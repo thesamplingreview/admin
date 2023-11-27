@@ -54,7 +54,7 @@ export default function FormCreate() {
       // push toast
       pushToast('success', 'Form created!');
       // redirect
-      navigate(appRoute(`/forms/${data.id}`));
+      navigate(appRoute(`/forms/${data.id}/fields`));
     } catch (err) {
       if (err.response?.data?.code === 422) {
         setValidator(err.response.data.validator.reduce((acc, cur) => ({

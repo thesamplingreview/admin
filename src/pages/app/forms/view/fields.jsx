@@ -4,11 +4,10 @@ import { useModel } from '@/contexts/hooks/module';
 import CBox from '@/components/CBox.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
 import NavView from '@/components/forms/NavView.jsx';
-import { FormBuilder } from '@/components/forms/FormBuilder';
+import FormFields from '@/components/forms/FormFields.jsx';
 
 export default function FormEditPage() {
   const [model] = useModel();
-  console.log(model);
 
   return (
     <>
@@ -35,11 +34,11 @@ export default function FormEditPage() {
         </Grid>
         <Grid lg={9}>
           <CBox
-            title="Form Builder"
+            title="Form Fields"
             bodyProps={{ px: 0, py: 0 }}
             mb={5}
           >
-            <FormBuilder defaultValue={model.fields} />
+            <FormFields />
           </CBox>
         </Grid>
       </Grid>

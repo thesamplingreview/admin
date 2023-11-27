@@ -25,7 +25,7 @@ const types = [
   },
   {
     id: 'products',
-    name: 'Linked Products List',
+    name: 'Products Selection',
   },
 ];
 
