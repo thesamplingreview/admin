@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
 import { appRoute } from '@/helpers/route';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CBox from '@/components/CBox.jsx';
 import FasIcon from '@/components/FasIcon.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
-import ListTable from '@/components/admins/ListTable.jsx';
+import ListTable from '@/components/pages/admins/ListTable.jsx';
 
 export default function AdminList() {
   return (

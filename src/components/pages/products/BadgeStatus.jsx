@@ -9,7 +9,7 @@ export default function BadgeStatus({ status }) {
     if (status === 'active') {
       return 'success';
     }
-    return '';
+    return undefined;
   }, [status]);
 
   return (

@@ -3,8 +3,8 @@ import { useModel } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import CBox from '@/components/CBox.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
-import NavView from '@/components/vendors/NavView.jsx';
-import ViewDetail from '@/components/vendors/ViewDetail.jsx';
+import NavView from '@/components/pages/vendors/NavView.jsx';
+import ViewDetail from '@/components/pages/vendors/ViewDetail.jsx';
 
 export default function VendorOverview() {
   const [model] = useModel();

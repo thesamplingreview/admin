@@ -1,6 +1,8 @@
 import { isDate, format } from 'date-fns';
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import config from '@/config/app';
 
@@ -61,6 +63,25 @@ const ValueComp = ({
         fontWeight="500"
         dangerouslySetInnerHTML={{ __html: value }}
       />
+    );
+  }
+  // url
+  if (value && type === 'url') {
+    return (
+      <Box display="inline-flex" spacing={1}>
+        <Typography variant="body1" fontWeight="500">
+          {value}
+        </Typography>
+        <Button
+          {...valueProps}
+          component={Link}
+          to={valueProps?.link || value}
+          size="small"
+          sx={{ my: -1 }}
+        >
+          view
+        </Button>
+      </Box>
     );
   }
 

@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import CBox from '@/components/CBox.jsx';
 import FasIcon from '@/components/FasIcon.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
-import ListTable from '@/components/products/ListTable.jsx';
+import ListTable from '@/components/pages/products/ListTable.jsx';
 
 export default function ProductList() {
   return (

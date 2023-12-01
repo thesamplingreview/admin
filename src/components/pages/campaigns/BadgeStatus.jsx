@@ -3,13 +3,10 @@ import Chip from '@mui/material/Chip';
 
 export default function BadgeStatus({ status }) {
   const color = useMemo(() => {
-    if (status === 'inactive') {
-      return 'error';
-    }
-    if (status === 'active') {
+    if (status === 'publish') {
       return 'success';
     }
-    return '';
+    return undefined;
   }, [status]);
 
   return (

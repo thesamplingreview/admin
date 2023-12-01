@@ -3,8 +3,8 @@ import { useModel } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import CBox from '@/components/CBox.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
-import NavView from '@/components/products/NavView.jsx';
-import FormEdit from '@/components/products/FormEdit.jsx';
+import NavView from '@/components/pages/products/NavView.jsx';
+import FormEdit from '@/components/pages/products/FormEdit.jsx';
 
 export default function ProductEdit() {
   const [model] = useModel();

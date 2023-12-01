@@ -2,7 +2,7 @@ import { appRoute } from '@/helpers/route';
 import Grid from '@mui/material/Unstable_Grid2';
 import CBox from '@/components/CBox.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
-import FormCreate from '@/components/users/FormCreate.jsx';
+import FormCreate from '@/components/pages/users/FormCreate.jsx';
 
 export default function UserAdd() {
   return (

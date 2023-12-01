@@ -21,11 +21,13 @@ export default function NavView({
       <MenuList>
         {navs.map((nav) => (
           <MenuItem
+            {...nav.props}
             key={nav.key}
             component={Link}
             to={nav.route}
             selected={nav.key === active}
             sx={[
+              nav.props?.sx,
               {
                 px: 2,
                 py: 1.5,

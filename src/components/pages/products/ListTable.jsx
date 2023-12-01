@@ -64,7 +64,6 @@ export default function ListTable() {
                 key: 'edit',
                 name: 'edit',
                 icon: 'fa-pencil',
-                color: 'success',
                 route: appRoute(`/products/${model.id}/edit`),
               },
             ]}

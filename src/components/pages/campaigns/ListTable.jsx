@@ -1,11 +1,9 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Grid from '@mui/material/Unstable_Grid2';
+import { isDate, format } from 'date-fns';
 import { useFetch } from '@/contexts/hooks/auth';
-import { useOptions } from '@/contexts/hooks/module';
-import { appRoute } from '@/helpers/route';
-// import CInput from '@/components/CInput.jsx';
-import CSelect from '@/components/CSelect.jsx';
+import { appRoute, publicRoute } from '@/helpers/route';
+import config from '@/config/app';
 import { DataTable, DataTableActions } from '@/components/DataTable';
 import BadgeStatus from './BadgeStatus.jsx';
 
@@ -20,14 +18,37 @@ export default function ListTable() {
       sortable: true,
     },
     {
-      key: 'email',
-      name: 'Email Address',
+      key: 'slug',
+      name: 'Slug',
       sortable: true,
     },
     {
-      key: 'contact',
-      name: 'Contact Number',
+      key: 'vendor.name',
+      name: 'Vendor',
+    },
+    {
+      key: 'start_date',
+      name: 'Start Date',
       sortable: true,
+      render(model) {
+        if (!model.start_date) {
+          return '-';
+        }
+        const dt = new Date(model.start_date);
+        return isDate(dt) ? format(dt, config.formatDateTime) : '-';
+      },
+    },
+    {
+      key: 'end_date',
+      name: 'End Date',
+      sortable: true,
+      render(model) {
+        if (!model.end_date) {
+          return '-';
+        }
+        const dt = new Date(model.end_date);
+        return isDate(dt) ? format(dt, config.formatDateTime) : '-';
+      },
     },
     {
       key: 'status',
@@ -48,17 +69,17 @@ export default function ListTable() {
           <DataTableActions
             actions={[
               {
-                key: 'view',
-                name: 'View',
-                icon: 'fa-file-lines',
-                route: appRoute(`/users/${model.id}`),
+                key: 'edit',
+                name: 'Edit entry',
+                icon: 'fa-pencil',
+                route: appRoute(`/campaigns/${model.id}/edit`),
               },
               {
-                key: 'edit',
-                name: 'edit',
-                icon: 'fa-pencil',
-                color: 'success',
-                route: appRoute(`/users/${model.id}/edit`),
+                key: 'public',
+                name: 'Campaign URL',
+                icon: 'fa-link',
+                route: publicRoute(`/campaigns/${model.slug}`),
+                otherProps: { target: '_blank' },
               },
             ]}
           />
@@ -73,7 +94,7 @@ export default function ListTable() {
       page,
       sort,
     };
-    return doFetch('/v1/admin/users', { params })
+    return doFetch('/v1/admin/campaigns', { params })
       .then((result) => {
         if (result.code !== 200) {
           throw new Error('Invalid response');
@@ -83,7 +104,7 @@ export default function ListTable() {
   }, [doFetch]);
 
   const handleSelect = (data) => {
-    navigate(appRoute(`/users/${data.id}`));
+    navigate(appRoute(`/campaigns/${data.id}`));
   };
 
   return (
@@ -100,38 +121,8 @@ export default function ListTable() {
         total: 'meta.total',
       }}
       selectable
-      filterable
-      filtersBody={<FiltersBody />}
       fetcher={fetchData}
       onSelect={handleSelect}
     />
   );
 }
-
-const FiltersBody = () => {
-  const options = useOptions();
-
-  return (
-    <Grid container spacing={4}>
-      <Grid xs={12} md={6} lg={3}>
-        <CSelect
-          label="Role"
-          name="role_id"
-          defaultValue="" // convert to uncontrolled input
-          // size="small"
-          placeholder="Show all"
-          options={options.roles}
-        />
-      </Grid>
-      <Grid xs={12} md={6} lg={3}>
-        <CSelect
-          label="Status"
-          name="status"
-          defaultValue="" // convert to uncontrolled input
-          placeholder="Show all"
-          options={options.statuses}
-        />
-      </Grid>
-    </Grid>
-  );
-};

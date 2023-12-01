@@ -3,8 +3,8 @@ import { useModel } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import CBox from '@/components/CBox.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
-import NavView from '@/components/products/NavView.jsx';
-import ViewDetail from '@/components/products/ViewDetail.jsx';
+import NavView from '@/components/pages/products/NavView.jsx';
+import ViewDetail from '@/components/pages/products/ViewDetail.jsx';
 
 export default function ProductOverview() {
   const [model] = useModel();

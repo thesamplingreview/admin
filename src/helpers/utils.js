@@ -53,6 +53,41 @@ export function isArraysEqual(arr1, arr2) {
 }
 
 /**
+ * Format number to readable string
+ *
+ * @param  {int}  number
+ * @param  {any}  fallback
+ * @return string
+ */
+export function formatNumber(number, fallback = '-') {
+  return !Number.isNaN(number) ? number.toLocaleString() : fallback;
+}
+
+/**
+ * Format number to humanize string
+ *
+ * @param  {int}  number
+ * @param  {any}  fallback
+ * @return string
+ */
+export function formatNumberGroup(number, fallback = '-') {
+  if (Number.isNaN(number)) {
+    return fallback;
+  }
+  if (number < 1000) {
+    return number.toString();
+  }
+  // thousand
+  if (number < 1000000) {
+    const result = (number / 1000);
+    return result % 1 === 0 ? `${result.toFixed(0)}k` : `${result.toFixed(1)}k`;
+  }
+  // millions
+  const result = (number / 1000000);
+  return result % 1 === 0 ? `${result.toFixed(0)}m` : `${result.toFixed(1)}m`;
+}
+
+/**
  * Get all input from <form>
  *
  * @param  {FormElement}  form

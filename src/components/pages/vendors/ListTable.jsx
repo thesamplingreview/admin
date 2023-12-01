@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFetch } from '@/contexts/hooks/auth';
 import { appRoute } from '@/helpers/route';
+import CAvatar from '@/components/CAvatar.jsx';
 import { DataTable, DataTableActions } from '@/components/DataTable';
 
 export default function ListTable() {
@@ -10,14 +11,24 @@ export default function ListTable() {
 
   const columns = [
     {
+      key: 'logo_url',
+      name: 'Logo',
+      width: 80,
+      render(data) {
+        if (!data.logo_url) {
+          return '-';
+        }
+        return <CAvatar name={data.name} src={data.logo_url} sx={{ width: 60, height: 60 }} />;
+      },
+    },
+    {
       key: 'name',
       name: 'Name',
       sortable: true,
-      width: 320,
     },
     {
-      key: 'campaigns',
-      name: 'Linked Campaigns',
+      key: 'profile',
+      name: 'Profile',
     },
     {
       key: 'actions',
@@ -30,11 +41,16 @@ export default function ListTable() {
           <DataTableActions
             actions={[
               {
+                key: 'view',
+                name: 'View',
+                icon: 'fa-file-lines',
+                route: appRoute(`/vendors/${model.id}`),
+              },
+              {
                 key: 'edit',
                 name: 'edit',
                 icon: 'fa-pencil',
-                color: 'success',
-                route: appRoute(`/users/${model.id}/edit`),
+                route: appRoute(`/vendors/${model.id}/edit`),
               },
             ]}
           />
@@ -49,7 +65,7 @@ export default function ListTable() {
       page,
       sort,
     };
-    return doFetch('/v1/admin/forms', { params })
+    return doFetch('/v1/admin/vendors', { params })
       .then((result) => {
         if (result.code !== 200) {
           throw new Error('Invalid response');
@@ -59,7 +75,7 @@ export default function ListTable() {
   }, [doFetch]);
 
   const handleSelect = (data) => {
-    navigate(appRoute(`/forms/${data.id}`));
+    navigate(appRoute(`/vendors/${data.id}`));
   };
 
   return (

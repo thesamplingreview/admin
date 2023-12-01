@@ -3,8 +3,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useModel } from '@/contexts/hooks/module';
 import CBox from '@/components/CBox.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
-import NavView from '@/components/forms/NavView.jsx';
-import FormDelete from '@/components/forms/FormDelete.jsx';
+import NavView from '@/components/pages/forms/NavView.jsx';
+import FormDelete from '@/components/pages/forms/FormDelete.jsx';
 
 export default function FormDeletePage() {
   const [model] = useModel();

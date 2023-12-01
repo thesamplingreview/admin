@@ -1,9 +1,13 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Grid from '@mui/material/Unstable_Grid2';
 import { useFetch } from '@/contexts/hooks/auth';
+import { useOptions } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
-import CAvatar from '@/components/CAvatar.jsx';
+// import CInput from '@/components/CInput.jsx';
+import CSelect from '@/components/CSelect.jsx';
 import { DataTable, DataTableActions } from '@/components/DataTable';
+import BadgeStatus from './BadgeStatus.jsx';
 
 export default function ListTable() {
   const navigate = useNavigate();
@@ -11,24 +15,27 @@ export default function ListTable() {
 
   const columns = [
     {
-      key: 'logo_url',
-      name: 'Logo',
-      width: 80,
-      render(data) {
-        if (!data.logo_url) {
-          return '-';
-        }
-        return <CAvatar name={data.name} src={data.logo_url} sx={{ width: 60, height: 60 }} />;
-      },
-    },
-    {
       key: 'name',
       name: 'Name',
       sortable: true,
     },
     {
-      key: 'profile',
-      name: 'Profile',
+      key: 'email',
+      name: 'Email Address',
+      sortable: true,
+    },
+    {
+      key: 'contact',
+      name: 'Contact Number',
+      sortable: true,
+    },
+    {
+      key: 'status',
+      name: 'Status',
+      sortable: true,
+      render(model) {
+        return <BadgeStatus status={model.status} />;
+      },
     },
     {
       key: 'actions',
@@ -44,14 +51,13 @@ export default function ListTable() {
                 key: 'view',
                 name: 'View',
                 icon: 'fa-file-lines',
-                route: appRoute(`/vendors/${model.id}`),
+                route: appRoute(`/users/${model.id}`),
               },
               {
                 key: 'edit',
                 name: 'edit',
                 icon: 'fa-pencil',
-                color: 'success',
-                route: appRoute(`/vendors/${model.id}/edit`),
+                route: appRoute(`/users/${model.id}/edit`),
               },
             ]}
           />
@@ -66,7 +72,7 @@ export default function ListTable() {
       page,
       sort,
     };
-    return doFetch('/v1/admin/vendors', { params })
+    return doFetch('/v1/admin/users', { params })
       .then((result) => {
         if (result.code !== 200) {
           throw new Error('Invalid response');
@@ -76,7 +82,7 @@ export default function ListTable() {
   }, [doFetch]);
 
   const handleSelect = (data) => {
-    navigate(appRoute(`/vendors/${data.id}`));
+    navigate(appRoute(`/users/${data.id}`));
   };
 
   return (
@@ -93,8 +99,38 @@ export default function ListTable() {
         total: 'meta.total',
       }}
       selectable
+      filterable
+      filtersBody={<FiltersBody />}
       fetcher={fetchData}
       onSelect={handleSelect}
     />
   );
 }
+
+const FiltersBody = () => {
+  const options = useOptions();
+
+  return (
+    <Grid container spacing={4}>
+      <Grid xs={12} md={6} lg={3}>
+        <CSelect
+          label="Role"
+          name="role_id"
+          defaultValue="" // convert to uncontrolled input
+          // size="small"
+          placeholder="Show all"
+          options={options.roles}
+        />
+      </Grid>
+      <Grid xs={12} md={6} lg={3}>
+        <CSelect
+          label="Status"
+          name="status"
+          defaultValue="" // convert to uncontrolled input
+          placeholder="Show all"
+          options={options.statuses}
+        />
+      </Grid>
+    </Grid>
+  );
+};

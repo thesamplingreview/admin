@@ -3,8 +3,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useModel } from '@/contexts/hooks/module';
 import CBox from '@/components/CBox.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
-import NavView from '@/components/vendors/NavView.jsx';
-import FormEdit from '@/components/vendors/FormEdit.jsx';
+import NavView from '@/components/pages/vendors/NavView.jsx';
+import FormEdit from '@/components/pages/vendors/FormEdit.jsx';
 
 export default function VendorEdit() {
   const [model] = useModel();

@@ -3,8 +3,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useModel } from '@/contexts/hooks/module';
 import CBox from '@/components/CBox.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
-import NavView from '@/components/admins/NavView.jsx';
-import FormPassword from '@/components/admins/FormPassword.jsx';
+import NavView from '@/components/pages/admins/NavView.jsx';
+import FormPassword from '@/components/pages/admins/FormPassword.jsx';
 
 export default function AdminPassword() {
   const [model] = useModel();
