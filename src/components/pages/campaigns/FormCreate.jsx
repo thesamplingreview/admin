@@ -7,6 +7,7 @@ import { useFetch } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
 import { useOptions } from '@/contexts/hooks/module';
 import { toFormData } from '@/helpers/utils';
+import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInput.jsx';
 import CSelect from '@/components/CSelect.jsx';
 import CTextArea from '@/components/CTextArea.jsx';
@@ -42,7 +43,7 @@ function genDefaultInput(options, model = null) {
   };
 }
 
-export default function FormCreate() {
+export default function FormCreate({ ...props }) {
   const doFetch = useFetch();
   const pushToast = useToast();
   const options = useOptions();
@@ -102,7 +103,23 @@ export default function FormCreate() {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit}>
+    <CBox
+      {...props}
+      component="form"
+      title="New Entry"
+      footer={(
+        <Box display="flex" justifyContent="flex-end">
+          <CLoadingButton
+            type="submit"
+            variant="contained"
+            loading={loading}
+          >
+            Save
+          </CLoadingButton>
+        </Box>
+      )}
+      onSubmit={handleSubmit}
+    >
       <CFormControl label="Campaign Name">
         <CInput
           name="name"
@@ -260,16 +277,6 @@ export default function FormCreate() {
           onChange={handleCheck}
         />
       </CFormControl>
-
-      <Box display="flex" justifyContent="flex-end" mt={3}>
-        <CLoadingButton
-          type="submit"
-          variant="contained"
-          loading={loading}
-        >
-          Save
-        </CLoadingButton>
-      </Box>
-    </Box>
+    </CBox>
   );
 }

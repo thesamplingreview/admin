@@ -34,6 +34,46 @@ export function getValue(obj, path) {
 }
 
 /**
+ * Set nested object value using dot pattern
+ *
+ * @param  {object}  obj - object (will be modified)
+ * @param  {string}  path - dotted string path
+ * @param  {any} val - value to set
+ * @return object
+ */
+export function setValue(obj, path, val) {
+  const paths = path.split('.');
+  const last = paths.pop();
+  if (last) {
+    paths.reduce((acc, part) => {
+      acc[part] = acc[part] || {};
+      return acc[part];
+    }, obj)[last] = val;
+  }
+  return obj;
+}
+
+export function toDotProps(obj) {
+  const result = {};
+  function traverse(o, c) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [k, v] of Object.entries(o)) {
+      const newPath = c ? `${c}.${k}` : k;
+      // preserve array
+      if (Array.isArray(v)) {
+        result[newPath] = v;
+      } else if (typeof v === 'object' && v !== null) {
+        traverse(v, newPath);
+      } else {
+        result[newPath] = v;
+      }
+    }
+  }
+  traverse(obj, '');
+  return result;
+}
+
+/**
  * Compare array if matched
  *
  * @param  {array}  arr1

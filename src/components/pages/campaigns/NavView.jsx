@@ -23,6 +23,12 @@ export default function NavView({ active }) {
       icon: 'fa-user-check',
     },
     {
+      key: 'products',
+      name: 'Products',
+      route: appRoute(`/campaigns/${model.id}/products`),
+      icon: 'fa-tag',
+    },
+    {
       key: 'edit',
       name: 'Edit Detail',
       route: appRoute(`/campaigns/${model.id}/edit`),

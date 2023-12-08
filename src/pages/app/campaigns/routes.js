@@ -48,6 +48,14 @@ export default [
             },
           },
           {
+            key: 'campaigns.detail.products',
+            path: 'products',
+            async lazy() {
+              const { ViewProducts } = await import('@/pages/app/campaigns/index');
+              return { Component: ViewProducts };
+            },
+          },
+          {
             key: 'campaigns.detail.delete',
             path: 'delete',
             async lazy() {

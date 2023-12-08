@@ -7,10 +7,11 @@ import { useFetch } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
 import { appRoute } from '@/helpers/route';
+import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInput.jsx';
 import CLoadingButton from '@/components/CLoadingButton.jsx';
 
-export default function FormDelete() {
+export default function FormDelete({ ...props }) {
   const navigate = useNavigate();
   const doFetch = useFetch();
   const [model] = useModel();
@@ -48,7 +49,25 @@ export default function FormDelete() {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit}>
+    <CBox
+      {...props}
+      component="form"
+      title="Delete Entry"
+      footer={(
+        <Box display="flex" justifyContent="flex-end">
+          <CLoadingButton
+            type="submit"
+            variant="contained"
+            color="error"
+            disabled={!isEnabled}
+            loading={loading}
+          >
+            Confirm Delete
+          </CLoadingButton>
+        </Box>
+      )}
+      onSubmit={handleSubmit}
+    >
       <Typography variant="h6">
         Are you certain you want to delete this entry?
       </Typography>
@@ -72,18 +91,6 @@ export default function FormDelete() {
           />
         </Grid>
       </Grid>
-
-      <Box display="flex" justifyContent="flex-end" mt={3}>
-        <CLoadingButton
-          type="submit"
-          variant="contained"
-          color="error"
-          disabled={!isEnabled}
-          loading={loading}
-        >
-          Confirm Delete
-        </CLoadingButton>
-      </Box>
-    </Box>
+    </CBox>
   );
 }

@@ -18,6 +18,9 @@ export default function ListTable() {
     {
       key: 'campaigns',
       name: 'Linked Campaigns',
+      render(model) {
+        return model.campaigns?.map((d) => d.name) || '-';
+      },
     },
     {
       key: 'actions',

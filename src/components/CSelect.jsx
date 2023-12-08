@@ -23,14 +23,16 @@ export default function CSelect({
     >
       <InputLabel>{label}</InputLabel>
       <Select
-        label={label}
         {...props}
+        label={label}
       >
         {placeholder && (
           <MenuItem value="">{placeholder}</MenuItem>
         )}
         {options.map((opt) => (
-          <MenuItem key={opt.id} value={opt.id}>{opt.name}</MenuItem>
+          <MenuItem key={opt.id} value={opt.id} disabled={Boolean(opt.disabled)}>
+            {opt.name}
+          </MenuItem>
         ))}
       </Select>
       {(error || helperText) && (

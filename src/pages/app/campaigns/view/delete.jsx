@@ -1,9 +1,9 @@
 import { appRoute } from '@/helpers/route';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useModel } from '@/contexts/hooks/module';
-import CBox from '@/components/CBox.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
 import NavView from '@/components/pages/campaigns/NavView.jsx';
+import EditAlert from '@/components/pages/campaigns/EditAlert.jsx';
 import FormDelete from '@/components/pages/campaigns/FormDelete.jsx';
 
 export default function CampaignDelete() {
@@ -33,9 +33,8 @@ export default function CampaignDelete() {
           <NavView active="delete" />
         </Grid>
         <Grid lg={9}>
-          <CBox title="Delete Entry" mb={5}>
-            <FormDelete />
-          </CBox>
+          <EditAlert />
+          <FormDelete mb={5} />
         </Grid>
       </Grid>
     </>

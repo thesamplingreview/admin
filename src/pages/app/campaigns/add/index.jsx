@@ -1,6 +1,5 @@
 import { appRoute } from '@/helpers/route';
 import Grid from '@mui/material/Unstable_Grid2';
-import CBox from '@/components/CBox.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
 import FormCreate from '@/components/pages/campaigns/FormCreate.jsx';
 
@@ -25,9 +24,7 @@ export default function VendorAdd() {
 
         </Grid>
         <Grid lg={9}>
-          <CBox title="New Entry" mb={5}>
-            <FormCreate />
-          </CBox>
+          <FormCreate mb={5} />
         </Grid>
       </Grid>
     </>

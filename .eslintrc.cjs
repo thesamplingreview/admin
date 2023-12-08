@@ -36,5 +36,8 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'import/extensions': ['error', 'always', {
+      'js': 'never'
+    }]
   },
 }

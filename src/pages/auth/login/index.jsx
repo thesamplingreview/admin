@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import SplashCover from '@/components/layouts/SplashCover.jsx';
-import LoginForm from '@/components/auth/LoginForm.jsx';
+import LoginForm from '@/components/pages/auth/LoginForm.jsx';
 import { useToken } from '@/contexts/hooks/auth';
 import { useOnce } from '@/helpers/hooks';
 import { appRoute } from '@/helpers/route';

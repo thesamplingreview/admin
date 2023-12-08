@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { appRoute } from '@/helpers/route';
 import Button from '@mui/material/Button';
-import CBox from '@/components/CBox.jsx';
 import FasIcon from '@/components/FasIcon.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
 import ListTable from '@/components/pages/campaigns/ListTable.jsx';
@@ -32,9 +31,7 @@ export default function CampaignList() {
         </Button>
       </PageHeader>
 
-      <CBox noPadding mb={5}>
-        <ListTable />
-      </CBox>
+      <ListTable mb={5} />
     </>
   );
 }

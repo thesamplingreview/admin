@@ -2,9 +2,11 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 export default function CBox({
-  title,
+  title = '',
   noPadding = false,
-  bodyProps,
+  bodyProps = null,
+  action = null,
+  footer = null,
   children,
   ...props
 }) {
@@ -20,20 +22,39 @@ export default function CBox({
       borderRadius="12px"
       {...props}
     >
-      {title && (
+      {(title || action) && (
         <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
           px={{ sx: 3, md: 4 }}
           py={{ sx: 2, md: 3 }}
           borderBottom="1px solid var(--border-500)"
         >
-          <Typography variant="h5">
-            {title}
-          </Typography>
+          {title && (
+            <Typography variant="h5">
+              {title}
+            </Typography>
+          )}
+          {action && (
+            <Box ml={3}>
+              {action}
+            </Box>
+          )}
         </Box>
       )}
       <Box {...internalBodyProps}>
         {children}
       </Box>
+      {footer && (
+        <Box
+          px={{ sx: 3, md: 4 }}
+          py={{ sx: 2, md: 3 }}
+          borderTop="1px solid var(--border-500)"
+        >
+          {footer}
+        </Box>
+      )}
     </Box>
   );
 }

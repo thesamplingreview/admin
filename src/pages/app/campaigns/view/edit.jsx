@@ -1,12 +1,9 @@
 import { appRoute } from '@/helpers/route';
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import { useModel } from '@/contexts/hooks/module';
-import CBox from '@/components/CBox.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
 import NavView from '@/components/pages/campaigns/NavView.jsx';
+import EditAlert from '@/components/pages/campaigns/EditAlert.jsx';
 import FormEdit from '@/components/pages/campaigns/FormEdit.jsx';
 
 export default function CampaignEdit() {
@@ -36,18 +33,8 @@ export default function CampaignEdit() {
           <NavView active="edit" />
         </Grid>
         <Grid lg={9}>
-          {model.status === 'publish' && (
-            <Box mb={3}>
-              <Alert severity="warning">
-                <AlertTitle>Warning</AlertTitle>
-                You are editing PUBLISHED campaign right now.
-              </Alert>
-            </Box>
-          )}
-
-          <CBox title="Edit Entry" mb={5}>
-            <FormEdit />
-          </CBox>
+          <EditAlert />
+          <FormEdit mb={5} />
         </Grid>
       </Grid>
     </>

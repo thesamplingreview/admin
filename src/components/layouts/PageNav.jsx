@@ -35,10 +35,12 @@ export default function NavView({
               },
             ]}
           >
-            <ListItemIcon>
+            <ListItemIcon key="icon">
               <FasIcon name={nav.icon} />
             </ListItemIcon>
-            <ListItemText>{nav.name}</ListItemText>
+            <ListItemText key="name">
+              {nav.name}
+            </ListItemText>
           </MenuItem>
         ))}
       </MenuList>

@@ -4,10 +4,11 @@ import { isDate, format } from 'date-fns';
 import { useFetch } from '@/contexts/hooks/auth';
 import { appRoute, publicRoute } from '@/helpers/route';
 import config from '@/config/app';
+import CBox from '@/components/CBox.jsx';
 import { DataTable, DataTableActions } from '@/components/DataTable';
 import BadgeStatus from './BadgeStatus.jsx';
 
-export default function ListTable() {
+export default function ListTable({ ...props }) {
   const navigate = useNavigate();
   const doFetch = useFetch();
 
@@ -108,21 +109,23 @@ export default function ListTable() {
   };
 
   return (
-    <DataTable
-      columns={columns}
-      initData={{
-        page: 1,
-        perPage: 10,
-        sort: '',
-        filters: {},
-      }}
-      dataProps={{
-        data: 'data',
-        total: 'meta.total',
-      }}
-      selectable
-      fetcher={fetchData}
-      onSelect={handleSelect}
-    />
+    <CBox {...props} noPadding>
+      <DataTable
+        columns={columns}
+        initData={{
+          page: 1,
+          perPage: 10,
+          sort: '',
+          filters: {},
+        }}
+        dataProps={{
+          data: 'data',
+          total: 'meta.total',
+        }}
+        selectable
+        fetcher={fetchData}
+        onSelect={handleSelect}
+      />
+    </CBox>
   );
 }
