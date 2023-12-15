@@ -5,23 +5,27 @@ const types = [
   },
   {
     id: 'select',
-    name: 'Select',
+    name: 'Selection',
   },
   {
-    id: 'true_false',
-    name: 'True / False',
+    id: 'yes_no',
+    name: 'Yes/No',
   },
-  {
-    id: 'email',
-    name: 'Email',
-  },
+  // {
+  //   id: 'email',
+  //   name: 'Email',
+  // },
   {
     id: 'contact',
-    name: 'Contact',
+    name: 'Phone Number',
+  },
+  {
+    id: 'static',
+    name: 'Static Content',
   },
   {
     id: 'address',
-    name: 'Full Address',
+    name: 'Address',
   },
   {
     id: 'products',

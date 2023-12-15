@@ -97,6 +97,11 @@ const theme = createTheme({
         root: {
           fontSize: '1em',
         },
+        input: {
+          '&::placeholder': {
+            fontStyle: 'normal',
+          },
+        },
       },
     },
     MuiInputLabel: {

@@ -6,6 +6,7 @@ import CAvatar from '@/components/CAvatar.jsx';
 import CFormControl from '@/components/CFormControl.jsx';
 // import CInput from '@/components/CInput.jsx';
 import CSwitch from '@/components/CSwitch.jsx';
+import CSelect from '@/components/CSelect.jsx';
 import CSelectMultiple from '@/components/CSelectMultiple.jsx';
 import FasIcon from '@/components/FasIcon.jsx';
 
@@ -111,7 +112,7 @@ function FormItemBody({
       <CFormControl
         label="Filterable"
         note={(
-          <Box>Enable enrolment filter on this product.<br/>Only <i>Select, True/False</i> field type can be used as filter</Box>
+          <Box>Enable filter on this product.<br/>Only <i>Select, True/False</i> field type can be used as filter</Box>
         )}
       >
         <CSwitch
@@ -193,7 +194,6 @@ function FormItemBodyDynamic({ item, fields, onChange }) {
           <FormItemBodyDynamicInput
             key={field.id}
             field={field}
-            label={`${field.name} match`}
             name={`config.and.${field.id}`}
             value={item[`config.and.${field.id}`] || []}
             onChange={onChange}
@@ -206,7 +206,6 @@ function FormItemBodyDynamic({ item, fields, onChange }) {
           <FormItemBodyDynamicInput
             key={field.id}
             field={field}
-            label={`${field.name} match`}
             name={`config.or.${field.id}`}
             value={item[`config.or.${field.id}`] || []}
             onChange={onChange}
@@ -219,14 +218,17 @@ function FormItemBodyDynamic({ item, fields, onChange }) {
 
 function FormItemBodyDynamicInput({
   field,
-  label,
   name,
   value,
   onChange,
 }) {
   if (field.type === 'select') {
     return (
-      <CFormControl label={label}>
+      <CFormControl
+        label={`${field.name} matches`}
+        labelColProps={{ md: 5, lg: 5 }}
+        inputColProps={{ md: 7, lg: 7 }}
+      >
         <CSelectMultiple
           options={field.options}
           name={name}
@@ -237,5 +239,27 @@ function FormItemBodyDynamicInput({
       </CFormControl>
     );
   }
+
+  if (field.type === 'yes_no') {
+    return (
+      <CFormControl
+        label={`${field.name} is`}
+        labelColProps={{ md: 5, lg: 5 }}
+        inputColProps={{ md: 7, lg: 7 }}
+      >
+        <CSelect
+          options={[
+            { id: 'Yes', name: 'Yes' },
+            { id: 'No', name: 'No' },
+          ]}
+          name={name}
+          label="Value"
+          value={value}
+          onChange={onChange}
+        />
+      </CFormControl>
+    );
+  }
+
   return null;
 }

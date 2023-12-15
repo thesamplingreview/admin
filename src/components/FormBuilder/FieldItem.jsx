@@ -5,11 +5,11 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import CInput from '@/components/CInput.jsx';
 import CSelect from '@/components/CSelect.jsx';
-import CTextArea from '@/components/CTextArea.jsx';
 import CSwitch from '@/components/CSwitch.jsx';
 import CFormControl from '@/components/CFormControl.jsx';
 import CConfirmAlert from '@/components/CConfirmAlert.jsx';
 import FasIcon from '@/components/FasIcon.jsx';
+import customOptions from './custom_options';
 import allTypes from './types';
 
 export default function FieldItem({
@@ -165,6 +165,9 @@ function FieldItemBody({
   onChange,
   onRemove,
 }) {
+  // enable type-only options config
+  const CustomOptionComp = customOptions[field.type] || null;
+
   const handleChecked = (e) => {
     onChange({
       target: {
@@ -186,6 +189,14 @@ function FieldItemBody({
           onChange={onChange}
         />
       </CFormControl>
+      <CFormControl label="Description">
+        <CInput
+          name="description"
+          label="Enter description"
+          value={field.description || ''}
+          onChange={onChange}
+        />
+      </CFormControl>
       <CFormControl label="Field Type">
         <CSelect
           name="type"
@@ -204,20 +215,22 @@ function FieldItemBody({
           onChange={handleChecked}
         />
       </CFormControl>
-      <CFormControl label="Field Hint">
+      <CFormControl label="Hint">
         <CInput
-          name="description"
-          label="Enter field hint"
-          value={field.description || ''}
+          name="hint"
+          label="Enter hint"
+          value={field.hint || ''}
           onChange={onChange}
         />
       </CFormControl>
 
-      <FieldItemDynamicBody
-        field={field}
-        onChange={onChange}
-        onCheck={handleChecked}
-      />
+      {CustomOptionComp && (
+        <CustomOptionComp
+          field={field}
+          onChange={onChange}
+          onCheck={handleChecked}
+        />
+      )}
 
       <Box display="flex" justifyContent="space-between" mt={3}>
         <Button
@@ -239,43 +252,4 @@ function FieldItemBody({
       </Box>
     </Box>
   );
-}
-
-function FieldItemDynamicBody({
-  field,
-  onChange,
-  // onCheck,
-}) {
-  // text field
-  if (field.type === 'text') {
-    return (
-      <>
-        <CFormControl label="Placeholder">
-          <CInput
-            name="placeholder"
-            label="Placeholder text"
-            value={field.placeholder || ''}
-            onChange={onChange}
-          />
-        </CFormControl>
-      </>
-    );
-  }
-  // select field
-  if (field.type === 'select') {
-    return (
-      <>
-        <CFormControl label="Select Options">
-          <CTextArea
-            name="options"
-            label="Enter option"
-            value={field.options || ''}
-            onChange={onChange}
-            helperText="Each line represent a single option"
-          />
-        </CFormControl>
-      </>
-    );
-  }
-  return null;
 }

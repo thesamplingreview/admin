@@ -58,7 +58,7 @@ export default function CampaignProducts() {
         ]}
       />
 
-      <Grid container spacing={5}>
+      <Grid container spacing={{ xs: 3, xl: 5 }}>
         <Grid lg={3}>
           <NavView active="products" />
         </Grid>

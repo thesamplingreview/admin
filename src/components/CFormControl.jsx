@@ -8,11 +8,13 @@ export default function CFormControl({
   label,
   size = 9,
   note,
+  labelColProps,
+  inputColProps,
   children,
 }) {
   return (
     <Grid container spacing={3} alignItems="flex-start" my={0}>
-      <Grid xs={12} md={4} lg={3}>
+      <Grid xs={12} md={4} lg={3} {...labelColProps}>
         <Box display="inline-flex" alignItems="center" mt={2}>
           <Typography variant="label">
             {label}
@@ -26,7 +28,7 @@ export default function CFormControl({
           )}
         </Box>
       </Grid>
-      <Grid md={8} lg={size}>
+      <Grid md={8} lg={size} {...inputColProps}>
         {children}
       </Grid>
     </Grid>

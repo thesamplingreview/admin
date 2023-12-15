@@ -33,13 +33,7 @@ export default function FormEditPage() {
           <NavView active="fields" />
         </Grid>
         <Grid lg={9}>
-          <CBox
-            title="Form Fields"
-            bodyProps={{ px: 0, py: 0 }}
-            mb={5}
-          >
-            <FormFields />
-          </CBox>
+          <FormFields mb={5} />
         </Grid>
       </Grid>
     </>

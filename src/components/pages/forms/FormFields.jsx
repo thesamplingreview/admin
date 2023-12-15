@@ -1,12 +1,47 @@
 import { useRef, useState } from 'react';
 import Box from '@mui/material/Box';
+import { setValue, toDotProps } from '@/helpers/utils';
 import { useFetch } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
 import { useModel } from '@/contexts/hooks/module';
+import CBox from '@/components/CBox.jsx';
 import CLoadingButton from '@/components/CLoadingButton.jsx';
 import { FormBuilder } from '@/components/FormBuilder';
 
-export default function FormFields() {
+function genInputs(dataset) {
+  if (!dataset) {
+    return [];
+  }
+  return dataset.map((d) => {
+    const data = {
+      id: d.id,
+      name: d.name,
+      type: d.type,
+      description: d.description,
+      hint: d.hint,
+      placeholder: d.placeholder,
+      options: d.options,
+      mandatory: d.mandatory,
+      config: d.config,
+    };
+    return toDotProps(data);
+  });
+}
+
+function genFormData(dataset) {
+  return dataset.map((data) => {
+    const input = {};
+    Object.keys(data).forEach((key) => {
+      setValue(input, key, data[key]);
+    });
+    return input;
+  }).map((data) => ({
+    ...data,
+    config: data.config ? JSON.stringify(data.config) : null,
+  }));
+}
+
+export default function FormFields({ ...props }) {
   const doFetch = useFetch();
   const pushToast = useToast();
   const [model, setModel] = useModel();
@@ -15,37 +50,14 @@ export default function FormFields() {
   const [loading, setLoading] = useState(false);
   const [validator, setValidator] = useState(null);
 
-  const genFormData = () => {
-    if (!$builder.current) {
-      throw new Error('Unable to get ref: $builder');
-    }
-    const fields = $builder.current.getValue();
-    return fields.map((field) => {
-      const input = {};
-      // define top level props, the rest will be categories into `config` prop
-      const fixedProps = [
-        'id', 'name', 'type', 'options', 'description', 'mandatory', 'placeholder',
-      ];
-      Object.keys(field).forEach((key) => {
-        if (fixedProps.includes(key)) {
-          input[key] = field[key];
-        } else if (key.startsWith('config.')) {
-          const configKey = key.replace('config.', '');
-          if (!input.config) {
-            input.config = {};
-          }
-          input.config[configKey] = field[key];
-        }
-      });
-      return input;
-    });
-  };
-
   const handleSave = async () => {
     setLoading(true);
     setValidator(null);
     try {
-      const fields = genFormData();
+      if (!$builder.current) {
+        throw new Error('Unable to get ref: $builder');
+      }
+      const fields = genFormData($builder.current.getValue());
 
       const formdata = {
         fields,
@@ -87,21 +99,27 @@ export default function FormFields() {
   };
 
   return (
-    <>
+    <CBox
+      {...props}
+      title="Form Fields"
+      noPadding
+      footer={(
+        <Box display="flex" justifyContent="flex-end">
+          <CLoadingButton
+            variant="contained"
+            loading={loading}
+            onClick={handleSave}
+          >
+            Save
+          </CLoadingButton>
+        </Box>
+      )}
+    >
       <FormBuilder
         ref={$builder}
-        defaultValue={model.fields}
+        defaultValue={genInputs(model.fields)}
         validator={validator}
       />
-      <Box px={3} py={2} textAlign="right">
-        <CLoadingButton
-          variant="contained"
-          loading={loading}
-          onClick={handleSave}
-        >
-          Save
-        </CLoadingButton>
-      </Box>
-    </>
+    </CBox>
   );
 }

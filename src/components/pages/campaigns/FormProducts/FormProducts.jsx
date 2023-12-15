@@ -11,27 +11,41 @@ import FasIcon from '@/components/FasIcon.jsx';
 import FormItem from './FormItem.jsx';
 import DialogAddProduct from './DialogAddProduct.jsx';
 
+function genInputs(dataset) {
+  if (!dataset) {
+    return [];
+  }
+  return dataset.map((d) => {
+    const data = {
+      id: d.id,
+      name: d.name,
+      brand: d.brand,
+      imageUrl: d.image_url || '',
+      filterable: d.campaign_products?.filterable || false,
+      config: d.campaign_products?.config || {},
+    };
+    return toDotProps(data);
+  });
+}
+
+function genFormData(dataset) {
+  return dataset.map((data) => {
+    const input = {};
+    Object.keys(data).forEach((key) => {
+      setValue(input, key, data[key]);
+    });
+    return input;
+  }).map((data) => ({
+    id: data.id,
+    filterable: data.filterable,
+    config: JSON.stringify(data.config || {}),
+  }));
+}
+
 export default function FormProducts({ formFields, ...props }) {
   const doFetch = useFetch();
   const pushToast = useToast();
   const [model, setModel] = useModel();
-
-  const genInputs = (dataset) => {
-    if (!dataset) {
-      return [];
-    }
-    return dataset.map((d) => {
-      const data = {
-        id: d.id,
-        name: d.name,
-        brand: d.brand,
-        imageUrl: d.image_url || '',
-        filterable: d.campaign_products?.filterable || false,
-        config: d.campaign_products?.config || {},
-      };
-      return toDotProps(data);
-    });
-  };
 
   const [inputs, setInputs] = useState(genInputs(model.products));
   const [loading, setLoading] = useState(false);
@@ -40,7 +54,7 @@ export default function FormProducts({ formFields, ...props }) {
 
   const filterableFields = useMemo(() => {
     const types = [
-      'select', 'true_false',
+      'select', 'yes_no',
     ];
     return formFields
       .filter((d) => types.includes(d.type))
@@ -54,20 +68,6 @@ export default function FormProducts({ formFields, ...props }) {
         })) || [],
       }));
   }, [formFields]);
-
-  const genFormData = () => {
-    return inputs.map((item) => {
-      const input = {};
-      Object.keys(item).forEach((key) => {
-        setValue(input, key, item[key]);
-      });
-      return input;
-    }).map((item) => ({
-      id: item.id,
-      filterable: item.filterable,
-      config: JSON.stringify(item.config || {}),
-    }));
-  };
 
   const handleAdd = () => {
     setIsAdd(true);
@@ -101,7 +101,7 @@ export default function FormProducts({ formFields, ...props }) {
     setLoading(true);
     setValidator(null);
     try {
-      const beInputs = genFormData();
+      const beInputs = genFormData(inputs);
 
       const formdata = {
         products: beInputs,

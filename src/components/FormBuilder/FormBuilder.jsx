@@ -22,8 +22,11 @@ const FormBuilderRef = forwardRef(({
       key: (new Date()).valueOf(),
       type: 'text',
       name: '',
+      description: '',
+      hint: '',
       mandatory: false,
       show: true,
+      config: null,
     });
     setFields(newFields);
   };
