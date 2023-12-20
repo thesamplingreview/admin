@@ -6,3 +6,5 @@ export { default as ViewOverview } from './view/overview.jsx';
 export { default as ViewEdit } from './view/edit.jsx';
 export { default as ViewProducts } from './view/products.jsx';
 export { default as ViewDelete } from './view/delete.jsx';
+export { default as ViewEnrolments } from './view/enrolments.jsx';
+export { default as ViewReport } from './view/report.jsx';

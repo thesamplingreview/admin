@@ -4,7 +4,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useFetch } from '@/contexts/hooks/auth';
 import { useOptions } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
-// import CInput from '@/components/CInput.jsx';
+import CInput from '@/components/CInput.jsx';
 import CSelect from '@/components/CSelect.jsx';
 import CAvatar from '@/components/CAvatar.jsx';
 import { DataTable, DataTableActions } from '@/components/DataTable';
@@ -121,21 +121,25 @@ const FiltersBody = () => {
     <Grid container spacing={4}>
       <Grid xs={12} md={6} lg={3}>
         <CSelect
-          label="Role"
-          name="role_id"
-          defaultValue="" // convert to uncontrolled input
-          // size="small"
-          placeholder="Show all"
-          options={options.roles || []}
-        />
-      </Grid>
-      <Grid xs={12} md={6} lg={3}>
-        <CSelect
           label="Status"
           name="status"
           defaultValue="" // convert to uncontrolled input
           placeholder="Show all"
           options={options.statuses || []}
+        />
+      </Grid>
+      <Grid xs={12} md={6} lg={3}>
+        <CInput
+          label="Product name"
+          name="name"
+          placeholder="Search product"
+        />
+      </Grid>
+      <Grid xs={12} md={6} lg={3}>
+        <CInput
+          label="Product brand"
+          name="brand"
+          placeholder="Search brand"
         />
       </Grid>
     </Grid>

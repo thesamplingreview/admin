@@ -63,6 +63,22 @@ export default [
               return { Component: ViewDelete };
             },
           },
+          {
+            key: 'campaigns.detail.enrolments',
+            path: 'enrolments',
+            async lazy() {
+              const { ViewEnrolments } = await import('@/pages/app/campaigns/index');
+              return { Component: ViewEnrolments };
+            },
+          },
+          {
+            key: 'campaigns.detail.report',
+            path: 'report',
+            async lazy() {
+              const { ViewReport } = await import('@/pages/app/campaigns/index');
+              return { Component: ViewReport };
+            },
+          },
         ],
       },
     ],

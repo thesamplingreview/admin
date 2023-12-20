@@ -109,7 +109,7 @@ export default function FormEdit() {
         />
       </CFormControl>
 
-      <CFormControl label="Status">
+      <CFormControl label="Status" size={4}>
         <CSelect
           name="status"
           value={input.status}

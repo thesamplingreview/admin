@@ -4,7 +4,7 @@ import { appRoute } from '@/helpers/route';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
 import NavView from '@/components/pages/campaigns/NavView.jsx';
 import ViewDetail from '@/components/pages/campaigns/ViewDetail.jsx';
-import ViewStats from '@/components/pages/campaigns/ViewStats.jsx';
+// import ViewStats from '@/components/pages/campaigns/ViewStats.jsx';
 
 export default function CampaignOverview() {
   const [model] = useModel();
@@ -29,7 +29,7 @@ export default function CampaignOverview() {
           <NavView active="overview" />
         </Grid>
         <Grid lg={9}>
-          <ViewStats modelId={model.id} mb={4} />
+          {/* <ViewStats modelId={model.id} mb={4} /> */}
           <ViewDetail mb={5} />
         </Grid>
       </Grid>

@@ -17,9 +17,15 @@ export default function NavView({ active }) {
       icon: 'fa-file-lines',
     },
     {
-      key: 'users',
-      name: 'Enrolments',
-      route: appRoute(`/campaigns/${model.id}/users`),
+      key: 'report',
+      name: 'Report',
+      route: appRoute(`/campaigns/${model.id}/report`),
+      icon: 'fa-chart-bar',
+    },
+    {
+      key: 'enrolments',
+      name: model.enrolments_count ? `Enrolments (${model.enrolments_count})` : 'Enrolments',
+      route: appRoute(`/campaigns/${model.id}/enrolments`),
       icon: 'fa-user-check',
     },
     {

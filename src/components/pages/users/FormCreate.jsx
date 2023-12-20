@@ -121,7 +121,7 @@ export default function FormCreate() {
         />
       </CFormControl>
 
-      <CFormControl label="Status">
+      <CFormControl label="Status" size={4}>
         <CSelect
           name="status"
           value={input.status}

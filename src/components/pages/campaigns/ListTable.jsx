@@ -1,10 +1,14 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isDate, format } from 'date-fns';
+import Grid from '@mui/material/Unstable_Grid2';
 import { useFetch } from '@/contexts/hooks/auth';
+import { useOptions } from '@/contexts/hooks/module';
 import { appRoute, publicRoute } from '@/helpers/route';
 import config from '@/config/app';
 import CBox from '@/components/CBox.jsx';
+import CInput from '@/components/CInput.jsx';
+import CSelect from '@/components/CSelect.jsx';
 import { DataTable, DataTableActions } from '@/components/DataTable';
 import BadgeStatus from './BadgeStatus.jsx';
 
@@ -123,9 +127,46 @@ export default function ListTable({ ...props }) {
           total: 'meta.total',
         }}
         selectable
+        filterable
+        filtersBody={<FiltersBody />}
         fetcher={fetchData}
         onSelect={handleSelect}
       />
     </CBox>
   );
 }
+
+const FiltersBody = () => {
+  const options = useOptions();
+
+  return (
+    <Grid container spacing={4}>
+      <Grid xs={12} md={6} lg={3}>
+        <CSelect
+          label="Type"
+          name="state"
+          defaultValue="" // convert to uncontrolled input
+          // size="small"
+          placeholder="Show all"
+          options={options.states || []}
+        />
+      </Grid>
+      <Grid xs={12} md={6} lg={3}>
+        <CSelect
+          label="Status"
+          name="status"
+          defaultValue="" // convert to uncontrolled input
+          placeholder="Show all"
+          options={options.statuses || []}
+        />
+      </Grid>
+      <Grid xs={12} md={6} lg={3}>
+        <CInput
+          label="Campaign name"
+          name="name"
+          placeholder="Search name"
+        />
+      </Grid>
+    </Grid>
+  );
+};

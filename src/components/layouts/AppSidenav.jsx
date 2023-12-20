@@ -27,6 +27,13 @@ export default function AppSidenav() {
       group: 'CONTENT',
       childs: [
         {
+          key: 'enrolments',
+          route: appRoute('/enrolments'),
+          name: 'Enrolments',
+          icon: 'fa-list-check',
+          group: 'CONTENT',
+        },
+        {
           key: 'campaigns',
           route: appRoute('/campaigns'),
           name: 'Campaigns',

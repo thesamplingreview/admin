@@ -48,7 +48,7 @@ export default function DTFilters({ children }) {
       {isShow && (
         <Box
           component="form"
-          bgcolor="background.main"
+          bgcolor="#f2f3fd"
           borderTop="1px solid rgba(224, 224, 224, 1)"
           px={3}
           py={3}

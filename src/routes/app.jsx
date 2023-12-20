@@ -2,6 +2,7 @@ import { Navigate } from 'react-router-dom';
 import AppLayout from '@/pages/app/layout.jsx';
 import vendorsRoutes from '@/pages/app/vendors/routes';
 import campaignsRoutes from '@/pages/app/campaigns/routes';
+import enrolmentsRoutes from '@/pages/app/enrolments/routes';
 import productsRoutes from '@/pages/app/products/routes';
 import formsRoutes from '@/pages/app/forms/routes';
 import usersRoutes from '@/pages/app/users/routes';
@@ -28,6 +29,7 @@ const routes = [
   ...usersRoutes,
   ...productsRoutes,
   ...campaignsRoutes,
+  ...enrolmentsRoutes,
   ...vendorsRoutes,
   ...formsRoutes,
 ];

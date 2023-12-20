@@ -26,6 +26,38 @@ export default function ViewDetail({ ...props }) {
         }}
       />
       <CDisplayControl
+        label="Description"
+        type="html"
+        value={model.description?.replace(/\n/g, '<br>')}
+      />
+      <CDisplayControl
+        label="Intro Title"
+        value={model.intro_title}
+      />
+      <CDisplayControl
+        label="Intro Description"
+        type="html"
+        value={model.intro_description?.replace(/\n/g, '<br>')}
+      />
+      <CDisplayControl
+        label="Pre-Submit Title"
+        value={model.presubmit_title}
+      />
+      <CDisplayControl
+        label="Pre-Submit Description"
+        type="html"
+        value={model.presubmit_description?.replace(/\n/g, '<br>')}
+      />
+      <CDisplayControl
+        label="Post-Submit Title"
+        value={model.postsubmit_title}
+      />
+      <CDisplayControl
+        label="Post-Submit Description"
+        type="html"
+        value={model.postsubmit_description?.replace(/\n/g, '<br>')}
+      />
+      <CDisplayControl
         label="Start Date"
         type="date"
         value={model.start_date}
@@ -36,15 +68,16 @@ export default function ViewDetail({ ...props }) {
         value={model.end_date}
       />
       <CDisplayControl
-        label="Description"
-        type="html"
-        value={model.description?.replace(/\n/g, '<br>')}
-      />
-      <CDisplayControl
         label="Cover Image"
         type="image"
         size={6}
         value={model.cover_url}
+      />
+      <CDisplayControl
+        label="Background"
+        type="image"
+        size={6}
+        value={model.background_url}
       />
       <CDisplayControl
         label="SEO Meta Title"

@@ -4,8 +4,8 @@ export default function CTextArea({ error, ...props }) {
   return (
     <TextField
       {...props}
-      multiline
       fullWidth
+      multiline
       minRows={3}
       error={Boolean(error)}
       helperText={error || props.helperText}

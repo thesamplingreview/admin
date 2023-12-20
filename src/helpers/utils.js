@@ -212,3 +212,30 @@ export function toFormData(input, formData = null, parentKey = '') {
   });
   return formData;
 }
+
+/**
+ * Convert string to color hex
+ * ref: https://mui.com/material-ui/react-avatar/#letter-avatars
+ *
+ * @param  {string}  string
+ * @return {string}
+ */
+export function stringToColor(string, lighten = 30) {
+  let hash = 0;
+  let i;
+
+  /* eslint-disable no-bitwise */
+  for (i = 0; i < string.length; i += 1) {
+    hash = string.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  let color = '#';
+  for (i = 0; i < 3; i += 1) {
+    let value = (hash >> (i * 8)) & 0xff;
+    value = Math.min(255, value + lighten);
+    color += `00${value.toString(16)}`.slice(-2);
+  }
+  /* eslint-enable no-bitwise */
+
+  return color;
+}

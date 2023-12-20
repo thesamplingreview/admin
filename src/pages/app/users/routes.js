@@ -55,6 +55,14 @@ export default [
               return { Component: ViewPassword };
             },
           },
+          {
+            key: 'users.detail.campaigns',
+            path: 'campaigns',
+            async lazy() {
+              const { ViewCampaigns } = await import('@/pages/app/users/index.jsx');
+              return { Component: ViewCampaigns };
+            },
+          },
         ],
       },
     ],

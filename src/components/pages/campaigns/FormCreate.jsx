@@ -8,7 +8,7 @@ import { useToast } from '@/contexts/hooks/toast';
 import { useOptions } from '@/contexts/hooks/module';
 import { toFormData } from '@/helpers/utils';
 import CBox from '@/components/CBox.jsx';
-import CInput from '@/components/CInput.jsx';
+import CInput from '@/components/CInputLazy.jsx';
 import CSelect from '@/components/CSelect.jsx';
 import CTextArea from '@/components/CTextArea.jsx';
 import CSwitch from '@/components/CSwitch.jsx';
@@ -26,9 +26,15 @@ function genDefaultInput(options, model = null) {
   }
 
   return {
-    name: model?.name || '',
     slug: model?.slug || '',
+    name: model?.name || '',
     description: model?.description || '',
+    intro_title: model?.intro_title || '',
+    intro_description: model?.intro_description || '',
+    presubmit_title: model?.presubmit_title || '',
+    presubmit_description: model?.presubmit_description || '',
+    postsubmit_title: model?.postsubmit_title || '',
+    postsubmit_description: model?.postsubmit_description || '',
     meta_title: model?.meta_title || '',
     meta_description: model?.meta_description || '',
     meta_tag: model?.meta_tag || '',
@@ -40,6 +46,8 @@ function genDefaultInput(options, model = null) {
     form_id: model?.form_id || '',
     cover: null,
     coverUrl: model?.cover_url || '',
+    background: null,
+    backgroundUrl: model?.background_url || '',
   };
 }
 
@@ -120,17 +128,6 @@ export default function FormCreate({ ...props }) {
       )}
       onSubmit={handleSubmit}
     >
-      <CFormControl label="Campaign Name">
-        <CInput
-          name="name"
-          value={input.name}
-          label="Enter name"
-          required
-          error={validator?.name}
-          onChange={handleChange}
-        />
-      </CFormControl>
-
       <CFormControl
         label="Campaign Slug"
         note="This field will used to construct campaign's public URL and must be unique."
@@ -144,6 +141,107 @@ export default function FormCreate({ ...props }) {
           error={validator?.slug}
           onChange={handleChange}
         />
+      </CFormControl>
+
+      <CFormControl label="Campaign Detail">
+        <Grid container spacing={2} columns={12}>
+          <Grid xs={12}>
+            <CInput
+              name="name"
+              value={input.name}
+              label="Enter name"
+              required
+              error={validator?.name}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid xs={12}>
+            <CInput
+              multiline
+              minRows={3}
+              name="description"
+              value={input.description}
+              label="Enter description"
+              error={validator?.description}
+              onChange={handleChange}
+            />
+          </Grid>
+        </Grid>
+      </CFormControl>
+
+      <CFormControl label="Intro Screen">
+        <Grid container spacing={2} columns={12}>
+          <Grid xs={12}>
+            <CInput
+              name="intro_title"
+              value={input.intro_title}
+              label="Enter title"
+              error={validator?.intro_title}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid xs={12}>
+            <CInput
+              multiline
+              minRows={3}
+              name="intro_description"
+              value={input.intro_description}
+              label="Enter description"
+              error={validator?.intro_description}
+              onChange={handleChange}
+            />
+          </Grid>
+        </Grid>
+      </CFormControl>
+
+      <CFormControl label="Pre-Submit Screen">
+        <Grid container spacing={2} columns={12}>
+          <Grid xs={12}>
+            <CInput
+              name="presubmit_title"
+              value={input.presubmit_title}
+              label="Enter title"
+              error={validator?.presubmit_title}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid xs={12}>
+            <CInput
+              multiline
+              minRows={3}
+              name="presubmit_description"
+              value={input.presubmit_description}
+              label="Enter description"
+              error={validator?.presubmit_description}
+              onChange={handleChange}
+            />
+          </Grid>
+        </Grid>
+      </CFormControl>
+
+      <CFormControl label="Post-Submit Screen">
+        <Grid container spacing={2} columns={12}>
+          <Grid xs={12}>
+            <CInput
+              name="postsubmit_title"
+              value={input.postsubmit_title}
+              label="Enter title"
+              error={validator?.postsubmit_title}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid xs={12}>
+            <CInput
+              multiline
+              minRows={3}
+              name="postsubmit_description"
+              value={input.postsubmit_description}
+              label="Enter description"
+              error={validator?.postsubmit_description}
+              onChange={handleChange}
+            />
+          </Grid>
+        </Grid>
       </CFormControl>
 
       <CFormControl label="Campaign Period">
@@ -174,16 +272,6 @@ export default function FormCreate({ ...props }) {
         </Grid>
       </CFormControl>
 
-      <CFormControl label="Description">
-        <CTextArea
-          name="description"
-          value={input.description}
-          label="Campaign description"
-          error={validator?.description}
-          onChange={handleChange}
-        />
-      </CFormControl>
-
       <CFormControl label="Cover Image">
         <CInputImage
           name="cover"
@@ -192,6 +280,18 @@ export default function FormCreate({ ...props }) {
           label="Browse image"
           maxSize={2}
           error={validator?.cover}
+          onChange={handleChange}
+        />
+      </CFormControl>
+
+      <CFormControl label="Background">
+        <CInputImage
+          name="background"
+          value={input.background}
+          defaultValue={input.backgroundUrl}
+          label="Browse image"
+          maxSize={2}
+          error={validator?.background}
           onChange={handleChange}
         />
       </CFormControl>
@@ -208,7 +308,9 @@ export default function FormCreate({ ...props }) {
             />
           </Grid>
           <Grid xs={12}>
-            <CTextArea
+            <CInput
+              multiline
+              minRows={3}
               name="meta_description"
               value={input.meta_description}
               label="Meta description"

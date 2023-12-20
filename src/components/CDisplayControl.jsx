@@ -5,6 +5,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import config from '@/config/app';
+import FasIcon from '@/components/FasIcon.jsx';
 
 export default function CDisplayControl({
   label,
@@ -77,9 +78,9 @@ const ValueComp = ({
           component={Link}
           to={valueProps?.link || value}
           size="small"
-          sx={{ my: -1 }}
+          sx={{ my: -1, px: 1, minWidth: '3em' }}
         >
-          view
+          <FasIcon name="fa-link" fontSize="0.875em" />
         </Button>
       </Box>
     );
