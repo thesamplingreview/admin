@@ -1,74 +1,25 @@
-import { useContext, useState, useCallback } from 'react';
+import { useContext, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Cookie from 'js-cookie';
-import { differenceInHours } from 'date-fns';
 import { appRoute, authRoute } from '@/helpers/route';
-import request from '@/helpers/request';
-import { useOnce } from '@/helpers/hooks';
+import request, { genRefreshRequest } from '@/helpers/request';
 import AuthContext from '../AuthContext.jsx';
 
 export function useAuth() {
   const { user, setUser } = useContext(AuthContext);
 
-  // using additional layer to enable customization
-  const setUserInfo = useCallback((data) => {
-    if (!data) {
-      setUser(null);
-    } else {
-      setUser({
-        id: data.id,
-        email: data.email,
-        name: data.name,
-        roleId: data.role_id,
-      });
-    }
-  }, [setUser]);
-
-  return [user, setUserInfo];
+  return [user, setUser];
 }
 
 export function useToken() {
   const { token, setToken } = useContext(AuthContext);
 
-  // using additional layer to enable customization
-  const setTokenExpiry = useCallback((newToken) => {
-    if (!newToken) {
-      setToken('');
-      Cookie.remove('access_token');
-    } else if (typeof newToken === 'object') {
-      setToken(newToken.token);
-      // sync with cookie
-      Cookie.set('access_token', newToken.token, {
-        expires: Math.ceil(differenceInHours(new Date(newToken.expiry), new Date()) / 24),
-      });
-    } else {
-      setToken(newToken);
-    }
-  }, [setToken]);
-
-  return [token, setTokenExpiry];
+  return [token, setToken];
 }
 
 export function useRefreshToken() {
   const { refreshToken, setRefreshToken } = useContext(AuthContext);
 
-  // using additional layer to enable customization
-  const setTokenExpiry = useCallback((newToken) => {
-    if (!newToken) {
-      setRefreshToken('');
-      Cookie.remove('refresh_token');
-    } else if (typeof newToken === 'object') {
-      setRefreshToken(newToken.token);
-      // sync with cookie
-      Cookie.set('refresh_token', newToken.token, {
-        expires: Math.ceil(differenceInHours(new Date(newToken.expiry), new Date()) / 24),
-      });
-    } else {
-      setRefreshToken(newToken);
-    }
-  }, [setRefreshToken]);
-
-  return [refreshToken, setTokenExpiry];
+  return [refreshToken, setRefreshToken];
 }
 
 /**
@@ -84,38 +35,10 @@ export function useFetch() {
     url,
     options = null,
   ) => {
-    const requestInstance = request.create({
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    // response interceptor - retry with refresh token
-    requestInstance.interceptors.response.use((resp) => {
-      return resp;
-    }, async (err) => {
-      const originalRequest = err.config;
-      /* eslint-disable no-underscore-dangle */
-      if (err.response?.data?.code === 401 && !originalRequest._retry && refresh) {
-        originalRequest._retry = true;
-        const { data: refreshData } = await request({
-          url: '/v1/auth/token-refresh',
-          method: 'POST',
-          data: { refresh_token: refresh },
-        });
-        const newToken = refreshData.data?.jwt?.access;
-        if (!newToken) {
-          return Promise.reject(err);
-        }
-
-        // reset token
-        originalRequest.headers.Authorization = `Bearer ${newToken.token}`;
-        // update state
-        setToken(newToken);
-
-        return requestInstance(originalRequest);
-      }
-      /* eslint-enable no-underscore-dangle */
-      return Promise.reject(err);
+    const requestInstance = genRefreshRequest({
+      token,
+      refreshToken: refresh,
+      updateTokenCb: setToken,
     });
 
     const response = await requestInstance({
@@ -127,49 +50,6 @@ export function useFetch() {
   }, [token, setToken, refresh]);
 
   return fetch;
-}
-
-/**
- * Perform auth check
- *
- * @param  {boolean}  options.lazy - enable lazy load
- * @return { isAuth, data, loading, error, doFetch }
- */
-export function useAuthCheck(options = null) {
-  const doFetch = useFetch();
-  const [refresh] = useRefreshToken();
-  const [user, setUser] = useAuth();
-  const [loading, setLoading] = useState(!options?.lazy);
-  const [error, setError] = useState(null);
-
-  useOnce(async () => {
-    if (!options?.lazy) {
-      setLoading(true);
-      try {
-        // if no refresh token, no need query with server
-        if (!refresh) {
-          throw new Error('Invalid auth');
-        }
-
-        const { code, data } = await doFetch('/v1/auth/my');
-        if (code !== 200) {
-          throw new Error('Invalid auth');
-        }
-        setUser(data);
-      } catch (err) {
-        setError(err);
-      }
-      setLoading(false);
-    }
-  });
-
-  return {
-    loading,
-    error,
-    data: user,
-    isAuth: Boolean(user),
-    doFetch,
-  };
 }
 
 /**

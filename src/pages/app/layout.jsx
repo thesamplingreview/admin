@@ -1,25 +1,25 @@
-import { useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { useAuthCheck } from '@/contexts/hooks/auth';
+import { useAuth } from '@/contexts/hooks/auth';
 import { LayoutProvider } from '@/contexts/LayoutContext.jsx';
 import { authRoute } from '@/helpers/route';
+import { useOnce } from '@/helpers/hooks';
 import CLoader from '@/components/CLoader.jsx';
-import AppSidenav from '@/components/layouts/AppSidenav.jsx';
 import AppHeader from '@/components/layouts/AppHeader.jsx';
+import AppSidenav from '@/components/layouts/AppSidenav.jsx';
 
 export default function AdminLayout() {
   const navigate = useNavigate();
-  const { isAuth, loading, error } = useAuthCheck();
+  const [auth] = useAuth();
 
   // auth protected
-  useEffect(() => {
-    if (!loading && (!isAuth || error)) {
+  useOnce(() => {
+    if (!auth) {
       navigate(authRoute('/login'));
     }
-  }, [navigate, isAuth, loading, error]);
+  });
 
-  if (loading || error) {
+  if (!auth) {
     return <CLoader full />;
   }
   return (

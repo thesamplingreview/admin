@@ -11,7 +11,6 @@ import BadgeStatus from './BadgeStatus.jsx';
 
 export default function ViewDetail({ ...props }) {
   const [model] = useModel();
-  console.log(model)
 
   const formFields = useMemo(() => {
     return model.form?.fields?.map((data) => {
@@ -121,7 +120,45 @@ function FormDisplayControl({ field }) {
   }
 
   if (field.type === 'address') {
-    return null;
+    return (
+      <>
+        {field.config?.fields?.includes('address') && (
+          <>
+            <CDisplayControl
+              label="Address"
+              type="html"
+              value={field.answer?.address?.replace(/\n/g, '<br>')}
+            />
+            <CDisplayControl
+              label="Postal"
+              value={field.answer?.postal}
+            />
+            <CDisplayControl
+              label="State"
+              value={field.answer?.state}
+            />
+          </>
+        )}
+        {field.config?.fields?.includes('name') && (
+          <CDisplayControl
+            label="Full Name"
+            value={field.answer?.name}
+          />
+        )}
+        {field.config?.fields?.includes('email') && (
+          <CDisplayControl
+            label="Email"
+            value={field.answer?.email}
+          />
+        )}
+        {field.config?.fields?.includes('contact') && (
+          <CDisplayControl
+            label="Phone Number"
+            value={field.answer?.contact}
+          />
+        )}
+      </>
+    );
   }
 
   if (field.type === 'static') {

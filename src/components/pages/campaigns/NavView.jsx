@@ -24,9 +24,10 @@ export default function NavView({ active }) {
     },
     {
       key: 'enrolments',
-      name: model.enrolments_count ? `Enrolments (${model.enrolments_count})` : 'Enrolments',
+      name: 'Enrolments',
       route: appRoute(`/campaigns/${model.id}/enrolments`),
       icon: 'fa-user-check',
+      count: model.enrolments_count,
     },
     {
       key: 'products',
@@ -54,7 +55,7 @@ export default function NavView({ active }) {
           <FasIcon name="fa-arrow-up-right-from-square" fontSize=".75em" ml={1} />
         </Box>
       ),
-      route: publicRoute(`/campaigns/${model.slug}`),
+      route: publicRoute(`/programs/${model.slug}`),
       icon: 'fa-link',
       props: {
         target: '_blank',

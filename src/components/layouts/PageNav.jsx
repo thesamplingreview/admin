@@ -4,6 +4,7 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Chip from '@mui/material/Chip';
 import CBox from '@/components/CBox.jsx';
 import FasIcon from '@/components/FasIcon.jsx';
 
@@ -40,6 +41,18 @@ export default function NavView({
             </ListItemIcon>
             <ListItemText key="name">
               {nav.name}
+              {nav.count && (
+                <Chip
+                  label={nav.count}
+                  color="primary"
+                  size="small"
+                  sx={{
+                    fontSize: '0.875em',
+                    height: 'auto',
+                    ml: 1,
+                  }}
+                />
+              )}
             </ListItemText>
           </MenuItem>
         ))}

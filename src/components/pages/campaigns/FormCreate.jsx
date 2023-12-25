@@ -10,7 +10,7 @@ import { toFormData } from '@/helpers/utils';
 import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInputLazy.jsx';
 import CSelect from '@/components/CSelect.jsx';
-import CTextArea from '@/components/CTextArea.jsx';
+import CInputMD from '@/components/CInputMD.jsx';
 import CSwitch from '@/components/CSwitch.jsx';
 import CInputImage from '@/components/CInputImage.jsx';
 import CFormControl from '@/components/CFormControl.jsx';
@@ -181,9 +181,7 @@ export default function FormCreate({ ...props }) {
             />
           </Grid>
           <Grid xs={12}>
-            <CInput
-              multiline
-              minRows={3}
+            <CInputMD
               name="intro_description"
               value={input.intro_description}
               label="Enter description"
@@ -206,9 +204,7 @@ export default function FormCreate({ ...props }) {
             />
           </Grid>
           <Grid xs={12}>
-            <CInput
-              multiline
-              minRows={3}
+            <CInputMD
               name="presubmit_description"
               value={input.presubmit_description}
               label="Enter description"
@@ -231,9 +227,7 @@ export default function FormCreate({ ...props }) {
             />
           </Grid>
           <Grid xs={12}>
-            <CInput
-              multiline
-              minRows={3}
+            <CInputMD
               name="postsubmit_description"
               value={input.postsubmit_description}
               label="Enter description"

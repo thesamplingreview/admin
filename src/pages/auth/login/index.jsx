@@ -3,17 +3,16 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import SplashCover from '@/components/layouts/SplashCover.jsx';
 import LoginForm from '@/components/pages/auth/LoginForm.jsx';
-import { useToken } from '@/contexts/hooks/auth';
+import { useAuth } from '@/contexts/hooks/auth';
 import { useOnce } from '@/helpers/hooks';
 import { appRoute } from '@/helpers/route';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [token] = useToken();
+  const [auth] = useAuth();
 
-  // check for already logined (using token only)
   useOnce(() => {
-    if (token) {
+    if (auth) {
       navigate(appRoute('/dashboard'));
     }
   });

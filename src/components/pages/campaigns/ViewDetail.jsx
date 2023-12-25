@@ -19,10 +19,10 @@ export default function ViewDetail({ ...props }) {
       <CDisplayControl
         label="Public Page"
         type="url"
-        value={publicRoute(`/campaigns/${model.slug}`)}
+        value={`/programs/${model.slug}`}
         valueProps={{
           target: '_blank',
-          endIcon: <FasIcon name="fa-arrow-up-right-from-square" fontSize=".75em !important" />,
+          link: publicRoute(`/programs/${model.slug}`),
         }}
       />
       <CDisplayControl
