@@ -29,6 +29,8 @@ export default function CInputMD({
   size,
   error,
   helperText,
+  placeholder = '',
+  inputProps = null,
   name,
   value,
   onChange,
@@ -85,6 +87,10 @@ export default function CInputMD({
           commands.codeEdit,
           commands.codePreview,
         ]}
+        textareaProps={{
+          ...inputProps,
+          placeholder,
+        }}
         onChange={setInput}
         onBlur={handleBlur}
       />

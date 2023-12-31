@@ -167,20 +167,20 @@ input[type="month"]{
   -webkit-appearance: textfield;
 }
 ::-webkit-input-placeholder {
-  color: var(--color-900);
-  font-style: italic;
+  color: currentColor;
+  opacity: 0.42;
 }
 :-moz-placeholder {
-  color: var(--color-900);
-  font-style: italic;
+  color: currentColor;
+  opacity: 0.42;
 }
 ::-moz-placeholder {
-  color: var(--color-900);
-  font-style: italic;
+  color: currentColor;
+  opacity: 0.42;
 }
 :-ms-input-placeholder {
-  color: var(--color-900);
-  font-style: italic;
+  color: currentColor;
+  opacity: 0.42;
 }
 /* fix height of inputs with a type of datetime-local, date, month, week, or time #BS */
 ::-webkit-datetime-edit{

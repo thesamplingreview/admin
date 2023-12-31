@@ -41,7 +41,7 @@ export default function NavView({
             </ListItemIcon>
             <ListItemText key="name">
               {nav.name}
-              {nav.count && (
+              {Number(nav.count) > 0 && (
                 <Chip
                   label={nav.count}
                   color="primary"

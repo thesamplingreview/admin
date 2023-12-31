@@ -58,18 +58,21 @@ const ValueComp = ({
   // html
   if (value && type === 'html') {
     return (
-      <Typography
-        {...valueProps}
-        variant="body1"
-        fontWeight="500"
-        dangerouslySetInnerHTML={{ __html: value }}
-      />
+      <Box
+        fontSize="0.875em"
+        border="1px solid var(--border-500)"
+        borderRadius=".5rem"
+        bgcolor="rgba(0,0,0,0.015)"
+        p={2}
+      >
+        <div dangerouslySetInnerHTML={{ __html: value }} />
+      </Box>
     );
   }
   // url
   if (value && type === 'url') {
     return (
-      <Box display="inline-flex" spacing={1}>
+      <Box display="inline-flex" alignItems="center" spacing={1}>
         <Typography variant="body1" fontWeight="500">
           {value}
         </Typography>

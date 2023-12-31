@@ -9,10 +9,9 @@ import { useOptions, useModel } from '@/contexts/hooks/module';
 import { toFormData } from '@/helpers/utils';
 import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInputLazy.jsx';
-import CSelect from '@/components/CSelect.jsx';
-import CSwitch from '@/components/CSwitch.jsx';
 import CInputImage from '@/components/CInputImage.jsx';
 import CInputMD from '@/components/CInputMD.jsx';
+// import CSwitch from '@/components/CSwitch.jsx';
 import CFormControl from '@/components/CFormControl.jsx';
 import CLoadingButton from '@/components/CLoadingButton.jsx';
 
@@ -40,14 +39,11 @@ function genDefaultInput(options, model = null) {
     meta_tag: model?.meta_tag || '',
     start_date: dateParse(model?.start_date),
     end_date: dateParse(model?.end_date),
-    highlight: Boolean(model?.highlight),
-    status: model?.status || options.statuses[0].id || '',
-    vendor_id: model?.vendor_id || '',
-    form_id: model?.form_id || '',
     cover: null,
     coverUrl: model?.cover_url || '',
     background: null,
     backgroundUrl: model?.background_url || '',
+    // highlight: Boolean(model?.highlight),
   };
 }
 
@@ -68,12 +64,12 @@ export default function FormEdit({ ...props }) {
     }));
   };
 
-  const handleCheck = (e) => {
-    setInput((state) => ({
-      ...state,
-      [e.target.name]: e.target.checked,
-    }));
-  };
+  // const handleCheck = (e) => {
+  //   setInput((state) => ({
+  //     ...state,
+  //     [e.target.name]: e.target.checked,
+  //   }));
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -171,6 +167,52 @@ export default function FormEdit({ ...props }) {
         </Grid>
       </CFormControl>
 
+      <CFormControl label="Cover Image">
+        <CInputImage
+          name="cover"
+          value={input.cover}
+          defaultValue={input.coverUrl}
+          label="Browse image"
+          maxSize={2}
+          error={validator?.cover}
+          onChange={handleChange}
+        />
+      </CFormControl>
+
+      <CFormControl label="Campaign Period">
+        <Grid container spacing={2} columns={12} alignItems="center">
+          <Grid xs={12} md>
+            <CInput
+              type="date"
+              name="start_date"
+              value={input.start_date}
+              label="Start"
+              InputLabelProps={{ shrink: true }}
+              error={validator?.start_date}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid xs={12} md="auto">
+            to
+          </Grid>
+          <Grid xs={12} md>
+            <CInput
+              type="date"
+              name="end_date"
+              value={input.end_date}
+              label="End"
+              InputLabelProps={{ shrink: true }}
+              error={validator?.end_date}
+              onChange={handleChange}
+            />
+          </Grid>
+        </Grid>
+      </CFormControl>
+
+      <Box my={3}>
+        <Divider />
+      </Box>
+
       <CFormControl label="Intro Screen">
         <Grid container spacing={2} columns={12}>
           <Grid xs={12}>
@@ -240,47 +282,7 @@ export default function FormEdit({ ...props }) {
         </Grid>
       </CFormControl>
 
-      <CFormControl label="Campaign Period">
-        <Grid container spacing={2} columns={12} alignItems="center">
-          <Grid xs={12} md>
-            <CInput
-              type="date"
-              name="start_date"
-              value={input.start_date}
-              label="Start"
-              error={validator?.start_date}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid xs={12} md="auto">
-            to
-          </Grid>
-          <Grid xs={12} md>
-            <CInput
-              type="date"
-              name="end_date"
-              value={input.end_date}
-              label="End"
-              error={validator?.end_date}
-              onChange={handleChange}
-            />
-          </Grid>
-        </Grid>
-      </CFormControl>
-
-      <CFormControl label="Cover Image">
-        <CInputImage
-          name="cover"
-          value={input.cover}
-          defaultValue={input.coverUrl}
-          label="Browse image"
-          maxSize={2}
-          error={validator?.cover}
-          onChange={handleChange}
-        />
-      </CFormControl>
-
-      <CFormControl label="Background">
+      <CFormControl label="Form Background">
         <CInputImage
           name="background"
           value={input.background}
@@ -291,6 +293,10 @@ export default function FormEdit({ ...props }) {
           onChange={handleChange}
         />
       </CFormControl>
+
+      <Box my={3}>
+        <Divider />
+      </Box>
 
       <CFormControl label="SEO Metadata">
         <Grid container spacing={2} columns={12}>
@@ -328,53 +334,14 @@ export default function FormEdit({ ...props }) {
         </Grid>
       </CFormControl>
 
-      <Box my={3}>
-        <Divider />
-      </Box>
-
-      <CFormControl label="Vendor">
-        <CSelect
-          options={options.vendors}
-          name="vendor_id"
-          value={input.vendor_id}
-          label="Select vendor"
-          placeholder="Select"
-          error={validator?.vendor_id}
-          onChange={handleChange}
-        />
-      </CFormControl>
-
-      <CFormControl label="Enrolment Form">
-        <CSelect
-          options={options.forms}
-          name="form_id"
-          value={input.form_id}
-          label="Select form"
-          placeholder="Select"
-          error={validator?.form_id}
-          onChange={handleChange}
-        />
-      </CFormControl>
-
-      <CFormControl label="Status" size={4}>
-        <CSelect
-          options={options.statuses}
-          name="status"
-          value={input.status}
-          label="Select"
-          error={validator?.status}
-          onChange={handleChange}
-        />
-      </CFormControl>
-
-      <CFormControl label="Highlighted">
+      {/* <CFormControl label="Highlighted">
         <CSwitch
           name="highlight"
           label="Mark as highlighted?"
           checked={input.highlight}
           onChange={handleCheck}
         />
-      </CFormControl>
+      </CFormControl> */}
     </CBox>
   );
 }

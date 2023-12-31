@@ -48,6 +48,14 @@ export default [
             },
           },
           {
+            key: 'campaigns.detail.setting',
+            path: 'setting',
+            async lazy() {
+              const { ViewSetting } = await import('@/pages/app/campaigns/index');
+              return { Component: ViewSetting };
+            },
+          },
+          {
             key: 'campaigns.detail.products',
             path: 'products',
             async lazy() {

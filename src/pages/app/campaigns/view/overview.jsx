@@ -4,6 +4,7 @@ import { appRoute } from '@/helpers/route';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
 import NavView from '@/components/pages/campaigns/NavView.jsx';
 import ViewDetail from '@/components/pages/campaigns/ViewDetail.jsx';
+import ViewDetailSetting from '@/components/pages/campaigns/ViewDetailSetting.jsx';
 // import ViewStats from '@/components/pages/campaigns/ViewStats.jsx';
 
 export default function CampaignOverview() {
@@ -30,7 +31,8 @@ export default function CampaignOverview() {
         </Grid>
         <Grid lg={9}>
           {/* <ViewStats modelId={model.id} mb={4} /> */}
-          <ViewDetail mb={5} />
+          <ViewDetailSetting mb={3} />
+          <ViewDetail show={false} mb={5} />
         </Grid>
       </Grid>
     </>

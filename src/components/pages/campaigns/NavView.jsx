@@ -18,20 +18,27 @@ export default function NavView({ active }) {
     },
     {
       key: 'report',
-      name: 'Report',
+      name: 'Campaign Report',
       route: appRoute(`/campaigns/${model.id}/report`),
       icon: 'fa-chart-bar',
     },
     {
       key: 'enrolments',
-      name: 'Enrolments',
+      name: 'User Enrolments',
       route: appRoute(`/campaigns/${model.id}/enrolments`),
       icon: 'fa-user-check',
       count: model.enrolments_count,
     },
     {
+      key: 'reviews',
+      name: 'User Reviews',
+      route: appRoute(`/campaigns/${model.id}/reviews`),
+      icon: 'fa-comments',
+      // count: model.enrolments_count,
+    },
+    {
       key: 'products',
-      name: 'Products',
+      name: 'Linked Products',
       route: appRoute(`/campaigns/${model.id}/products`),
       icon: 'fa-tag',
     },
@@ -40,6 +47,12 @@ export default function NavView({ active }) {
       name: 'Edit Detail',
       route: appRoute(`/campaigns/${model.id}/edit`),
       icon: 'fa-pencil',
+    },
+    {
+      key: 'setting',
+      name: 'Setting',
+      route: appRoute(`/campaigns/${model.id}/setting`),
+      icon: 'fa-cogs',
     },
     {
       key: 'delete',

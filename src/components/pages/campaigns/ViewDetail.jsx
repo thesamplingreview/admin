@@ -1,35 +1,43 @@
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import { useModel } from '@/contexts/hooks/module';
-import { publicRoute } from '@/helpers/route';
 import CBox from '@/components/CBox.jsx';
-import FasIcon from '@/components/FasIcon.jsx';
 import CDisplayControl from '@/components/CDisplayControl.jsx';
-import BadgeStatus from './BadgeStatus.jsx';
 
 export default function ViewDetail({ ...props }) {
   const [model] = useModel();
 
   return (
-    <CBox title="Entry Detail" {...props}>
+    <CBox title="Entry Detail" toggleable {...props}>
       <CDisplayControl
         label="Campaign Name"
         value={model.name}
       />
       <CDisplayControl
-        label="Public Page"
-        type="url"
-        value={`/programs/${model.slug}`}
-        valueProps={{
-          target: '_blank',
-          link: publicRoute(`/programs/${model.slug}`),
-        }}
+        label="Start Date"
+        type="date"
+        value={model.start_date}
+      />
+      <CDisplayControl
+        label="End Date"
+        type="date"
+        value={model.end_date}
       />
       <CDisplayControl
         label="Description"
-        type="html"
-        value={model.description?.replace(/\n/g, '<br>')}
+        value={model.description}
       />
+      <CDisplayControl
+        label="Cover Image"
+        type="image"
+        size={6}
+        value={model.cover_url}
+      />
+
+      <Box my={3}>
+        <Divider />
+      </Box>
+
       <CDisplayControl
         label="Intro Title"
         value={model.intro_title}
@@ -58,27 +66,16 @@ export default function ViewDetail({ ...props }) {
         value={model.postsubmit_description?.replace(/\n/g, '<br>')}
       />
       <CDisplayControl
-        label="Start Date"
-        type="date"
-        value={model.start_date}
-      />
-      <CDisplayControl
-        label="End Date"
-        type="date"
-        value={model.end_date}
-      />
-      <CDisplayControl
-        label="Cover Image"
-        type="image"
-        size={6}
-        value={model.cover_url}
-      />
-      <CDisplayControl
         label="Background"
         type="image"
         size={6}
         value={model.background_url}
       />
+
+      <Box my={3}>
+        <Divider />
+      </Box>
+
       <CDisplayControl
         label="SEO Meta Title"
         value={model.meta_title}
@@ -91,34 +88,28 @@ export default function ViewDetail({ ...props }) {
         label="SEO Meta Tags"
         value={model.meta_tag}
       />
-      <Box my={3}>
-        <Divider />
-      </Box>
-      <CDisplayControl
-        label="Vendor"
-        value={model.vendor?.name}
-      />
-      <CDisplayControl
-        label="Enrolment Form"
-        value={model.form?.name}
-      />
-      <CDisplayControl label="Status">
-        <BadgeStatus status={model.status} />
-      </CDisplayControl>
-      <CDisplayControl
-        label="Highligted"
-        value={model.highlight ? 'Yes' : 'No'}
-      />
-      <CDisplayControl
-        label="Last Update"
-        type="datetime"
-        value={model.updated_at}
-      />
-      <CDisplayControl
-        label="Created Date"
-        type="datetime"
-        value={model.created_at}
-      />
+
+      {model.review_type === 'redirect' && (
+        <>
+          <Box my={3}>
+            <Divider />
+          </Box>
+
+          <CDisplayControl
+            label="Review Instruction"
+            type="html"
+            value={model.review_instruction}
+          />
+          <CDisplayControl
+            label="Review CTA"
+            type="url"
+            value={model.review_cta}
+            valueProps={{
+              target: '_blank',
+            }}
+          />
+        </>
+      )}
     </CBox>
   );
 }
