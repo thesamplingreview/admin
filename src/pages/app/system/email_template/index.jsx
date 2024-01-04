@@ -1,0 +1,296 @@
+import { useState } from 'react';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Unstable_Grid2';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
+import { appRoute } from '@/helpers/route';
+import { useOnce } from '@/helpers/hooks';
+import { useFetch } from '@/contexts/hooks/auth';
+import { useToast } from '@/contexts/hooks/toast';
+import CBox from '@/components/CBox.jsx';
+import CInput from '@/components/CInput.jsx';
+import CLoadingButton from '@/components/CLoadingButton.jsx';
+import PageHeader from '@/components/layouts/PageHeader.jsx';
+
+export default function SystemEmailTemplate() {
+  const doFetch = useFetch();
+  const pushToast = useToast();
+
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [input, setInput] = useState({
+    sendgrid_template_id_reset_password: '',
+    sendgrid_template_id_campaign_enrolled_user: '',
+    sendgrid_template_id_campaign_enrolled_admin: '',
+    sendgrid_template_id_signup_user: '',
+    sendgrid_template_id_signup_admin: '',
+  });
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const { data } = await doFetch('/v1/admin/configs', {
+        params: {
+          keys: Object.keys(input).join(','),
+        },
+      });
+      setInput(data);
+    } catch (err) {
+      // push toast
+      pushToast('error', 'Failed to retrieve configs!');
+    }
+    setLoading(false);
+  };
+
+  const saveData = async () => {
+    setSaving(true);
+    try {
+      const formdata = {
+        configs: Object.keys(input).map((key) => ({
+          key,
+          value: input[key] || '',
+        })),
+      };
+      const { code, data } = await doFetch('/v1/admin/configs', {
+        method: 'PUT',
+        data: formdata,
+      });
+      if (code !== 200) {
+        throw new Error('Error');
+      }
+      setInput(data);
+      // push toast
+      pushToast('success', 'Configs updated!');
+    } catch (err) {
+      // push toast
+      pushToast('error', 'Failed to save configs!');
+    }
+    setSaving(false);
+  };
+
+  const handleChange = (e) => {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    saveData();
+  };
+
+  useOnce(() => {
+    fetchData();
+  });
+
+  return (
+    <>
+      <PageHeader
+        title="Email Templates Setting"
+        navs={[
+          {
+            name: 'System',
+            route: appRoute('/system'),
+          },
+          {
+            name: 'Email Templates',
+          },
+        ]}
+      />
+
+      <Box mt={-2} mb={4}>
+        <Typography variant="body2" color="text.light">
+          The email notification will rely on Sendgrid email API and email template features. <br />Refer to Sendgrid documentation for more detail. (<a href="https://docs.sendgrid.com/ui/sending-email/how-to-send-an-email-with-dynamic-templates" target="_blank" rel="noreferrer noopener">link</a>)
+        </Typography>
+      </Box>
+
+      <CBox
+        component="form"
+        noPadding
+        mb={5}
+        footer={(
+          <Box display="flex" justifyContent="flex-end">
+            <CLoadingButton
+              type="submit"
+              variant="contained"
+              disabled={loading}
+              loading={saving}
+            >
+              Save
+            </CLoadingButton>
+          </Box>
+        )}
+        onSubmit={handleSubmit}
+      >
+        {/* password reset */}
+        <ConfigItem
+          heading="Forgot Password Email"
+          desc={(
+            <>
+              <Typography variant="body2" mb={2}>
+                Email notification when user request for password reset.
+              </Typography>
+              <Box display="flex">
+                <Typography variant="body2" fontSize="0.75em" pt={0.25} mr={2}>
+                  Variables:
+                </Typography>
+                <Stack flexGrow="1" direction="row" flexWrap="wrap" gap={1}>
+                  <VariableTag label="{{reset_link}}" />
+                  <VariableTag label="{{code}}" />
+                  <VariableTag label="{{email}}" />
+                </Stack>
+              </Box>
+            </>
+          )}
+        >
+          <Box mb={0}>
+            <CInput
+              label="Send to user"
+              placeholder="Enter Sendgrid Template ID"
+              helperText="Leave empty to disable email."
+              name="sendgrid_template_id_reset_password"
+              value={input.sendgrid_template_id_reset_password || ''}
+              onChange={handleChange}
+            />
+          </Box>
+        </ConfigItem>
+
+        <Divider />
+
+        {/* user enrolments */}
+        <ConfigItem
+          heading="User Enrolment Email Notification"
+          desc={(
+            <>
+              <Typography variant="body2" mb={2}>
+                A notification when user enrolled into any campaign.
+              </Typography>
+              <Box display="flex">
+                <Typography variant="body2" fontSize="0.75em" pt={0.25} mr={2}>
+                  Variables:
+                </Typography>
+                <Stack flexGrow="1" direction="row" flexWrap="wrap" gap={1}>
+                  <VariableTag label="{{enrolment_id}}" />
+                  <VariableTag label="{{campaign_name}}" />
+                  <VariableTag label="{{user_name}}" />
+                  <VariableTag label="{{user_email}}" />
+                  <VariableTag label="{{user_email}}" />
+                  <VariableTag label="{{user_email}}" />
+                  <VariableTag label="{{user_email}}" />
+                </Stack>
+              </Box>
+            </>
+          )}
+        >
+          <Box mb={3}>
+            <CInput
+              label="Send to user"
+              placeholder="Enter Sendgrid Template ID"
+              helperText="Leave empty to disable email."
+              name="sendgrid_template_id_campaign_enrolled_user"
+              value={input.sendgrid_template_id_campaign_enrolled_user || ''}
+              onChange={handleChange}
+            />
+          </Box>
+          <Box mb={0}>
+            <CInput
+              label="Send to admin"
+              placeholder="Enter Sendgrid Template ID"
+              helperText="Leave empty to disable email."
+              name="sendgrid_template_id_campaign_enrolled_admin"
+              value={input.sendgrid_template_id_campaign_enrolled_admin || ''}
+              onChange={handleChange}
+            />
+          </Box>
+        </ConfigItem>
+
+        <Divider />
+
+        {/* user signup */}
+        <ConfigItem
+          heading="User Sign Up Email Notification"
+          desc={(
+            <>
+              <Typography variant="body2" mb={2}>
+                A notification when user signed up.
+              </Typography>
+              <Box display="flex">
+                <Typography variant="body2" fontSize="0.75em" pt={0.25} mr={2}>
+                  Variables:
+                </Typography>
+                <Stack flexGrow="1" direction="row" flexWrap="wrap" gap={1}>
+                  <VariableTag label="{{user_name}}" />
+                  <VariableTag label="{{user_email}}" />
+                </Stack>
+              </Box>
+            </>
+          )}
+        >
+          <Box mb={3}>
+            <CInput
+              label="Send to user"
+              placeholder="Enter Sendgrid Template ID"
+              helperText="Leave empty to disable email."
+              name="sendgrid_template_id_signup_user"
+              value={input.sendgrid_template_id_signup_user || ''}
+              onChange={handleChange}
+            />
+          </Box>
+          <Box mb={0}>
+            <CInput
+              label="Send to admin"
+              placeholder="Enter Sendgrid Template ID"
+              helperText="Leave empty to disable email."
+              name="sendgrid_template_id_signup_admin"
+              value={input.sendgrid_template_id_signup_user || ''}
+              onChange={handleChange}
+            />
+          </Box>
+        </ConfigItem>
+      </CBox>
+    </>
+  );
+}
+
+function ConfigItem({
+  heading,
+  desc,
+  children,
+}) {
+  return (
+    <Grid container>
+      <Grid xs={12} md={7}>
+        <Box p={3}>
+          <Typography variant="h6" fontWeight="600" mb={1}>
+            {heading}
+          </Typography>
+          {desc}
+        </Box>
+      </Grid>
+      <Grid xs={12} md={5} sx={{ borderLeft: '1px solid var(--border-500)' }}>
+        <Box p={3}>
+          {children}
+        </Box>
+      </Grid>
+    </Grid>
+  );
+}
+
+function VariableTag({ label }) {
+  return (
+    <Chip
+      label={label}
+      size="small"
+      sx={{
+        py: 0.35,
+        height: 'auto',
+        fontSize: '0.75em',
+        color: '#666',
+        textTransform: 'initial',
+      }}
+    />
+  );
+}

@@ -76,12 +76,24 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          borderColor: 'var(--border-500)',
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
           fontWeight: 500,
           padding: '0.5em 1.5em',
           textTransform: 'none',
+        },
+        startIcon: {
+          '& > :nth-of-type(1)': {
+            fontSize: '1em',
+          },
         },
       },
     },

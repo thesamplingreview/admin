@@ -227,6 +227,7 @@ function FieldItemBody({
       {CustomOptionComp && (
         <CustomOptionComp
           field={field}
+          error={error}
           onChange={onChange}
           onCheck={handleChecked}
         />

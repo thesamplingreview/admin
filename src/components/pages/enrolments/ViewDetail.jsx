@@ -161,6 +161,20 @@ function FormDisplayControl({ field }) {
     );
   }
 
+  if (field.type === 'file') {
+    return (
+      <CDisplayControl
+        label={field.name}
+        type="url"
+        value="View attachment"
+        valueProps={{
+          link: field.answer,
+          target: '_blank',
+        }}
+      />
+    );
+  }
+
   if (field.type === 'static') {
     return null;
   }

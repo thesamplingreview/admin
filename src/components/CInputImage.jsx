@@ -5,7 +5,7 @@ import { MuiFileInput } from 'mui-file-input';
 import { useUpdated } from '@/helpers/hooks';
 import FasIcon from './FasIcon.jsx';
 
-export default function CInputFile({
+export default function CInputImage({
   name,
   value,
   defaultValue,

@@ -80,6 +80,13 @@ export default function AppSidenav() {
           icon: 'fa-user-gear',
           group: 'CONTENT',
         },
+        {
+          key: 'system',
+          route: appRoute('/system'),
+          name: 'System',
+          icon: 'fa-gears',
+          group: 'CONTENT',
+        },
       ],
     },
   ], []);
@@ -149,9 +156,9 @@ export default function AppSidenav() {
       >
         <a href="#" className="sidenav-logo">
           <img
-            src=""
+            src="/images/logo.png"
             alt="App name"
-            width="130"
+            width="36"
             height="36"
           />
         </a>
@@ -249,6 +256,7 @@ function SidenavItem({
           fontSize="1.25em"
           width="1.25em"
           textAlign="center"
+          className="sidenav-item-ic"
           mr={2}
         />
         <span className="sidenav-item-txt truncate">

@@ -11,13 +11,13 @@ const types = [
     id: 'yes_no',
     name: 'Yes/No',
   },
-  // {
-  //   id: 'email',
-  //   name: 'Email',
-  // },
   {
     id: 'contact',
     name: 'Phone Number',
+  },
+  {
+    id: 'file',
+    name: 'File Upload',
   },
   {
     id: 'static',
