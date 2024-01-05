@@ -3,7 +3,7 @@ export default [
     key: 'admins',
     path: 'admins',
     async lazy() {
-      const { Layout } = await import('@/pages/app/admins/index.jsx');
+      const { Layout } = await import('./index.jsx');
       return { Component: Layout };
     },
     children: [
@@ -11,7 +11,7 @@ export default [
         key: 'admins.list',
         index: true,
         async lazy() {
-          const { ListingIndex } = await import('@/pages/app/admins/index.jsx');
+          const { ListingIndex } = await import('./index.jsx');
           return { Component: ListingIndex };
         },
       },
@@ -19,7 +19,7 @@ export default [
         key: 'admins.add',
         path: 'add',
         async lazy() {
-          const { AddIndex } = await import('@/pages/app/admins/index.jsx');
+          const { AddIndex } = await import('./index.jsx');
           return { Component: AddIndex };
         },
       },
@@ -27,7 +27,7 @@ export default [
         key: 'admins.detail',
         path: ':id',
         async lazy() {
-          const { ViewLayout } = await import('@/pages/app/admins/index.jsx');
+          const { ViewLayout } = await import('./index.jsx');
           return { Component: ViewLayout };
         },
         children: [
@@ -35,7 +35,7 @@ export default [
             key: 'admins.detail.edit',
             index: true,
             async lazy() {
-              const { ViewEdit } = await import('@/pages/app/admins/index.jsx');
+              const { ViewEdit } = await import('./index.jsx');
               return { Component: ViewEdit };
             },
           },
@@ -43,7 +43,7 @@ export default [
             key: 'admins.detail.password',
             path: 'password',
             async lazy() {
-              const { ViewPassword } = await import('@/pages/app/admins/index.jsx');
+              const { ViewPassword } = await import('./index.jsx');
               return { Component: ViewPassword };
             },
           },

@@ -3,7 +3,7 @@ export default [
     key: 'campaigns',
     path: 'campaigns',
     async lazy() {
-      const { Layout } = await import('@/pages/app/campaigns/index');
+      const { Layout } = await import('./index');
       return { Component: Layout };
     },
     children: [
@@ -11,7 +11,7 @@ export default [
         key: 'campaigns.list',
         index: true,
         async lazy() {
-          const { ListingIndex } = await import('@/pages/app/campaigns/index');
+          const { ListingIndex } = await import('./index');
           return { Component: ListingIndex };
         },
       },
@@ -19,7 +19,7 @@ export default [
         key: 'campaigns.add',
         path: 'add',
         async lazy() {
-          const { AddIndex } = await import('@/pages/app/campaigns/index');
+          const { AddIndex } = await import('./index');
           return { Component: AddIndex };
         },
       },
@@ -27,7 +27,7 @@ export default [
         key: 'campaigns.detail',
         path: ':id',
         async lazy() {
-          const { ViewLayout } = await import('@/pages/app/campaigns/index');
+          const { ViewLayout } = await import('./index');
           return { Component: ViewLayout };
         },
         children: [
@@ -35,7 +35,7 @@ export default [
             key: 'campaigns.detail.overview',
             index: true,
             async lazy() {
-              const { ViewOverview } = await import('@/pages/app/campaigns/index');
+              const { ViewOverview } = await import('./index');
               return { Component: ViewOverview };
             },
           },
@@ -43,7 +43,7 @@ export default [
             key: 'campaigns.detail.edit',
             path: 'edit',
             async lazy() {
-              const { ViewEdit } = await import('@/pages/app/campaigns/index');
+              const { ViewEdit } = await import('./index');
               return { Component: ViewEdit };
             },
           },
@@ -51,7 +51,7 @@ export default [
             key: 'campaigns.detail.setting',
             path: 'setting',
             async lazy() {
-              const { ViewSetting } = await import('@/pages/app/campaigns/index');
+              const { ViewSetting } = await import('./index');
               return { Component: ViewSetting };
             },
           },
@@ -59,7 +59,7 @@ export default [
             key: 'campaigns.detail.products',
             path: 'products',
             async lazy() {
-              const { ViewProducts } = await import('@/pages/app/campaigns/index');
+              const { ViewProducts } = await import('./index');
               return { Component: ViewProducts };
             },
           },
@@ -67,7 +67,7 @@ export default [
             key: 'campaigns.detail.delete',
             path: 'delete',
             async lazy() {
-              const { ViewDelete } = await import('@/pages/app/campaigns/index');
+              const { ViewDelete } = await import('./index');
               return { Component: ViewDelete };
             },
           },
@@ -75,7 +75,7 @@ export default [
             key: 'campaigns.detail.enrolments',
             path: 'enrolments',
             async lazy() {
-              const { ViewEnrolments } = await import('@/pages/app/campaigns/index');
+              const { ViewEnrolments } = await import('./index');
               return { Component: ViewEnrolments };
             },
           },
@@ -83,7 +83,7 @@ export default [
             key: 'campaigns.detail.report',
             path: 'report',
             async lazy() {
-              const { ViewReport } = await import('@/pages/app/campaigns/index');
+              const { ViewReport } = await import('./index');
               return { Component: ViewReport };
             },
           },

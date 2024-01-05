@@ -3,7 +3,7 @@ export default [
     key: 'forms',
     path: 'forms',
     async lazy() {
-      const { Layout } = await import('@/pages/app/forms/index');
+      const { Layout } = await import('./index');
       return { Component: Layout };
     },
     children: [
@@ -11,7 +11,7 @@ export default [
         key: 'forms.list',
         index: true,
         async lazy() {
-          const { ListingIndex } = await import('@/pages/app/forms/index');
+          const { ListingIndex } = await import('./index');
           return { Component: ListingIndex };
         },
       },
@@ -19,7 +19,7 @@ export default [
         key: 'forms.add',
         path: 'add',
         async lazy() {
-          const { AddIndex } = await import('@/pages/app/forms/index');
+          const { AddIndex } = await import('./index');
           return { Component: AddIndex };
         },
       },
@@ -27,7 +27,7 @@ export default [
         key: 'forms.detail',
         path: ':id',
         async lazy() {
-          const { ViewLayout } = await import('@/pages/app/forms/index');
+          const { ViewLayout } = await import('./index');
           return { Component: ViewLayout };
         },
         children: [
@@ -35,7 +35,7 @@ export default [
             key: 'forms.detail.edit',
             index: true,
             async lazy() {
-              const { ViewEdit } = await import('@/pages/app/forms/index');
+              const { ViewEdit } = await import('./index');
               return { Component: ViewEdit };
             },
           },
@@ -43,7 +43,7 @@ export default [
             key: 'forms.detail.fields',
             path: 'fields',
             async lazy() {
-              const { ViewFields } = await import('@/pages/app/forms/index');
+              const { ViewFields } = await import('./index');
               return { Component: ViewFields };
             },
           },
@@ -51,7 +51,7 @@ export default [
             key: 'forms.detail.delete',
             path: 'delete',
             async lazy() {
-              const { ViewDelete } = await import('@/pages/app/forms/index');
+              const { ViewDelete } = await import('./index');
               return { Component: ViewDelete };
             },
           },

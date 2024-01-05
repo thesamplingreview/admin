@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { stringToColor } from '@/helpers/utils';
 
-export default function HorizontalBarChart({ dataset, maxCount, ...props }) {
+export default function MChartHorizontalBar({ dataset, maxCount, ...props }) {
   const getMaxCount = useMemo(() => {
     if (maxCount) {
       return maxCount;

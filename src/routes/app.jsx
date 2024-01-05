@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import AppLayout from '@/pages/app/layout.jsx';
+import dashboardRoutes from '@/pages/app/dashboard/routes';
 import vendorsRoutes from '@/pages/app/vendors/routes';
 import campaignsRoutes from '@/pages/app/campaigns/routes';
 import enrolmentsRoutes from '@/pages/app/enrolments/routes';
@@ -18,14 +19,7 @@ const routes = [
     index: true,
     element: <Navigate to='./dashboard' />,
   },
-  {
-    key: 'dashboard',
-    path: 'dashboard',
-    async lazy() {
-      const { Dashboard } = await import('@/pages/app/dashboard/index.jsx');
-      return { Component: Dashboard };
-    },
-  },
+  ...dashboardRoutes,
   ...adminsRoutes,
   ...usersRoutes,
   ...productsRoutes,

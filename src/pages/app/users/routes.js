@@ -3,7 +3,7 @@ export default [
     key: 'users',
     path: 'users',
     async lazy() {
-      const { Layout } = await import('@/pages/app/users/index.jsx');
+      const { Layout } = await import('./index.jsx');
       return { Component: Layout };
     },
     children: [
@@ -11,7 +11,7 @@ export default [
         key: 'users.list',
         index: true,
         async lazy() {
-          const { ListingIndex } = await import('@/pages/app/users/index.jsx');
+          const { ListingIndex } = await import('./index.jsx');
           return { Component: ListingIndex };
         },
       },
@@ -19,7 +19,7 @@ export default [
         key: 'users.add',
         path: 'add',
         async lazy() {
-          const { AddIndex } = await import('@/pages/app/users/index.jsx');
+          const { AddIndex } = await import('./index.jsx');
           return { Component: AddIndex };
         },
       },
@@ -27,7 +27,7 @@ export default [
         key: 'users.detail',
         path: ':id',
         async lazy() {
-          const { ViewLayout } = await import('@/pages/app/users/index.jsx');
+          const { ViewLayout } = await import('./index.jsx');
           return { Component: ViewLayout };
         },
         children: [
@@ -35,7 +35,7 @@ export default [
             key: 'users.detail.view',
             index: true,
             async lazy() {
-              const { ViewOverview } = await import('@/pages/app/users/index.jsx');
+              const { ViewOverview } = await import('./index.jsx');
               return { Component: ViewOverview };
             },
           },
@@ -43,7 +43,7 @@ export default [
             key: 'users.detail.edit',
             path: 'edit',
             async lazy() {
-              const { ViewEdit } = await import('@/pages/app/users/index.jsx');
+              const { ViewEdit } = await import('./index.jsx');
               return { Component: ViewEdit };
             },
           },
@@ -51,7 +51,7 @@ export default [
             key: 'users.detail.password',
             path: 'password',
             async lazy() {
-              const { ViewPassword } = await import('@/pages/app/users/index.jsx');
+              const { ViewPassword } = await import('./index.jsx');
               return { Component: ViewPassword };
             },
           },
@@ -59,7 +59,7 @@ export default [
             key: 'users.detail.campaigns',
             path: 'campaigns',
             async lazy() {
-              const { ViewCampaigns } = await import('@/pages/app/users/index.jsx');
+              const { ViewCampaigns } = await import('./index.jsx');
               return { Component: ViewCampaigns };
             },
           },

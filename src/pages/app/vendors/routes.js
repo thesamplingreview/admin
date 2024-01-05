@@ -3,7 +3,7 @@ export default [
     key: 'vendors',
     path: 'vendors',
     async lazy() {
-      const { Layout } = await import('@/pages/app/vendors/index');
+      const { Layout } = await import('./index');
       return { Component: Layout };
     },
     children: [
@@ -11,7 +11,7 @@ export default [
         key: 'vendors.list',
         index: true,
         async lazy() {
-          const { ListingIndex } = await import('@/pages/app/vendors/index');
+          const { ListingIndex } = await import('./index');
           return { Component: ListingIndex };
         },
       },
@@ -19,7 +19,7 @@ export default [
         key: 'vendors.add',
         path: 'add',
         async lazy() {
-          const { AddIndex } = await import('@/pages/app/vendors/index');
+          const { AddIndex } = await import('./index');
           return { Component: AddIndex };
         },
       },
@@ -27,7 +27,7 @@ export default [
         key: 'vendors.detail',
         path: ':id',
         async lazy() {
-          const { ViewLayout } = await import('@/pages/app/vendors/index');
+          const { ViewLayout } = await import('./index');
           return { Component: ViewLayout };
         },
         children: [
@@ -35,7 +35,7 @@ export default [
             key: 'vendors.detail.overview',
             index: true,
             async lazy() {
-              const { ViewOverview } = await import('@/pages/app/vendors/index');
+              const { ViewOverview } = await import('./index');
               return { Component: ViewOverview };
             },
           },
@@ -43,7 +43,7 @@ export default [
             key: 'vendors.detail.edit',
             path: 'edit',
             async lazy() {
-              const { ViewEdit } = await import('@/pages/app/vendors/index');
+              const { ViewEdit } = await import('./index');
               return { Component: ViewEdit };
             },
           },
@@ -51,7 +51,7 @@ export default [
             key: 'vendors.detail.delete',
             path: 'delete',
             async lazy() {
-              const { ViewDelete } = await import('@/pages/app/vendors/index');
+              const { ViewDelete } = await import('./index');
               return { Component: ViewDelete };
             },
           },

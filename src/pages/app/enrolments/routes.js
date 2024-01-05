@@ -3,7 +3,7 @@ export default [
     key: 'enrolments',
     path: 'enrolments',
     async lazy() {
-      const { Layout } = await import('@/pages/app/enrolments/index');
+      const { Layout } = await import('./index');
       return { Component: Layout };
     },
     children: [
@@ -11,7 +11,7 @@ export default [
         key: 'enrolments.list',
         index: true,
         async lazy() {
-          const { ListingIndex } = await import('@/pages/app/enrolments/index');
+          const { ListingIndex } = await import('./index');
           return { Component: ListingIndex };
         },
       },
@@ -19,7 +19,7 @@ export default [
         key: 'enrolments.detail',
         path: ':id',
         async lazy() {
-          const { ViewLayout } = await import('@/pages/app/enrolments/index');
+          const { ViewLayout } = await import('./index');
           return { Component: ViewLayout };
         },
         children: [
@@ -27,7 +27,7 @@ export default [
             key: 'enrolments.detail.overview',
             index: true,
             async lazy() {
-              const { ViewOverview } = await import('@/pages/app/enrolments/index');
+              const { ViewOverview } = await import('./index');
               return { Component: ViewOverview };
             },
           },
@@ -35,7 +35,7 @@ export default [
             key: 'enrolments.detail.edit',
             path: 'edit',
             async lazy() {
-              const { ViewEdit } = await import('@/pages/app/enrolments/index');
+              const { ViewEdit } = await import('./index');
               return { Component: ViewEdit };
             },
           },
@@ -43,7 +43,7 @@ export default [
             key: 'enrolments.detail.delete',
             path: 'delete',
             async lazy() {
-              const { ViewDelete } = await import('@/pages/app/enrolments/index');
+              const { ViewDelete } = await import('./index');
               return { Component: ViewDelete };
             },
           },

@@ -9,7 +9,7 @@ import { stringToColor } from '@/helpers/utils';
 import CBox from '@/components/CBox.jsx';
 import CLoader from '@/components/CLoader.jsx';
 import CError from '@/components/CError.jsx';
-import HorizontalBarChart from '@/components/Charts/HorizontalBarChart.jsx';
+import MChartHorizontalBar from '@/components/Charts/MChartHorizontalBar.jsx';
 
 export default function ViewReport({ ...props }) {
   const doFetch = useFetch();
@@ -78,7 +78,7 @@ function DataItem({ data }) {
           </Typography>
         </Grid>
         <Grid xs={12} lg={9}>
-          <HorizontalBarChart dataset={chartDs} />
+          <MChartHorizontalBar dataset={chartDs} />
         </Grid>
       </Grid>
     </Box>

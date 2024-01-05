@@ -137,11 +137,13 @@ export default function SystemEmailTemplate() {
                 <Typography variant="body2" fontSize="0.75em" pt={0.25} mr={2}>
                   Variables:
                 </Typography>
-                <Stack flexGrow="1" direction="row" flexWrap="wrap" gap={1}>
-                  <VariableTag label="{{reset_link}}" />
-                  <VariableTag label="{{code}}" />
-                  <VariableTag label="{{email}}" />
-                </Stack>
+                <VariableTags
+                  items={[
+                    '{{reset_link}}',
+                    '{{email}}',
+                    '{{token}}',
+                  ]}
+                />
               </Box>
             </>
           )}
@@ -172,15 +174,14 @@ export default function SystemEmailTemplate() {
                 <Typography variant="body2" fontSize="0.75em" pt={0.25} mr={2}>
                   Variables:
                 </Typography>
-                <Stack flexGrow="1" direction="row" flexWrap="wrap" gap={1}>
-                  <VariableTag label="{{enrolment_id}}" />
-                  <VariableTag label="{{campaign_name}}" />
-                  <VariableTag label="{{user_name}}" />
-                  <VariableTag label="{{user_email}}" />
-                  <VariableTag label="{{user_email}}" />
-                  <VariableTag label="{{user_email}}" />
-                  <VariableTag label="{{user_email}}" />
-                </Stack>
+                <VariableTags
+                  items={[
+                    '{{enrolment_id}}',
+                    '{{campaign_name}}',
+                    '{{user_name}}',
+                    '{{user_email}}',
+                  ]}
+                />
               </Box>
             </>
           )}
@@ -221,10 +222,12 @@ export default function SystemEmailTemplate() {
                 <Typography variant="body2" fontSize="0.75em" pt={0.25} mr={2}>
                   Variables:
                 </Typography>
-                <Stack flexGrow="1" direction="row" flexWrap="wrap" gap={1}>
-                  <VariableTag label="{{user_name}}" />
-                  <VariableTag label="{{user_email}}" />
-                </Stack>
+                <VariableTags
+                  items={[
+                    '{{user_name}}',
+                    '{{user_email}}',
+                  ]}
+                />
               </Box>
             </>
           )}
@@ -279,18 +282,28 @@ function ConfigItem({
   );
 }
 
-function VariableTag({ label }) {
+function VariableTags({ items }) {
   return (
-    <Chip
-      label={label}
-      size="small"
-      sx={{
-        py: 0.35,
-        height: 'auto',
-        fontSize: '0.75em',
-        color: '#666',
-        textTransform: 'initial',
-      }}
-    />
+    <Stack
+      flexGrow="1"
+      direction="row"
+      flexWrap="wrap"
+      gap={1}
+    >
+      {items.map((item, index) => (
+        <Chip
+          key={index}
+          label={item}
+          size="small"
+          sx={{
+            py: 0.35,
+            height: 'auto',
+            fontSize: '0.75em',
+            color: '#666',
+            textTransform: 'initial',
+          }}
+        />
+      ))}
+    </Stack>
   );
 }

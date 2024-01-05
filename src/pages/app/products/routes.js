@@ -3,7 +3,7 @@ export default [
     key: 'products',
     path: 'products',
     async lazy() {
-      const { Layout } = await import('@/pages/app/products/index.jsx');
+      const { Layout } = await import('./index.jsx');
       return { Component: Layout };
     },
     children: [
@@ -11,7 +11,7 @@ export default [
         key: 'products.list',
         index: true,
         async lazy() {
-          const { ListingIndex } = await import('@/pages/app/products/index.jsx');
+          const { ListingIndex } = await import('./index.jsx');
           return { Component: ListingIndex };
         },
       },
@@ -19,7 +19,7 @@ export default [
         key: 'products.add',
         path: 'add',
         async lazy() {
-          const { AddIndex } = await import('@/pages/app/products/index.jsx');
+          const { AddIndex } = await import('./index.jsx');
           return { Component: AddIndex };
         },
       },
@@ -27,7 +27,7 @@ export default [
         key: 'products.detail',
         path: ':id',
         async lazy() {
-          const { ViewLayout } = await import('@/pages/app/products/index.jsx');
+          const { ViewLayout } = await import('./index.jsx');
           return { Component: ViewLayout };
         },
         children: [
@@ -35,7 +35,7 @@ export default [
             key: 'products.detail.overview',
             index: true,
             async lazy() {
-              const { ViewOverview } = await import('@/pages/app/products/index.jsx');
+              const { ViewOverview } = await import('./index.jsx');
               return { Component: ViewOverview };
             },
           },
@@ -43,7 +43,7 @@ export default [
             key: 'products.detail.edit',
             path: 'edit',
             async lazy() {
-              const { ViewEdit } = await import('@/pages/app/products/index.jsx');
+              const { ViewEdit } = await import('./index.jsx');
               return { Component: ViewEdit };
             },
           },
