@@ -8,6 +8,7 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
+    "apprunner:run": "npm run build && npm run preview",
     "ci": "yarn install --immutable --immutable-cache --check-cache"
   },
   "dependencies": {
