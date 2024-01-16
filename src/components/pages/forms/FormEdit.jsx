@@ -3,10 +3,9 @@ import Box from '@mui/material/Box';
 import { useFetch } from '@/contexts/hooks/auth';
 import { useOptions, useModel } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
-import { toFormData } from '@/helpers/utils';
 import CInput from '@/components/CInput.jsx';
 import CTextArea from '@/components/CTextArea.jsx';
-import CInputImage from '@/components/CInputImage.jsx';
+// import CInputImage from '@/components/CInputImage.jsx';
 import CFormControl from '@/components/CFormControl.jsx';
 import CLoadingButton from '@/components/CLoadingButton.jsx';
 
@@ -14,8 +13,8 @@ function genDefaultInput(options, model = null) {
   return {
     name: model?.name || '',
     description: model?.description || '',
-    cover: null,
-    coverUrl: model?.cover_url || '',
+    // cover: null,
+    // coverUrl: model?.cover_url || '',
   };
 }
 
@@ -45,8 +44,7 @@ export default function FormEdit() {
       const formdata = { ...input };
       const { code, data } = await doFetch(`/v1/admin/forms/${model.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'multipart/form-data' },
-        data: toFormData(formdata),
+        data: formdata,
       });
       if (code !== 200) {
         throw new Error('Invalid API');
@@ -86,7 +84,7 @@ export default function FormEdit() {
         />
       </CFormControl>
 
-      <CFormControl label="Cover Image">
+      {/* <CFormControl label="Cover Image">
         <CInputImage
           name="cover"
           value={input.cover}
@@ -96,7 +94,7 @@ export default function FormEdit() {
           error={validator?.cover}
           onChange={handleChange}
         />
-      </CFormControl>
+      </CFormControl> */}
 
       <CFormControl label="Description">
         <CTextArea

@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { useFetch } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
-import { toFormData } from '@/helpers/utils';
 import { appRoute } from '@/helpers/route';
 import CInput from '@/components/CInput.jsx';
 import CTextArea from '@/components/CTextArea.jsx';
-import CInputImage from '@/components/CInputImage.jsx';
+// import CInputImage from '@/components/CInputImage.jsx';
 import CFormControl from '@/components/CFormControl.jsx';
 import CLoadingButton from '@/components/CLoadingButton.jsx';
 
@@ -15,8 +14,8 @@ function genDefaultInput(model = null) {
   return {
     name: model?.name || '',
     description: model?.description || '',
-    cover: null,
-    coverUrl: model?.cover_url || '',
+    // cover: null,
+    // coverUrl: model?.cover_url || '',
   };
 }
 
@@ -45,8 +44,7 @@ export default function FormCreate() {
       const formdata = { ...input };
       const { code, data } = await doFetch('/v1/admin/forms', {
         method: 'POST',
-        headers: { 'Content-Type': 'multipart/form-data' },
-        data: toFormData(formdata),
+        data: formdata,
       });
       if (code !== 200) {
         throw new Error('Invalid API');
@@ -84,7 +82,7 @@ export default function FormCreate() {
         />
       </CFormControl>
 
-      <CFormControl label="Cover Image">
+      {/* <CFormControl label="Cover Image">
         <CInputImage
           name="cover"
           value={input.cover}
@@ -94,7 +92,7 @@ export default function FormCreate() {
           error={validator?.cover}
           onChange={handleChange}
         />
-      </CFormControl>
+      </CFormControl> */}
 
       <CFormControl label="Description">
         <CTextArea
