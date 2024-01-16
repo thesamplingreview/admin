@@ -80,6 +80,14 @@ export default [
             },
           },
           {
+            key: 'campaigns.detail.reviews',
+            path: 'reviews',
+            async lazy() {
+              const { ViewReviews } = await import('./index');
+              return { Component: ViewReviews };
+            },
+          },
+          {
             key: 'campaigns.detail.report',
             path: 'report',
             async lazy() {

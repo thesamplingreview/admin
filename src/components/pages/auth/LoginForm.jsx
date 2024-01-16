@@ -38,13 +38,13 @@ export default function LoginForm() {
     >
       <Box>
         <img
-          src="xxx"
-          alt="My Logo"
-          width="145"
-          height="40"
+          src="/images/logo.png"
+          alt="App name"
+          width="60"
+          height="60"
         />
       </Box>
-      <Typography variant="h5" mt={2}>
+      <Typography variant="h5">
         Admin Portal
       </Typography>
       <Typography variant="body1" color="text.light" mt={1}>

@@ -5,7 +5,7 @@ import PageHeader from '@/components/layouts/PageHeader.jsx';
 import NavView from '@/components/pages/campaigns/NavView.jsx';
 import ViewEnrolments from '@/components/pages/campaigns/ViewEnrolments.jsx';
 
-export default function UserOverview() {
+export default function CampaignEnrolments() {
   const [model] = useModel();
 
   return (

@@ -34,7 +34,7 @@ export default function NavView({ active }) {
       name: 'User Reviews',
       route: appRoute(`/campaigns/${model.id}/reviews`),
       icon: 'fa-comments',
-      // count: model.enrolments_count,
+      count: model.reviews_count,
     },
     {
       key: 'products',
