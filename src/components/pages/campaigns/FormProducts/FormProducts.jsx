@@ -49,7 +49,7 @@ export default function FormProducts({ formFields, ...props }) {
 
   const [inputs, setInputs] = useState(genInputs(model.products));
   const [loading, setLoading] = useState(false);
-  const [validator, setValidator] = useState(null);
+  const [, setValidator] = useState(null);
   const [isAdd, setIsAdd] = useState(false);
 
   const filterableFields = useMemo(() => {
@@ -62,10 +62,10 @@ export default function FormProducts({ formFields, ...props }) {
         id: d.id,
         type: d.type,
         name: d.name,
-        options: d.options?.split('\n').map((val) => ({
-          id: val,
-          name: val,
-        })) || [],
+        options: d.options.map((opt) => ({
+          id: opt.id,
+          name: opt.label,
+        })),
       }));
   }, [formFields]);
 

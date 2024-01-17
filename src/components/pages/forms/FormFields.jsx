@@ -51,7 +51,7 @@ export default function FormFields({ ...props }) {
   const [validator, setValidator] = useState(null);
 
   const handleSave = async () => {
-    setLoading(true);
+    // setLoading(true);
     setValidator(null);
     try {
       if (!$builder.current) {

@@ -60,13 +60,16 @@ export default function CSelectMultiple({
             </IconButton>
           </InputAdornment>
         ) : null}
-        renderValue={(selected) => (
-          <Stack direction="row" gap={1}>
-            {selected.map((val) => (
-              <Chip key={val} label={val} size="small" />
-            ))}
-          </Stack>
-        )}
+        renderValue={(selected) => {
+          const selectedOptions = options.filter((d) => selected.includes(d.id));
+          return (
+            <Stack direction="row" gap={1}>
+              {selectedOptions.map((opt) => (
+                <Chip key={opt.id} label={opt.name} size="small" />
+              ))}
+            </Stack>
+          );
+        }}
         onChange={onChange}
       >
         {!options.length && (
