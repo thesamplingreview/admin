@@ -34,7 +34,6 @@ export default function WidgetSignupChart() {
       if (!data) {
         throw new Error('Failed to retrieve data.');
       }
-      console.log(data);
       setDataset(data);
     } catch (err) {
       setError(err);

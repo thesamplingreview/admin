@@ -15,13 +15,14 @@ const ModuleContext = createContext(initialState);
 
 export const ModuleProvider = ({
   fetchInit,
+  initModel,
   children,
 }) => {
   const [init, setInit] = useState(false);
   const [loading, setLoading] = useState(initialState.loading);
   const [error, setError] = useState(initialState.error);
   const [options, setOptions] = useState(initialState.options);
-  const [model, setModel] = useState(initialState.model);
+  const [model, setModel] = useState(initModel || initialState.model);
 
   const fetchInitData = async () => {
     if (!fetchInit) {

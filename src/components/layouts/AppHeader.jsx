@@ -7,7 +7,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useAuth } from '@/contexts/hooks/auth';
-import { authRoute } from '@/helpers/route';
+import { appRoute, authRoute } from '@/helpers/route';
 import CAvatar from '@/components/CAvatar.jsx';
 
 export default function AppHeader() {
@@ -48,7 +48,7 @@ function UserNav() {
     {
       key: 'profile',
       name: 'Edit Profile',
-      route: '#',
+      route: appRoute('/my/profile'),
     },
     {
       key: 'logout',

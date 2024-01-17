@@ -9,6 +9,7 @@ import formsRoutes from '@/pages/app/forms/routes';
 import usersRoutes from '@/pages/app/users/routes';
 import adminsRoutes from '@/pages/app/admins/routes';
 import systemRoutes from '@/pages/app/system/routes';
+import myRoutes from '@/pages/app/my/routes';
 
 /**
  * NOTE: not using react-router loader to preload the data as the method doesn't works well with <suspense>, hence will using own context to handle it
@@ -28,6 +29,7 @@ const routes = [
   ...vendorsRoutes,
   ...formsRoutes,
   ...systemRoutes,
+  ...myRoutes,
 ];
 
 const layout = <AppLayout />;
