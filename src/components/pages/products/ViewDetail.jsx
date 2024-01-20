@@ -24,7 +24,7 @@ export default function ViewDetail() {
       <CDisplayControl
         label="Description"
         type="html"
-        value={model.description.replace(/\n/g, '<br>')}
+        value={model?.description.replace(/\n/g, '<br>')}
       />
       <CDisplayControl label="Status">
         <BadgeStatus status={model.status} />
