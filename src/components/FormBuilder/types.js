@@ -25,11 +25,15 @@ const types = [
   },
   {
     id: 'address',
-    name: 'Address',
+    name: 'Full Address',
   },
   {
     id: 'products',
     name: 'Products Selection',
+  },
+  {
+    id: 'state',
+    name: 'State Selection',
   },
 ];
 

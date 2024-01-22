@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { useFetch } from '@/contexts/hooks/auth';
 import { useOptions, useModel } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
+import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInput.jsx';
 import CTextArea from '@/components/CTextArea.jsx';
 // import CInputImage from '@/components/CInputImage.jsx';
@@ -18,7 +19,7 @@ function genDefaultInput(options, model = null) {
   };
 }
 
-export default function FormEdit() {
+export default function FormEdit({ ...props }) {
   const doFetch = useFetch();
   const options = useOptions();
   const pushToast = useToast();
@@ -72,7 +73,23 @@ export default function FormEdit() {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit}>
+    <CBox
+      {...props}
+      component="form"
+      title="Edit Entry"
+      footer={(
+        <Box display="flex" justifyContent="flex-end">
+          <CLoadingButton
+            type="submit"
+            variant="contained"
+            loading={loading}
+          >
+            Save
+          </CLoadingButton>
+        </Box>
+      )}
+      onSubmit={handleSubmit}
+    >
       <CFormControl label="Form Name">
         <CInput
           name="name"
@@ -105,16 +122,6 @@ export default function FormEdit() {
           onChange={handleChange}
         />
       </CFormControl>
-
-      <Box display="flex" justifyContent="flex-end" mt={3}>
-        <CLoadingButton
-          type="submit"
-          variant="contained"
-          loading={loading}
-        >
-          Save
-        </CLoadingButton>
-      </Box>
-    </Box>
+    </CBox>
   );
 }

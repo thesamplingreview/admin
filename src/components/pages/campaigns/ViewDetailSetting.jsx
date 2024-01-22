@@ -1,11 +1,12 @@
 import { useModel } from '@/contexts/hooks/module';
-import { publicRoute } from '@/helpers/route';
+import { publicRoute, appRoute } from '@/helpers/route';
 import CBox from '@/components/CBox.jsx';
 import CDisplayControl from '@/components/CDisplayControl.jsx';
 import BadgeStatus from './BadgeStatus.jsx';
 
 export default function ViewDetail({ ...props }) {
   const [model] = useModel();
+  console.log(model)
 
   return (
     <CBox title="Campaign Settings" toggleable {...props}>
@@ -31,7 +32,13 @@ export default function ViewDetail({ ...props }) {
       />
       <CDisplayControl
         label="Enrolment Form"
+        type="url"
         value={model.form?.name}
+        valueProps={{
+          link: model.form_id ? appRoute(`/forms/${model.form_id}/fields`) : '#',
+          title: 'Edit form',
+          icon: 'fa-pencil',
+        }}
       />
       <CDisplayControl
         label="Review Type"

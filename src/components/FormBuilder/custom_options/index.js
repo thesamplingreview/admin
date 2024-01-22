@@ -3,6 +3,7 @@ import Select from './Select.jsx';
 import File from './File.jsx';
 import Products from './Products.jsx';
 import Address from './Address.jsx';
+import State from './State.jsx';
 import Static from './Static.jsx';
 
 const comps = {
@@ -11,6 +12,7 @@ const comps = {
   file: File,
   products: Products,
   address: Address,
+  state: State,
   static: Static,
 };
 

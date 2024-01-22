@@ -79,11 +79,15 @@ const ValueComp = ({
         <Button
           {...valueProps}
           component={Link}
+          title={valueProps?.title}
           to={valueProps?.link || value}
           size="small"
           sx={{ my: -1, px: 1, minWidth: '3em' }}
         >
-          <FasIcon name="fa-link" fontSize="0.875em" />
+          <FasIcon
+            name={valueProps?.icon || 'fa-link'}
+            fontSize="0.875em"
+          />
         </Button>
       </Box>
     );

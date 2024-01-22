@@ -6,7 +6,7 @@ import CLoadingButton from '@/components/CLoadingButton.jsx';
 import { useLogin } from '@/contexts/hooks/auth';
 import { getFormData } from '@/helpers/utils';
 
-export default function LoginForm() {
+export default function LoginForm({ disabled }) {
   const doLogin = useLogin();
 
   const [loading, setLoading] = useState(false);
@@ -78,7 +78,7 @@ export default function LoginForm() {
           variant="contained"
           color="primary"
           fullWidth
-          loading={loading}
+          loading={disabled || loading}
         >
           Login
         </CLoadingButton>

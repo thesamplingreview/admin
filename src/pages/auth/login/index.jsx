@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -11,10 +12,13 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [auth] = useAuth();
 
+  const [init, setInit] = useState(false);
+
   useOnce(() => {
     if (auth) {
       navigate(appRoute('/dashboard'));
     }
+    setInit(true);
   });
 
   return (
@@ -27,7 +31,7 @@ export default function LoginPage() {
           flexDirection="column"
           height="100%"
         >
-          <LoginForm />
+          <LoginForm disabled={!init} />
         </Box>
       </Grid>
       <Grid xs lg={7} position="relative">

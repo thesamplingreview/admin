@@ -32,7 +32,10 @@ function BarItem({ data, color, max }) {
   const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
-    setPercentage(((data.count / max) * 100));
+    // update only if have count
+    if (data.count) {
+      setPercentage(((data.count / max) * 100));
+    }
   }, [data.count, max]);
 
   return (
