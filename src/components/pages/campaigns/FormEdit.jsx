@@ -9,6 +9,7 @@ import { useOptions, useModel } from '@/contexts/hooks/module';
 import { toFormData } from '@/helpers/utils';
 import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInputLazy.jsx';
+import CSelect from '@/components/CSelect.jsx';
 import CInputImage from '@/components/CInputImage.jsx';
 import CInputMD from '@/components/CInputMD.jsx';
 // import CSwitch from '@/components/CSwitch.jsx';
@@ -39,6 +40,7 @@ function genDefaultInput(options, model = null) {
     meta_tag: model?.meta_tag || '',
     start_date: dateParse(model?.start_date),
     end_date: dateParse(model?.end_date),
+    theme: model?.theme || '',
     cover: null,
     coverUrl: model?.cover_url || '',
     background: null,
@@ -290,6 +292,18 @@ export default function FormEdit({ ...props }) {
           label="Browse image"
           maxSize={2}
           error={validator?.background}
+          onChange={handleChange}
+        />
+      </CFormControl>
+
+      <CFormControl label="Form Theme" size={4}>
+        <CSelect
+          name="theme"
+          value={input.theme}
+          label="Select theme"
+          options={options.themes}
+          required
+          error={validator?.theme}
           onChange={handleChange}
         />
       </CFormControl>
