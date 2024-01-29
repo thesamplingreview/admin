@@ -230,7 +230,10 @@ function FormItemBodyDynamicInput({
         inputColProps={{ md: 7, lg: 7 }}
       >
         <CSelectMultiple
-          options={field.options}
+          options={field.options.map((opt) => ({
+            id: opt.name,
+            name: opt.name,
+          }))}
           name={name}
           label="Select"
           value={value}

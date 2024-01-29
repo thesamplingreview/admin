@@ -84,7 +84,7 @@ function FormDisplayControl({ field }) {
     return (
       <CDisplayControl label={field.name}>
         <Box display="flex" flexWrap="wrap" gap={3}>
-          {field.answer.map((data) => (
+          {field.answer?.map((data) => (
             <Box
               key={data.id}
               component={Link}
