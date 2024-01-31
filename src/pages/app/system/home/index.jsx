@@ -16,6 +16,13 @@ export default function SystemHome() {
       href: appRoute('/system/email-template'),
       icon: 'fa-envelopes-bulk',
     },
+    {
+      key: 'notification',
+      name: 'Admin Notification',
+      desc: 'Setup notification for admins.',
+      href: appRoute('/system/notification'),
+      icon: 'fa-bell',
+    },
   ]), []);
 
   return (
@@ -45,6 +52,7 @@ export default function SystemHome() {
               borderRadius="12px"
               bgcolor="#fff"
               color="text.main"
+              height="100%"
               px={3}
               py={2}
               sx={{

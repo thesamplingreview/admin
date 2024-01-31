@@ -23,6 +23,14 @@ export default [
           return { Component: ViewEmailTemplate };
         },
       },
+      {
+        key: 'system.notification',
+        path: 'notification',
+        async lazy() {
+          const { ViewNotification } = await import('./index.jsx');
+          return { Component: ViewNotification };
+        },
+      },
     ],
   },
 ];

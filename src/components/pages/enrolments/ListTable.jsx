@@ -95,7 +95,7 @@ export default function ListTable({ ...props }) {
         initData={{
           page: 1,
           perPage: 10,
-          sort: '',
+          sort: '-created_at',
           filters: {},
         }}
         dataProps={{
