@@ -1,9 +1,7 @@
 import {
   useRef, useState, useEffect, useCallback,
 } from 'react';
-import {
-  format, eachDayOfInterval, startOfMonth, endOfMonth,
-} from 'date-fns';
+import { format, eachDayOfInterval, subDays } from 'date-fns';
 import Box from '@mui/material/Box';
 import { useFetch } from '@/contexts/hooks/auth';
 import ChartGraph from '@/components/Charts/ChartGraph.jsx';
@@ -14,8 +12,8 @@ export default function WidgetEnrolmentChart() {
   const doFetch = useFetch();
 
   const [dates, setDates] = useState({
-    start: startOfMonth(new Date()),
-    end: endOfMonth(new Date()),
+    start: subDays(new Date(), 30),
+    end: new Date(),
   });
   const [dataset, setDataset] = useState([]);
   const [loading, setLoading] = useState(true);
