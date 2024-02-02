@@ -9,12 +9,14 @@ import CSwitch from '@/components/CSwitch.jsx';
 import CFormControl from '@/components/CFormControl.jsx';
 import CConfirmAlert from '@/components/CConfirmAlert.jsx';
 import FasIcon from '@/components/FasIcon.jsx';
+import InputLogic from './comps/InputLogic.jsx';
 import customOptions from './custom_options';
 import allTypes from './types';
 
 export default function FieldItem({
   index,
   field,
+  allFields,
   error,
   onChange,
   onRemove,
@@ -62,6 +64,7 @@ export default function FieldItem({
       {field.show && (
         <FieldItemBody
           field={field}
+          allFields={allFields}
           error={error}
           onToggle={handleToggle}
           onChange={handleChange}
@@ -160,6 +163,7 @@ function FieldItemHeader({
 
 function FieldItemBody({
   field,
+  allFields,
   error,
   onToggle,
   onChange,
@@ -173,6 +177,30 @@ function FieldItemBody({
       target: {
         name: e.target.name,
         value: e.target.checked,
+      },
+    });
+  };
+
+  const handleChangeConfig = (e) => {
+    onChange({
+      target: {
+        name: 'config',
+        value: {
+          ...field.config,
+          [e.target.name]: e.target.value,
+        },
+      },
+    });
+  };
+
+  const handleCheckedConfig = (e) => {
+    onChange({
+      target: {
+        name: 'config',
+        value: {
+          ...field.config,
+          [e.target.name]: e.target.checked,
+        },
       },
     });
   };
@@ -228,10 +256,29 @@ function FieldItemBody({
         <CustomOptionComp
           field={field}
           error={error}
-          onChange={onChange}
-          onCheck={handleChecked}
+          onParentChange={onChange}
+          onChange={handleChangeConfig}
+          onCheck={handleCheckedConfig}
         />
       )}
+
+      <CFormControl label="Display Logic">
+        <CSwitch
+          name="use_logic"
+          label="Enable logic on this field"
+          checked={field.use_logic}
+          onChange={handleChecked}
+        />
+        {field.use_logic && (
+          <InputLogic
+            currField={field}
+            allFields={allFields}
+            name="logic"
+            value={field.logic}
+            onChange={onChange}
+          />
+        )}
+      </CFormControl>
 
       <Box display="flex" justifyContent="space-between" mt={3}>
         <Button

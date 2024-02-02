@@ -17,22 +17,22 @@ export default function OptionFile({
       <CFormControl label="Allowed File">
         <CSelect
           options={acceptOptions}
-          name="config.accept"
+          name="accept"
           label="Select type"
           placeholder="Default (all)"
           helperText="Allowing all are not recommended."
-          value={field['config.accept'] || ''}
+          value={field.config?.accept || ''}
           onChange={onChange}
         />
       </CFormControl>
       <CFormControl label="Max. File Size (Mb)" size={4}>
         <CInput
           type="number"
-          name="config.max_size"
+          name="max_size"
           label="Enter value"
           placeholder="Default 4Mb"
           min="1"
-          value={field['config.max_size'] || ''}
+          value={field.config?.max_size || ''}
           onChange={onChange}
         />
       </CFormControl>

@@ -15,13 +15,13 @@ export default function OptionState({
 
   return (
     <>
-      <CFormControl label="Display Layout">
+      <CFormControl label="Display Layout" size={4}>
         <CSelect
           options={layoutOptions}
-          name="config.layout"
+          name="layout"
           label="Select layout"
           placeholder="Default"
-          value={field['config.layout'] || ''}
+          value={field.config?.layout || ''}
           onChange={onChange}
         />
       </CFormControl>

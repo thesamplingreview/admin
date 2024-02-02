@@ -12,6 +12,8 @@ const FormBuilderRef = forwardRef(({
 }, ref) => {
   const [fields, setFields] = useState(defaultValue.map((d) => ({
     ...d,
+    logic: d.logic || null,
+    use_logic: d.use_logic || false,
     key: d.id,
     show: false,
   })));
@@ -25,8 +27,10 @@ const FormBuilderRef = forwardRef(({
       description: '',
       hint: '',
       mandatory: false,
-      show: true,
       config: null,
+      use_logic: false,
+      logic: null,
+      show: true,
     });
     setFields(newFields);
   };

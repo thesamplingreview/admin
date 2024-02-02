@@ -3,7 +3,7 @@ import CFormControl from '@/components/CFormControl.jsx';
 
 export default function OptionText({
   field,
-  onChange,
+  onParentChange,
 }) {
   return (
     <>
@@ -12,7 +12,7 @@ export default function OptionText({
           name="placeholder"
           label="Placeholder text"
           value={field.placeholder || ''}
-          onChange={onChange}
+          onChange={onParentChange}
         />
       </CFormControl>
     </>

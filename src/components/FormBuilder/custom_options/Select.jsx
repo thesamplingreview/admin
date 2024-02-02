@@ -15,6 +15,7 @@ export default function OptionSelect({
   field,
   error,
   onChange,
+  onParentChange,
 }) {
   const layoutOptions = useMemo(() => ([
     { id: '1', name: '1 column' },
@@ -30,28 +31,28 @@ export default function OptionSelect({
           name="options"
           value={field.options || []}
           error={error?.options}
-          onChange={onChange}
+          onChange={onParentChange}
         />
       </CFormControl>
-      <CFormControl label="Display Layout">
+      <CFormControl label="Display Layout" size={4}>
         <CSelect
           options={layoutOptions}
-          name="config.layout"
+          name="layout"
           label="Select layout"
           placeholder="Default"
-          value={field['config.layout'] || ''}
+          value={field.config?.layout || ''}
           onChange={onChange}
         />
       </CFormControl>
       <CFormControl label="Max Selection">
         <CInput
           type="number"
-          name="config.select_count"
+          name="select_count"
           label="Enter number"
           placeholder="Default 1"
           min="1"
           helperText="Hint variable: %%total%%, %%count%%, %%left%%"
-          value={field['config.select_count'] || ''}
+          value={field.config?.select_count || ''}
           onChange={onChange}
         />
       </CFormControl>

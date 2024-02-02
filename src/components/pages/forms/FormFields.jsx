@@ -1,45 +1,11 @@
 import { useRef, useState } from 'react';
 import Box from '@mui/material/Box';
-import { setValue, toDotProps } from '@/helpers/utils';
 import { useFetch } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
 import { useModel } from '@/contexts/hooks/module';
 import CBox from '@/components/CBox.jsx';
 import CLoadingButton from '@/components/CLoadingButton.jsx';
 import { FormBuilder } from '@/components/FormBuilder';
-
-function genInputs(dataset) {
-  if (!dataset) {
-    return [];
-  }
-  return dataset.map((d) => {
-    const data = {
-      id: d.id,
-      name: d.name,
-      type: d.type,
-      description: d.description,
-      hint: d.hint,
-      placeholder: d.placeholder,
-      options: d.options,
-      mandatory: d.mandatory,
-      config: d.config,
-    };
-    return toDotProps(data);
-  });
-}
-
-function genFormData(dataset) {
-  return dataset.map((data) => {
-    const input = {};
-    Object.keys(data).forEach((key) => {
-      setValue(input, key, data[key]);
-    });
-    return input;
-  }).map((data) => ({
-    ...data,
-    config: data.config ? JSON.stringify(data.config) : null,
-  }));
-}
 
 export default function FormFields({ ...props }) {
   const doFetch = useFetch();
@@ -51,16 +17,14 @@ export default function FormFields({ ...props }) {
   const [validator, setValidator] = useState(null);
 
   const handleSave = async () => {
-    // setLoading(true);
+    setLoading(true);
     setValidator(null);
     try {
       if (!$builder.current) {
         throw new Error('Unable to get ref: $builder');
       }
-      const fields = genFormData($builder.current.getValue());
-
       const formdata = {
-        fields,
+        fields: $builder.current.getValue(),
       };
       const { code, data } = await doFetch(`/v1/admin/forms/${model.id}/fields`, {
         method: 'PUT',
@@ -117,7 +81,7 @@ export default function FormFields({ ...props }) {
     >
       <FormBuilder
         ref={$builder}
-        defaultValue={genInputs(model.fields)}
+        defaultValue={model.fields || []}
         validator={validator}
       />
     </CBox>

@@ -19,10 +19,10 @@ export default function OptionAddress({
     <>
       <CFormControl label="Show Fields">
         <CCheckboxes
-          name="config.fields"
+          name="fields"
           label="Select"
           options={fields}
-          value={field['config.fields'] || []}
+          value={field.config?.fields || []}
           col={{ xs: 12, md: 6, lg: 4 }}
           onChange={onChange}
         />

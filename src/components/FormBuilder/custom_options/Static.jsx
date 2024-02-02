@@ -9,8 +9,8 @@ export default function OptionProducts({
     <>
       <CFormControl label="Content">
         <CInputMD
-          name="config.content"
-          value={field['config.content'] || ''}
+          name="content"
+          value={field.config?.content || ''}
           label="Enter content"
           onChange={onChange}
         />

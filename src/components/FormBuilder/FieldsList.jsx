@@ -23,6 +23,7 @@ export default function FieldsList({ fields, errors, onChange }) {
             key={field.key}
             index={index + 1}
             field={field}
+            allFields={fields}
             sx={{
               borderBottom: '1px solid var(--border-500)',
               transition: 'opacity .3s',
