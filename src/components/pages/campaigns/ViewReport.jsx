@@ -26,7 +26,7 @@ export default function ViewReport({ ...props }) {
       if (code !== 200) {
         throw new Error('API error');
       }
-      setDataset(data);
+      setDataset(data || []);
     } catch (err) {
       setError(err);
     }
@@ -45,7 +45,13 @@ export default function ViewReport({ ...props }) {
       {!loading && error && (
         <CError message={error.message} />
       )}
-      {!loading && !error && (
+      {!loading && !error && dataset.length === 0 && (
+        <CError
+          fasIcon="fa-triangle-exclamation"
+          message="Campaign does not have any trackable field."
+        />
+      )}
+      {!loading && !error && dataset.length > 0 && (
         <Box>
           {dataset.map((data) => (
             <DataItem key={data.id} data={data} />
