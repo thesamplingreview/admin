@@ -15,6 +15,20 @@ export default function FieldsList({ fields, errors, onChange }) {
     onChange(newFields);
   };
 
+  const handleFieldDuplicate = (index, field) => {
+    const newFields = [...fields];
+    // clone field
+    const newField = {
+      ...field,
+      key: (new Date()).valueOf(),
+      name: `${field.name} (copy)`,
+      show: true,
+    };
+    delete newField.id;
+    newFields.splice(index + 1, 0, newField);
+    onChange(newFields);
+  };
+
   return (
     <Box>
       <ReactSortable list={fields} setList={onChange} handle=".drag-handler">
@@ -34,6 +48,7 @@ export default function FieldsList({ fields, errors, onChange }) {
             error={errors?.[index]}
             onChange={(newVal) => handleFieldChange(index, newVal)}
             onRemove={() => handleFieldRemove(index)}
+            onDuplicate={(val) => handleFieldDuplicate(index, val)}
           />
         ))}
       </ReactSortable>

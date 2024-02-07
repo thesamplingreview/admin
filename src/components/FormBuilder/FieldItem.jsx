@@ -20,6 +20,7 @@ export default function FieldItem({
   error,
   onChange,
   onRemove,
+  onDuplicate,
   ...props
 }) {
   const [isConfirm, setIsConfirm] = useState(false);
@@ -42,6 +43,14 @@ export default function FieldItem({
     onRemove(field);
   };
 
+  const handleDuplicate = () => {
+    onChange({
+      ...field,
+      show: false,
+    });
+    onDuplicate(field);
+  };
+
   return (
     <Box
       {...props}
@@ -59,6 +68,7 @@ export default function FieldItem({
         isShow={field.show}
         error={error}
         onClick={handleToggle}
+        onDuplicate={handleDuplicate}
       />
       {/* body */}
       {field.show && (
@@ -89,6 +99,7 @@ function FieldItemHeader({
   index,
   isShow,
   onClick,
+  onDuplicate,
 }) {
   const typeName = useMemo(() => {
     const found = allTypes.find((d) => d.id === field.type);
@@ -106,8 +117,15 @@ function FieldItemHeader({
         {
           cursor: 'pointer',
           transition: 'background .3s',
+          '& > .actions': {
+            opacity: 0,
+            transition: 'opacity .3s',
+          },
           '&:hover': {
             backgroundColor: 'var(--bg-500)',
+            '& > .actions': {
+              opacity: 1,
+            },
           },
         },
         isShow && {
@@ -124,6 +142,7 @@ function FieldItemHeader({
         alignItems="center"
         justifyContent="center"
         sx={{
+          flex: '0 0 2rem',
           width: '2rem',
           height: '2rem',
           border: '1px solid var(--color-300)',
@@ -154,7 +173,24 @@ function FieldItemHeader({
           <Typography variant="caption" color="text.light">
             Type: {typeName}
           </Typography>
+          {field.use_logic && (
+            <Box display="inline-flex" alignItems="center" color="text.light">
+              <FasIcon name="fa-network-wired" fontSize="0.875rem" />
+              <Typography component="span" variant="caption" ml={1}>
+                Logic enabled
+              </Typography>
+            </Box>
+          )}
         </Stack>
+      </Box>
+      <Box className="actions" px={1} onClick={(e) => e.stopPropagation()}>
+        <Button
+          variant="text"
+          sx={{ fontSize: '0.75rem' }}
+          onClick={onDuplicate}
+        >
+          Duplicate
+        </Button>
       </Box>
       <FasIcon name={isShow ? 'fa-chevron-up' : 'fa-chevron-down'} color="text.light" />
     </Box>
