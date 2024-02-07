@@ -6,7 +6,7 @@ import { useModel } from '@/contexts/hooks/module';
 export default function EditAlert() {
   const [model] = useModel();
 
-  if (model.campaigns?.length <= 0) {
+  if (model.campaigns?.length <= 1) {
     return null;
   }
   return (
