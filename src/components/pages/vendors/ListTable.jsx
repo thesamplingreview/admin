@@ -59,11 +59,14 @@ export default function ListTable() {
     },
   ];
 
-  const fetchData = useCallback(({ page, sort, filters }) => {
+  const fetchData = useCallback(({
+    page, perPage, sort, filters,
+  }) => {
     const params = {
       ...filters,
       page,
       sort,
+      per_page: perPage,
     };
     return doFetch('/v1/admin/vendors', { params })
       .then((result) => {
@@ -83,7 +86,7 @@ export default function ListTable() {
       columns={columns}
       initData={{
         page: 1,
-        perPage: 10,
+        perPage: 20,
         sort: '',
         filters: {},
       }}

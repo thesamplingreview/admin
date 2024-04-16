@@ -41,14 +41,16 @@ export const DTContextProvider = ({
 
     setLoading(true);
     try {
-      const result = await fetcher({ page, sort, filters });
+      const result = await fetcher({
+        page, perPage, sort, filters,
+      });
       setDataset(getValue(result, dataProps.data) || []);
       setTotal(getValue(result, dataProps.total) || 0);
     } catch (err) {
       setError(err);
     }
     setLoading(false);
-  }, [fetcher, page, sort, filters, dataProps]);
+  }, [fetcher, page, perPage, sort, filters, dataProps]);
 
   const timer = useRef(null);
   // updated - sort & page

@@ -6,7 +6,6 @@ import BadgeStatus from './BadgeStatus.jsx';
 
 export default function ViewDetail({ ...props }) {
   const [model] = useModel();
-  console.log(model)
 
   return (
     <CBox title="Campaign Settings" toggleable {...props}>
