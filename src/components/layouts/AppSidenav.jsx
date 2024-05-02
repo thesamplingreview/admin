@@ -4,92 +4,102 @@ import classNames from 'classnames';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { appRoute } from '@/helpers/route';
+import { usePermissions } from '@/contexts/hooks/auth';
 import LayoutContext from '@/contexts/LayoutContext.jsx';
 import FasIcon from '@/components/FasIcon.jsx';
 
 export default function AppSidenav() {
+  const [permissions] = usePermissions();
   const { currModule, sidenav, setSidenav } = useContext(LayoutContext);
 
-  const navs = useMemo(() => [
-    {
-      group: '',
-      childs: [
-        {
-          key: 'dashboard',
-          route: appRoute('/dashboard'),
-          name: 'Dashboard',
-          icon: 'fa-chart-line',
-          group: '',
-        },
-      ],
-    },
-    {
-      group: 'CONTENT',
-      childs: [
-        {
-          key: 'enrolments',
-          route: appRoute('/enrolments'),
-          name: 'Enrolments',
-          icon: 'fa-list-check',
-          group: 'CONTENT',
-        },
-        {
-          key: 'campaigns',
-          route: appRoute('/campaigns'),
-          name: 'Campaigns',
-          icon: 'fa-fire',
-          group: 'CONTENT',
-        },
-        {
-          key: 'products',
-          route: appRoute('/products'),
-          name: 'Products',
-          icon: 'fa-tag',
-          group: 'CONTENT',
-        },
-        {
-          key: 'users',
-          route: appRoute('/users'),
-          name: 'Users',
-          icon: 'fa-users',
-          group: 'CONTENT',
-        },
-        {
-          key: 'vendors',
-          route: appRoute('/vendors'),
-          name: 'Vendors',
-          icon: 'fa-shop',
-          group: 'CONTENT',
-        },
-        {
-          key: 'forms',
-          route: appRoute('/forms'),
-          name: 'Forms',
-          icon: 'fa-rectangle-list',
-          group: 'CONTENT',
-        },
-      ],
-    },
-    {
-      group: 'ADMIN',
-      childs: [
-        {
-          key: 'admins',
-          route: appRoute('/admins'),
-          name: 'Admins',
-          icon: 'fa-user-gear',
-          group: 'CONTENT',
-        },
-        {
-          key: 'system',
-          route: appRoute('/system'),
-          name: 'System',
-          icon: 'fa-gears',
-          group: 'CONTENT',
-        },
-      ],
-    },
-  ], []);
+  const navs = useMemo(() => {
+    return [
+      {
+        group: '',
+        childs: [
+          {
+            key: 'dashboard',
+            route: appRoute('/dashboard'),
+            name: 'Dashboard',
+            icon: 'fa-chart-line',
+          },
+        ],
+      },
+      {
+        group: 'CONTENT',
+        childs: [
+          {
+            key: 'enrolments',
+            route: appRoute('/enrolments'),
+            name: 'Enrolments',
+            icon: 'fa-list-check',
+            scope: 'enrolments:view',
+          },
+          {
+            key: 'campaigns',
+            route: appRoute('/campaigns'),
+            name: 'Campaigns',
+            icon: 'fa-fire',
+            scope: 'campaigns:view',
+          },
+          {
+            key: 'products',
+            route: appRoute('/products'),
+            name: 'Products',
+            icon: 'fa-tag',
+            scope: 'products:view',
+          },
+          {
+            key: 'users',
+            route: appRoute('/users'),
+            name: 'Users',
+            icon: 'fa-users',
+            scope: 'users:view',
+          },
+          {
+            key: 'vendors',
+            route: appRoute('/vendors'),
+            name: 'Vendors',
+            icon: 'fa-shop',
+            scope: 'vendors:view',
+          },
+          {
+            key: 'forms',
+            route: appRoute('/forms'),
+            name: 'Forms',
+            icon: 'fa-rectangle-list',
+            scope: 'forms:view',
+          },
+          {
+            key: 'workflows',
+            route: appRoute('/workflows'),
+            name: 'Workflows',
+            icon: 'fa-sitemap',
+            scope: 'workflows:view',
+          },
+        ].filter((d) => permissions.includes(d.scope)),
+      },
+      {
+        group: 'ADMIN',
+        childs: [
+          {
+            key: 'admins',
+            route: appRoute('/admins'),
+            name: 'Admins',
+            icon: 'fa-user-gear',
+            scope: 'admins:view',
+          },
+          {
+            key: 'system',
+            route: appRoute('/system'),
+            name: 'System',
+            icon: 'fa-gears',
+            scope: 'system:view',
+          },
+        ].filter((d) => permissions.includes(d.scope)),
+      },
+    ];
+  }, [permissions]);
 
   const handleToggleNav = () => {
     setSidenav((state) => (state === 'minimize' ? '' : 'minimize'));
@@ -180,20 +190,23 @@ export default function AppSidenav() {
           overflowY: 'auto',
         }}
       >
-        {navs.map((nav, index) => (
-          <Fragment key={index}>
-            {nav.group && <SidenavLabel label={nav.group} />}
-            {nav.childs.map((child) => (
-              <SidenavItem
-                key={child.key}
-                route={child.route}
-                name={child.name}
-                icon={child.icon}
-                active={currModule === child.key}
-              />
-            ))}
-          </Fragment>
-        ))}
+        {navs
+          .filter((nav) => nav.childs.length)
+          .map((nav, index) => (
+            <Fragment key={index}>
+              {nav.group && <SidenavLabel label={nav.group} />}
+              {nav.childs.map((child) => (
+                <SidenavItem
+                  key={child.key}
+                  route={child.route}
+                  name={child.name}
+                  icon={child.icon}
+                  active={currModule === child.key}
+                />
+              ))}
+            </Fragment>
+          ))
+        }
       </Box>
     </Box>
   );

@@ -8,6 +8,7 @@ import productsRoutes from '@/pages/app/products/routes';
 import formsRoutes from '@/pages/app/forms/routes';
 import usersRoutes from '@/pages/app/users/routes';
 import adminsRoutes from '@/pages/app/admins/routes';
+import workflowsRoutes from '@/pages/app/workflows/routes';
 import systemRoutes from '@/pages/app/system/routes';
 import myRoutes from '@/pages/app/my/routes';
 
@@ -28,6 +29,7 @@ const routes = [
   ...enrolmentsRoutes,
   ...vendorsRoutes,
   ...formsRoutes,
+  ...workflowsRoutes,
   ...systemRoutes,
   ...myRoutes,
 ];

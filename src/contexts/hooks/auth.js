@@ -10,6 +10,12 @@ export function useAuth() {
   return [user, setUser];
 }
 
+export function usePermissions() {
+  const { permissions, setPermissions } = useContext(AuthContext);
+
+  return [permissions, setPermissions];
+}
+
 export function useToken() {
   const { token, setToken } = useContext(AuthContext);
 
@@ -20,6 +26,22 @@ export function useRefreshToken() {
   const { refreshToken, setRefreshToken } = useContext(AuthContext);
 
   return [refreshToken, setRefreshToken];
+}
+
+export function useFetchSetMy() {
+  const { fetchSetUser } = useContext(AuthContext);
+
+  return fetchSetUser;
+}
+
+/**
+ * Generate API endpoint based on user role
+ */
+export function useRoleEndpoint(endpoint, version = 'v1') {
+  const [user] = useAuth();
+
+  const group = user.role_group === 'vendor' ? 'vendor' : 'admin';
+  return `/${version}/${group}${endpoint}`;
 }
 
 /**
@@ -60,7 +82,7 @@ export function useFetch() {
 export function useLogin() {
   const [, setToken] = useToken();
   const [, setRefresh] = useRefreshToken();
-  const [, setUser] = useAuth();
+  const fetchSetMy = useFetchSetMy();
   const navigate = useNavigate();
 
   const doLogin = useCallback(async (input, options) => {
@@ -71,17 +93,21 @@ export function useLogin() {
         data: input,
       });
       if (data.code !== 200) {
-        throw new Error('Unable to login.');
+        throw new Error('Failed to login.');
       }
       const {
         jwt: { access, refresh },
         user,
       } = data.data;
 
+      // use re-fetch for more data
+      await fetchSetMy({
+        jwtToken: access.token,
+        jwtRefresh: refresh.token,
+      });
       // set state
       setToken(access);
       setRefresh(refresh);
-      setUser(user);
 
       // auto redirect
       navigate(options?.redirect || appRoute('/dashboard'));
@@ -90,13 +116,11 @@ export function useLogin() {
     } catch (err) {
       const errCode = err.response?.data?.code || 500;
       if (!err.response || errCode === 500) {
-        // eslint-disable-next-line no-console
-        console.log(err);
-        throw new Error('Something went wrong, please contact support');
+        throw new Error(err.message || 'Something went wrong, please contact support');
       }
       throw new Error('Invalid authentication!');
     }
-  }, [navigate, setToken, setRefresh, setUser]);
+  }, [navigate, setToken, setRefresh, fetchSetMy]);
 
   return doLogin;
 }

@@ -24,6 +24,10 @@ export default function ViewDetail({ ...props }) {
         value={model.end_date}
       />
       <CDisplayControl
+        label="Enrolments Quota"
+        value={model.quota}
+      />
+      <CDisplayControl
         label="Description"
         value={model.description}
       />

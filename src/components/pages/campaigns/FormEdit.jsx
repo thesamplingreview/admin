@@ -10,6 +10,7 @@ import { toFormData } from '@/helpers/utils';
 import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInputLazy.jsx';
 import CSelect from '@/components/CSelect.jsx';
+import CInputNumber from '@/components/CInputNumber.jsx';
 import CInputImage from '@/components/CInputImage.jsx';
 import CInputMD from '@/components/CInputMD.jsx';
 // import CSwitch from '@/components/CSwitch.jsx';
@@ -40,6 +41,7 @@ function genDefaultInput(options, model = null) {
     meta_tag: model?.meta_tag || '',
     start_date: dateParse(model?.start_date),
     end_date: dateParse(model?.end_date),
+    quota: model?.quota || '',
     theme: model?.theme || '',
     cover: null,
     coverUrl: model?.cover_url || '',
@@ -209,6 +211,21 @@ export default function FormEdit({ ...props }) {
             />
           </Grid>
         </Grid>
+      </CFormControl>
+
+      <CFormControl
+        label="Enrolments Quota"
+        size={4}
+        note="If the quota is reached, no more enrollments can be made. Leave empty for unlimited enrollments."
+      >
+        <CInputNumber
+          name="quota"
+          value={input.quota}
+          label="Enter quota"
+          min={0}
+          error={validator?.quota}
+          onChange={handleChange}
+        />
       </CFormControl>
 
       <Box my={3}>

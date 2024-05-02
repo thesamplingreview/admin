@@ -7,6 +7,8 @@ const config = {
   formatDate: 'd MMM yyyy',
   formatTime: 'HH:mm',
   formatDateTime: 'd MMM yyyy, HH:mm',
+  // roles accessible
+  loginableRoleIds: [2, 3, 4, 9],
 };
 
 export default config;
