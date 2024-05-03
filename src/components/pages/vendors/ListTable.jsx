@@ -1,13 +1,14 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { appRoute } from '@/helpers/route';
 import CAvatar from '@/components/CAvatar.jsx';
-import { DataTable, DataTableActions } from '@/components/DataTable';
+import { DataTable } from '@/components/DataTable';
 
 export default function ListTable() {
   const navigate = useNavigate();
   const doFetch = useFetch();
+  const endpointGet = useRoleEndpoint('/vendors');
 
   const columns = [
     {
@@ -30,33 +31,6 @@ export default function ListTable() {
       key: 'profile',
       name: 'Profile',
     },
-    {
-      key: 'actions',
-      name: '',
-      width: 100,
-      align: 'right',
-      stopPropagate: true,
-      render(model) {
-        return (
-          <DataTableActions
-            actions={[
-              {
-                key: 'view',
-                name: 'View',
-                icon: 'fa-file-lines',
-                route: appRoute(`/vendors/${model.id}`),
-              },
-              {
-                key: 'edit',
-                name: 'edit',
-                icon: 'fa-pencil',
-                route: appRoute(`/vendors/${model.id}/edit`),
-              },
-            ]}
-          />
-        );
-      },
-    },
   ];
 
   const fetchData = useCallback(({
@@ -68,14 +42,14 @@ export default function ListTable() {
       sort,
       per_page: perPage,
     };
-    return doFetch('/v1/admin/vendors', { params })
+    return doFetch(endpointGet, { params })
       .then((result) => {
         if (result.code !== 200) {
           throw new Error('Invalid response');
         }
         return result;
       });
-  }, [doFetch]);
+  }, [doFetch, endpointGet]);
 
   const handleSelect = (data) => {
     navigate(appRoute(`/vendors/${data.id}`));

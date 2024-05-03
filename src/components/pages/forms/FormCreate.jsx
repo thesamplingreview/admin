@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
 import { appRoute } from '@/helpers/route';
 import CInput from '@/components/CInput.jsx';
@@ -23,6 +23,7 @@ export default function FormCreate() {
   const navigate = useNavigate();
   const doFetch = useFetch();
   const pushToast = useToast();
+  const endpointPost = useRoleEndpoint('/forms');
 
   const [loading, setLoading] = useState(false);
   const [validator, setValidator] = useState(null);
@@ -42,7 +43,7 @@ export default function FormCreate() {
     setValidator(null);
     try {
       const formdata = { ...input };
-      const { code, data } = await doFetch('/v1/admin/forms', {
+      const { code, data } = await doFetch(endpointPost, {
         method: 'POST',
         data: formdata,
       });

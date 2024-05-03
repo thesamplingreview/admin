@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
 import { appRoute } from '@/helpers/route';
@@ -14,6 +14,7 @@ export default function FormDelete() {
   const navigate = useNavigate();
   const doFetch = useFetch();
   const [model] = useModel();
+  const endpointDelete = useRoleEndpoint(`/forms/${model.id}`);
   const pushToast = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -31,7 +32,7 @@ export default function FormDelete() {
 
     setLoading(true);
     try {
-      const { code } = await doFetch(`/v1/admin/forms/${model.id}`, {
+      const { code } = await doFetch(endpointDelete, {
         method: 'DELETE',
       });
       if (code !== 200) {

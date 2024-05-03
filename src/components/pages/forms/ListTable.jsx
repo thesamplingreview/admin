@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { appRoute } from '@/helpers/route';
-import { DataTable, DataTableActions } from '@/components/DataTable';
+import { DataTable } from '@/components/DataTable';
 
 export default function ListTable() {
   const navigate = useNavigate();
   const doFetch = useFetch();
+  const endpointGet = useRoleEndpoint('/forms');
 
   const columns = [
     {
@@ -23,27 +24,6 @@ export default function ListTable() {
         return names.length ? names.join(', ') : '-';
       },
     },
-    {
-      key: 'actions',
-      name: '',
-      width: 100,
-      align: 'right',
-      stopPropagate: true,
-      render(model) {
-        return (
-          <DataTableActions
-            actions={[
-              {
-                key: 'edit',
-                name: 'edit',
-                icon: 'fa-pencil',
-                route: appRoute(`/users/${model.id}/edit`),
-              },
-            ]}
-          />
-        );
-      },
-    },
   ];
 
   const fetchData = useCallback(({
@@ -55,14 +35,14 @@ export default function ListTable() {
       sort,
       per_page: perPage,
     };
-    return doFetch('/v1/admin/forms', { params })
+    return doFetch(endpointGet, { params })
       .then((result) => {
         if (result.code !== 200) {
           throw new Error('Invalid response');
         }
         return result;
       });
-  }, [doFetch]);
+  }, [doFetch, endpointGet]);
 
   const handleSelect = (data) => {
     navigate(appRoute(`/forms/${data.id}`));

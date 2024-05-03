@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
 import { toFormData } from '@/helpers/utils';
 import { appRoute } from '@/helpers/route';
@@ -20,6 +20,7 @@ function genDefaultInput(model = null) {
 export default function FormCreate({ ...props }) {
   const navigate = useNavigate();
   const doFetch = useFetch();
+  const endpointPost = useRoleEndpoint('/campaigns');
   const pushToast = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -40,7 +41,7 @@ export default function FormCreate({ ...props }) {
     setValidator(null);
     try {
       const formdata = { ...input };
-      const { code, data } = await doFetch('/v1/admin/campaigns', {
+      const { code, data } = await doFetch(endpointPost, {
         method: 'POST',
         headers: { 'Content-Type': 'multipart/form-data' },
         data: toFormData(formdata),

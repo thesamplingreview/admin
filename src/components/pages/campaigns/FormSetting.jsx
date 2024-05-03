@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint, usePermissions } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
 import { useOptions, useModel } from '@/contexts/hooks/module';
 import { toFormData } from '@/helpers/utils';
@@ -25,8 +25,10 @@ function genDefaultInput(options, model = null) {
 export default function FormSetting({ ...props }) {
   const doFetch = useFetch();
   const pushToast = useToast();
+  const [permissions] = usePermissions();
   const options = useOptions();
   const [model, setModel] = useModel();
+  const endpointPut = useRoleEndpoint(`/campaigns/${model.id}`);
 
   const [loading, setLoading] = useState(false);
   const [validator, setValidator] = useState(null);
@@ -54,7 +56,7 @@ export default function FormSetting({ ...props }) {
     setValidator(null);
     try {
       const formdata = { ...input };
-      const { code, data } = await doFetch(`/v1/admin/campaigns/${model.id}`, {
+      const { code, data } = await doFetch(endpointPut, {
         method: 'PUT',
         headers: { 'Content-Type': 'multipart/form-data' },
         data: toFormData(formdata),
@@ -117,17 +119,19 @@ export default function FormSetting({ ...props }) {
         />
       </CFormControl>
 
-      <CFormControl label="Vendor">
-        <CSelect
-          options={options.vendors}
-          name="vendor_id"
-          value={input.vendor_id}
-          label="Select vendor"
-          placeholder="Select"
-          error={validator?.vendor_id}
-          onChange={handleChange}
-        />
-      </CFormControl>
+      {permissions.includes('vendors:view') && (
+        <CFormControl label="Vendor">
+          <CSelect
+            options={options.vendors}
+            name="vendor_id"
+            value={input.vendor_id}
+            label="Select vendor"
+            placeholder="Select"
+            error={validator?.vendor_id}
+            onChange={handleChange}
+          />
+        </CFormControl>
+      )}
 
       <CFormControl
         label="Enrolment Form"

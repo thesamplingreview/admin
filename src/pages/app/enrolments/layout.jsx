@@ -1,15 +1,16 @@
 import { useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ModuleProvider } from '@/contexts/ModuleContext.jsx';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 
 export default function EnrolmentsLayout() {
   const doFetch = useFetch();
+  const endpointGet = useRoleEndpoint('/enrolments/all/options');
 
   const fetchOptions = useCallback(() => {
-    return doFetch('/v1/admin/enrolments/all/options')
+    return doFetch(endpointGet)
       .then(({ data }) => data);
-  }, [doFetch]);
+  }, [doFetch, endpointGet]);
 
   return (
     <ModuleProvider fetchInit={fetchOptions} >

@@ -5,7 +5,6 @@ import Chip from '@mui/material/Chip';
 import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useOptions } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
-// import CInput from '@/components/CInput.jsx';
 import CSelect from '@/components/CSelect.jsx';
 import { DataTable } from '@/components/DataTable';
 

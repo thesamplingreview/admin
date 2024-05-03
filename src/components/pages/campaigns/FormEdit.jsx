@@ -3,7 +3,7 @@ import { isDate, formatISO } from 'date-fns';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Divider from '@mui/material/Divider';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
 import { useOptions, useModel } from '@/contexts/hooks/module';
 import { toFormData } from '@/helpers/utils';
@@ -56,6 +56,7 @@ export default function FormEdit({ ...props }) {
   const pushToast = useToast();
   const options = useOptions();
   const [model, setModel] = useModel();
+  const endpointPut = useRoleEndpoint(`/campaigns/${model.id}`);
 
   const [loading, setLoading] = useState(false);
   const [validator, setValidator] = useState(null);
@@ -82,7 +83,7 @@ export default function FormEdit({ ...props }) {
     setValidator(null);
     try {
       const formdata = { ...input };
-      const { code, data } = await doFetch(`/v1/admin/campaigns/${model.id}`, {
+      const { code, data } = await doFetch(endpointPut, {
         method: 'PUT',
         headers: { 'Content-Type': 'multipart/form-data' },
         data: toFormData(formdata),
@@ -91,7 +92,10 @@ export default function FormEdit({ ...props }) {
         throw new Error('Invalid API');
       }
       // update cache
-      setModel({ ...model, data });
+      setModel((oldState) => ({
+        ...oldState,
+        ...data,
+      }));
       setInput(genDefaultInput(options, data));
       // push toast
       pushToast('success', 'Entry updated!');

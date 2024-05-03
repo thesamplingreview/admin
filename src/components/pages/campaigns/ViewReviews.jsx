@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { isDate, format } from 'date-fns';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import config from '@/config/app';
 import CBox from '@/components/CBox.jsx';
@@ -11,6 +11,7 @@ import RatingStars from './RatingStars.jsx';
 export default function ViewReviews({ ...props }) {
   const doFetch = useFetch();
   const [model] = useModel();
+  const endpointGet = useRoleEndpoint('/reviews');
 
   const columns = [
     {
@@ -55,14 +56,14 @@ export default function ViewReviews({ ...props }) {
       sort,
       per_page: perPage,
     };
-    return doFetch('/v1/admin/reviews', { params })
+    return doFetch(endpointGet, { params })
       .then((result) => {
         if (result.code !== 200) {
           throw new Error('Invalid response');
         }
         return result;
       });
-  }, [doFetch, model.id]);
+  }, [doFetch, model.id, endpointGet]);
 
   return (
     <CBox {...props} noPadding>

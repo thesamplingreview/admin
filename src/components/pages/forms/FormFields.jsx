@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
 import { useModel } from '@/contexts/hooks/module';
 import CBox from '@/components/CBox.jsx';
@@ -11,6 +11,7 @@ export default function FormFields({ ...props }) {
   const doFetch = useFetch();
   const pushToast = useToast();
   const [model, setModel] = useModel();
+  const endpointPut = useRoleEndpoint(`/forms/${model.id}/fields`);
 
   const $builder = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -26,7 +27,7 @@ export default function FormFields({ ...props }) {
       const formdata = {
         fields: $builder.current.getValue(),
       };
-      const { code, data } = await doFetch(`/v1/admin/forms/${model.id}/fields`, {
+      const { code, data } = await doFetch(endpointPut, {
         method: 'PUT',
         data: formdata,
       });
@@ -34,7 +35,10 @@ export default function FormFields({ ...props }) {
         throw new Error('Invalid API');
       }
       // update cached
-      setModel(data);
+      setModel((oldState) => ({
+        ...oldState,
+        ...data,
+      }));
       // push toast
       pushToast('success', 'Form updated!');
     } catch (err) {

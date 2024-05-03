@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useOptions } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
 import { toFormData } from '@/helpers/utils';
@@ -26,6 +26,7 @@ export default function FormCreate() {
   const doFetch = useFetch();
   const pushToast = useToast();
   const options = useOptions();
+  const endpointPost = useRoleEndpoint('/products');
 
   const [loading, setLoading] = useState(false);
   const [validator, setValidator] = useState(null);
@@ -45,7 +46,7 @@ export default function FormCreate() {
     setValidator(null);
     try {
       const formdata = { ...input };
-      const { code } = await doFetch('/v1/admin/products', {
+      const { code } = await doFetch(endpointPost, {
         method: 'POST',
         headers: { 'Content-Type': 'multipart/form-data' },
         data: toFormData(formdata),

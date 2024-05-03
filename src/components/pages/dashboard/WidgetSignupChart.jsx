@@ -3,13 +3,14 @@ import {
 } from 'react';
 import { format, eachDayOfInterval, subDays } from 'date-fns';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import ChartGraph from '@/components/Charts/ChartGraph.jsx';
 import WidgetBox from './WidgetBox.jsx';
 import InputDates from './InputDates.jsx';
 
 export default function WidgetSignupChart() {
   const doFetch = useFetch();
+  const endpointGet = useRoleEndpoint('/report/signup');
 
   const [dates, setDates] = useState({
     start: subDays(new Date(), 30),
@@ -23,7 +24,7 @@ export default function WidgetSignupChart() {
     setError(null);
     setLoading(true);
     try {
-      const { data } = await doFetch('/v1/admin/report/signup', {
+      const { data } = await doFetch(endpointGet, {
         params: {
           date_from: format(dates.start, 'yyyy-MM-dd'),
           date_to: format(dates.end, 'yyyy-MM-dd'),
@@ -50,7 +51,7 @@ export default function WidgetSignupChart() {
       setError(err);
     }
     setLoading(false);
-  }, [doFetch, dates]);
+  }, [doFetch, dates, endpointGet]);
 
   const timer = useRef(null);
   useEffect(() => {

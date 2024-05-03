@@ -8,13 +8,14 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import { useOnce } from '@/helpers/hooks';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { appRoute } from '@/helpers/route';
 import WidgetBox from './WidgetBox.jsx';
 
 export default function WidgetSignupChart() {
   const navigate = useNavigate();
   const doFetch = useFetch();
+  const endpointGet = useRoleEndpoint('/enrolments');
 
   const [dataset, setDataset] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ export default function WidgetSignupChart() {
     setDataset([]);
     setLoading(true);
     try {
-      const { data } = await doFetch('/v1/admin/enrolments', {
+      const { data } = await doFetch(endpointGet, {
         params: {
           sort: '-created_at',
           per_page: 5,
@@ -39,7 +40,7 @@ export default function WidgetSignupChart() {
       setError(err);
     }
     setLoading(false);
-  }, [doFetch]);
+  }, [doFetch, endpointGet]);
 
   const handleClick = (data) => {
     navigate(appRoute(`/enrolments/${data.id}`));
