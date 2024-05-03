@@ -7,7 +7,6 @@ import { appRoute } from '@/helpers/route';
 import { useModel } from '@/contexts/hooks/module';
 import CBox from '@/components/CBox.jsx';
 import CDisplayControl from '@/components/CDisplayControl.jsx';
-import BadgeStatus from './BadgeStatus.jsx';
 
 export default function ViewDetail({ ...props }) {
   const [model] = useModel();
@@ -38,9 +37,6 @@ export default function ViewDetail({ ...props }) {
       <Box my={3}>
         <Divider />
       </Box>
-      <CDisplayControl label="Status">
-        <BadgeStatus status={model.status} />
-      </CDisplayControl>
       <CDisplayControl
         label="Reference Form"
         type="url"

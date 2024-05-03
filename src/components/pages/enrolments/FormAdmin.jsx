@@ -89,7 +89,11 @@ export default function FormAdmin({ ...props }) {
       )}
       onSubmit={handleSubmit}
     >
-      <CFormControl label="Status" size={4}>
+      <CFormControl
+        label="Status"
+        size={4}
+        note="Rejected enrollments will not be included in the campaign's quota."
+      >
         <CSelect
           options={options.statuses}
           name="status"

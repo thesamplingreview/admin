@@ -5,6 +5,7 @@ import { usePermissions } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import PageNav from '@/components/layouts/PageNav.jsx';
+import BadgeStatus from './BadgeStatus.jsx';
 
 export default function NavView({ active }) {
   const [model] = useModel();
@@ -48,6 +49,9 @@ export default function NavView({ active }) {
         <Typography variant="body2" color="text.light" mb={0}>
           {model.user?.email}
         </Typography>
+        <Box mt={1}>
+          <BadgeStatus status={model.status} />
+        </Box>
       </Box>
     </PageNav>
   );
