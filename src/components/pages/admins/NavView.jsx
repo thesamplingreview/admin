@@ -25,7 +25,7 @@ export default function NavView({ active }) {
         name: 'Change Password',
         route: appRoute(`/admins/${model.id}/password`),
         icon: 'fa-key',
-        scope: 'admins:edit',
+        scope: 'admins:password',
       },
     ].filter((d) => permissions.includes(d.scope));
   }, [model.id, permissions]);

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
 import { toFormData } from '@/helpers/utils';
@@ -15,6 +16,9 @@ function genDefaultInput(model = null) {
     profile: model?.profile || '',
     logo_url: model?.logo_url || '',
     logo: null,
+    admin_name: '',
+    admin_email: '',
+    admin_password: '',
   };
 }
 
@@ -101,6 +105,43 @@ export default function FormCreate() {
           value={input.profile}
           label="Write profile"
           error={validator?.profile}
+          onChange={handleChange}
+        />
+      </CFormControl>
+
+      <Divider sx={{ my: 3 }} />
+
+      <CFormControl label="Admin Name">
+        <CInput
+          name="admin_name"
+          value={input.admin_name}
+          label="Enter name"
+          required
+          error={validator?.admin_name}
+          onChange={handleChange}
+        />
+      </CFormControl>
+
+      <CFormControl label="Admin Email">
+        <CInput
+          type="email"
+          name="admin_email"
+          value={input.admin_email}
+          label="Email address"
+          required
+          error={validator?.admin_email}
+          onChange={handleChange}
+        />
+      </CFormControl>
+
+      <CFormControl label="Admin Password">
+        <CInput
+          type="password"
+          name="admin_password"
+          value={input.admin_password}
+          label="Enter password"
+          required
+          error={validator?.admin_password}
           onChange={handleChange}
         />
       </CFormControl>

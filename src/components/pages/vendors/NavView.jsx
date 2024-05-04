@@ -21,6 +21,13 @@ export default function NavView({ active }) {
         scope: 'vendors:view',
       },
       {
+        key: 'admins',
+        name: 'Admins',
+        route: appRoute(`/vendors/${model.id}/admins`),
+        icon: 'fa-user-cog',
+        scope: 'vendors:edit',
+      },
+      {
         key: 'edit',
         name: 'Edit Detail',
         route: appRoute(`/vendors/${model.id}/edit`),
