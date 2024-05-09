@@ -1,0 +1,69 @@
+             node1
+               |
+      -----------------
+      |               |
+    node2           node3
+      |               | 
+   ---------          |
+   |       |          |
+node2a  node2b      node3a
+   |       |          |
+   ---------          |
+      |               |
+    node4             |
+      |               |
+      -----------------
+               |
+             node5
+
+
+{ id: 'node1', parent_id: null, case: null },
+{ id: 'node5', parent_id: 'node1', case: null },
+{ id: 'node2', parent_id: 'node1', case: 'true' },
+{ id: 'node3', parent_id: 'node1', case: 'false' },
+{ id: 'node2a', parent_id: 'node2', case: 'true' },
+{ id: 'node2b', parent_id: 'node2', case: 'false' },
+{ id: 'node4', parent_id: 'node2', case: null },
+{ id: 'node3a', parent_id: 'node3', case: null },
+
+
+node1: 
+id: node1
+child_id: node5
+cond_ids: [node2, node3]
+
+node2:
+id: node2
+child_id: node4
+cond_ids: [node2a, node2b]
+
+node2a:
+id: node2a
+child_id: null
+cond_ids: []
+
+node2b:
+id: node2b
+child_id: null
+cond_ids: []
+
+node3:
+id: node3
+child_id: node3a
+cond_ids: []
+
+node3a:
+id: node3a
+child_id: null
+cond_ids: []
+
+node4:
+id: node4
+child_id: null
+cond_ids: []
+
+node5:
+id: node5
+child_id: null
+cond_ids: []
+

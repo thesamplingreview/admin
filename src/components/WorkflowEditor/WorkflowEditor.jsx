@@ -1,39 +1,108 @@
-import { useCallback } from 'react';
-import ReactFlow, {
-  useNodesState,
-  useEdgesState,
-  addEdge,
-  Background,
-} from 'reactflow';
-import 'reactflow/dist/style.css';
+import Box from '@mui/material/Box';
+import { WFContextProvider } from './WFContext.jsx';
+import WFHeader from './WFHeader.jsx';
+import WFEditor from './WFEditor.jsx';
+import WFNodesSelection from './WFNodesSelection.jsx';
 
 const initialNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: 'Label 1' } },
-  { id: '2', position: { x: 0, y: 100 }, data: { label: 'Label 2' } },
+  {
+    id: 'node1',
+    type: 'call_api',
+    config: {
+      to: 'kenny@qutebox.com',
+    },
+    parent_task_id: null,
+    pos: null,
+  },
+  {
+    id: 'node2',
+    type: 'send_email',
+    config: {
+      to: 'kenny@qutebox.com',
+    },
+    parent_task_id: 'node1',
+    pos: null,
+  },
+  {
+    id: 'node1_success',
+    type: 'send_email',
+    config: {
+      to: 'kenny@qutebox.com',
+    },
+    parent_task_id: 'node1',
+    pos: 'left',
+  },
+  {
+    id: 'node1_fail',
+    type: 'send_email',
+    config: {
+      to: 'kenny@qutebox.com',
+    },
+    parent_task_id: 'node1',
+    pos: 'right',
+  },
+  {
+    id: 'node3',
+    type: 'call_api',
+    config: {
+      to: 'kenny@qutebox.com',
+    },
+    parent_task_id: 'node2',
+    pos: null,
+  },
+  // {
+  //   id: 'node1_success_a',
+  //   type: 'call_api',
+  //   config: {
+  //     to: 'kenny@qutebox.com',
+  //   },
+  //   parent_task_id: 'node1_success',
+  //   pos: 'success',
+  // },
+  // {
+  //   id: 'node1_success_b',
+  //   type: 'call_api',
+  //   config: {
+  //     to: 'kenny@qutebox.com',
+  //   },
+  //   parent_task_id: 'node1_success',
+  //   pos: 'fail',
+  // },
+  // {
+  //   id: 'node1_success_a1',
+  //   type: 'send_email',
+  //   config: {},
+  //   parent_task_id: 'node1_success_a',
+  //   pos: 'fail',
+  // },
+  // {
+  //   id: 'node1_success_a11',
+  //   type: 'call_api',
+  //   config: {},
+  //   parent_task_id: 'node1_success_a1',
+  //   pos: null,
+  // },
 ];
-// const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
-const initialEdges = [];
 
 export default function WorkflowEditor() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
-  const onConnect = useCallback((params) => {
-    console.log(params)
-    setEdges((eds) => addEdge(params, eds));
-  }, [setEdges]);
-
   return (
-    <div style={{ width: '100%', height: '500px' }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
+    <WFContextProvider dataset={initialNodes}>
+      <Box
+        position="relative"
+        overflow="hidden"
+        bgcolor="var(--bg-500)"
+        // sx={{
+        //   // backgroundColor: 'var(--bg-500)',
+        //   // backgroundPosition: 'calc(var(--gap) / 2 * -1) calc(var(--gap) / 2 * -1)',
+        //   // backgroundSize: 'var(--gap) var(--gap)',
+        //   // backgroundImage: 'linear-gradient(to right, #eee 1px, transparent 1px), linear-gradient(to bottom, #eee 1px, transparent 1px)', // grid-design
+        //   // backgroundImage: 'radial-gradient(circle, #ccc 1px, rgba(0, 0, 0, 0) 1px)', // dot-design
+        // }}
       >
-        <Background variant="dots" gap={10} size={1} />
-      </ReactFlow>
-    </div>
+        <WFHeader />
+        <WFEditor height="500px" />
+        <WFNodesSelection />
+      </Box>
+    </WFContextProvider>
   );
 }
