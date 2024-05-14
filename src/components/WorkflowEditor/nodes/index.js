@@ -2,6 +2,7 @@ import EmailAction from './EmailAction';
 import WhatsappAction from './WhatsappAction';
 import ApiAction from './ApiAction';
 import DelayAction from './DelayAction';
+import EndAction from './EndAction';
 
 /**
  * Action configs
@@ -18,6 +19,7 @@ const nodes = {
   send_whatsapp: WhatsappAction,
   call_api: ApiAction,
   delay_action: DelayAction,
+  // end_action: EndAction,
 };
 
 export default nodes;

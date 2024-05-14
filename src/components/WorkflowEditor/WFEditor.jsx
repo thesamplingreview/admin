@@ -2,10 +2,10 @@ import {
   useRef, useState, useMemo, useCallback, useLayoutEffect, useEffect,
 } from 'react';
 import Box from '@mui/material/Box';
-import { NodeItem } from './WFNodeComps.jsx';
+import { NodeTrigger, NodeItem, NodeEnd } from './WFNodeComps.jsx';
 import { useNodes } from './hooks';
 
-export default function WFEditor() {
+export default function WFEditor({ height, isFull }) {
   const [nodes] = useNodes();
 
   const $el = useRef(null);
@@ -28,7 +28,7 @@ export default function WFEditor() {
 
   useEffect(() => {
     doSetEditorWidth();
-  }, [nodes.length, doSetEditorWidth]);
+  }, [nodes.length, isFull, doSetEditorWidth]);
 
   useLayoutEffect(() => {
     doSetEditorWidth();
@@ -42,6 +42,8 @@ export default function WFEditor() {
     <Box
       ref={$el}
       width="100%"
+      flexGrow="1"
+      minHeight={height}
       overflow="auto"
       p="3rem"
       className="noselect"
@@ -49,8 +51,6 @@ export default function WFEditor() {
       <Box
         // display="flex"
         // flexDirection="column"
-        // alignItems="center"
-        // justifyContent="center"
         sx={{
           '--wf-gap': '3rem',
           '--wf-width': '400px',
@@ -58,7 +58,12 @@ export default function WFEditor() {
           minWidth: `${editorWidth}px`,
         }}
       >
-        <NodeItem node={rootNode} />
+        <NodeTrigger
+          name="Campaign Enrolment"
+          desc="Trigger when having new campaign's enrolment."
+        />
+        {rootNode && <NodeItem node={rootNode} />}
+        <NodeEnd />
       </Box>
     </Box>
   );

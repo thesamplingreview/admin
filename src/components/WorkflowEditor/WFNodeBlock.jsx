@@ -7,21 +7,34 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FasIcon from '@/components/FasIcon.jsx';
 import { useAction } from './hooks';
-import nodesList from './nodes';
 
-export default function WFNodeBlock({ node }) {
+export default function WFNodeBlock({ node, noActions }) {
   const removeNode = useAction('removeNode');
   const updateConfig = useAction('updateNodeConfig');
   const elActions = useRef(null);
   const [openConfig, setOpenConfig] = useState(false);
   const [openActions, setOpenActions] = useState(false);
 
-  const currNode = useMemo(() => {
-    return nodesList[node.type] || null;
+  const isInvalid = useMemo(() => {
+    // doesn't support validation
+    if (!node.node_detail?.validate) {
+      return false;
+    }
+    const hasError = node.node_detail.validate(node.config);
+    return !!hasError;
   }, [node]);
 
+  const descText = useMemo(() => {
+    const { desc } = node.node_detail;
+    return desc.replace(/{(\w+)}/g, (match, key) => node.config?.[key] || '-');
+  }, [node]);
+
+  const ConfigComp = node.node_detail?.configComp || null;
+
   const handleToggleOpen = () => {
-    setOpenConfig((oldState) => !oldState);
+    if (ConfigComp) {
+      setOpenConfig((oldState) => !oldState);
+    }
   };
 
   const handleToggleActions = () => {
@@ -36,13 +49,21 @@ export default function WFNodeBlock({ node }) {
     updateConfig(node.id, newConfig);
   };
 
+  const handleSet = (newObj) => {
+    const newConfig = {
+      ...node.config,
+      ...newObj,
+    };
+    updateConfig(node.id, newConfig);
+  };
+
   const handleDelete = () => {
     setOpenConfig(false);
     setOpenActions(false);
     removeNode(node);
   };
 
-  if (!currNode) {
+  if (!node.node_detail) {
     return null;
   }
   return (
@@ -60,57 +81,74 @@ export default function WFNodeBlock({ node }) {
         display="flex"
         alignItems="center"
         p={2}
-        className="clickable"
+        className={noActions ? '' : 'clickable'}
         onClick={handleToggleOpen}
       >
-        <Box pl={1} pr={2}>
+        <Box position="relative" pl={1} pr={2}>
           <Box
             display="flex"
             alignItems="center"
             justifyContent="center"
-            bgcolor={`${currNode.color}28`}
+            bgcolor={`${node.node_detail.color}28`}
             width="3em"
             height="3em"
             borderRadius="50%"
           >
             <FasIcon
-              name={currNode.icon}
+              name={node.node_detail.icon}
               fontSize="1.25em"
-              color={currNode.color}
+              color={node.node_detail.color}
             />
           </Box>
+          {isInvalid && (
+            <FasIcon
+              name="fa-circle-exclamation"
+              color="#f44"
+              sx={{
+                position: 'absolute',
+                bottom: 0,
+                right: '1rem',
+              }}
+            />
+          )}
         </Box>
         <Box flexGrow="1">
           <Typography variant="inherit" component="div" fontWeight="700">
-            {currNode.name}
+            {node.node_detail.name}
           </Typography>
           <Typography variant="caption" component="div" color="textSecondary">
-            {currNode.desc}
+            {descText}
           </Typography>
         </Box>
-        <Box onClick={(e) => e.stopPropagation()}>
-          <IconButton
-            ref={elActions}
-            sx={{ width: '1.25em' }}
-            onClick={handleToggleActions}
-          >
-            <FasIcon
-              name="fa-ellipsis-vertical"
-              color="var(--color-300)"
-              fontSize="1.25rem"
+        {!noActions && (
+          <Box onClick={(e) => e.stopPropagation()}>
+            <IconButton
+              ref={elActions}
+              sx={{ width: '1.25em' }}
+              onClick={handleToggleActions}
+            >
+              <FasIcon
+                name="fa-ellipsis-vertical"
+                color="var(--color-300)"
+                fontSize="1.25rem"
+              />
+            </IconButton>
+            <BlockActions
+              open={openActions}
+              anchorEl={elActions.current}
+              onClose={handleToggleActions}
+              onDelete={handleDelete}
             />
-          </IconButton>
-          <BlockActions
-            open={openActions}
-            anchorEl={elActions.current}
-            onClose={handleToggleActions}
-            onDelete={handleDelete}
-          />
-        </Box>
+          </Box>
+        )}
       </Box>
-      {openConfig && currNode.configComp && (
+      {openConfig && ConfigComp && (
         <Box borderTop="1px solid var(--border-500)" p={2}>
-          <currNode.configComp config={node.config || {}} onChange={handleChange} />
+          <ConfigComp
+            config={node.config || {}}
+            onChange={handleChange}
+            onSet={handleSet}
+          />
           <Box mt={2}>
             <Button
               variant="outlined"

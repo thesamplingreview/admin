@@ -1,13 +1,16 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { useNodes } from './hooks';
+import IconButton from '@mui/material/IconButton';
+import FasIcon from '@/components/FasIcon.jsx';
+import CLoadingButton from '@/components/CLoadingButton.jsx';
+import { useAction, useLoading } from './hooks';
 
-export default function WFHeader() {
-  const [nodes] = useNodes();
+export default function WFHeader({ title, isFull, setIsFull }) {
+  const handleSave = useAction('handleSave');
+  const loading = useLoading();
 
-  const handleSave = () => {
-    console.log(nodes);
+  const toggleIsFull = () => {
+    setIsFull((oldState) => !oldState);
   };
 
   return (
@@ -25,12 +28,22 @@ export default function WFHeader() {
         top: 0,
       }}
     >
-      <Typography variant="h6">
-        Workflow Name Goes here
-      </Typography>
-      <Button variant="contained" onClick={handleSave}>
-        Save
-      </Button>
+      <Typography variant="h6">{title}</Typography>
+      <Box display="flex" alignItems="center" gap={3}>
+        <IconButton onClick={toggleIsFull}>
+          <FasIcon
+            name={isFull ? 'fa-compress' : 'fa-expand'}
+            color="var(--color-300)"
+          />
+        </IconButton>
+        <CLoadingButton
+          variant="contained"
+          loading={loading}
+          onClick={handleSave}
+        >
+          Save
+        </CLoadingButton>
+      </Box>
     </Box>
   );
 }

@@ -95,6 +95,14 @@ export default [
               return { Component: ViewReport };
             },
           },
+          {
+            key: 'campaigns.detail.workflow',
+            path: 'workflow',
+            async lazy() {
+              const { ViewWorkflow } = await import('./index');
+              return { Component: ViewWorkflow };
+            },
+          },
         ],
       },
     ],

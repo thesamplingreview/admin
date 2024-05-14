@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import CInput from '@/components/CInput.jsx';
+import CInputNumber from '@/components/CInputNumber.jsx';
 
-export default function NodeConfig({ onChange }) {
+export default function NodeConfig({ config, onChange }) {
   return (
     <Box>
       <Box mb={2}>
@@ -11,12 +11,14 @@ export default function NodeConfig({ onChange }) {
         </Typography>
       </Box>
       <Box mb={2}>
-        <CInput
-          name="input"
-          label="Enter value"
+        <CInputNumber
+          name="duration"
+          label="Duration (in hours)"
           placeholder="Placeholder"
+          min={0}
+          max={100}
           InputLabelProps={{ shrink: true }}
-          value=''
+          value={config.duration || ''}
           onChange={onChange}
         />
       </Box>

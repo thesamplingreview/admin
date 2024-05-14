@@ -17,7 +17,7 @@ export function generateNodesStructure(nodes) {
 
     return {
       ...node,
-      node_detail: nodesList[node.type] || null,
+      node_detail: nodesList[node.action] || null,
       child_id: childId,
       cond_ids: condIds,
     };

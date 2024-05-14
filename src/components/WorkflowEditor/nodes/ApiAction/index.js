@@ -8,6 +8,12 @@ const meta = {
   color: '#c92464',
   configComp: NodeConfig,
   conditionable: ['Success', 'Error'],
+  validate: (input) => {
+    if (!input?.endpoint) {
+      return 'Endpoint is required.';
+    }
+    return '';
+  },
 };
 
 export default meta;

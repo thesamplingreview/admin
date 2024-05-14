@@ -5,14 +5,66 @@ import FasIcon from '@/components/FasIcon.jsx';
 import WFNodeBlock from './WFNodeBlock.jsx';
 import { useNodes, useAction } from './hooks';
 
+export const NodeTrigger = ({ name, desc }) => {
+  const triggerNode = useMemo(() => ({
+    id: null,
+    type: 'trigger',
+    node_detail: {
+      key: 'trigger',
+      color: '#f7e476',
+      icon: 'fa-bolt',
+      name,
+      desc,
+    },
+  }), [name, desc]);
+
+  return (
+    <>
+      <Box>
+        <WFNodeBlock node={triggerNode} noActions />
+      </Box>
+      <NodeDirectLine node={triggerNode} />
+    </>
+  );
+};
+
+export const NodeEnd = () => {
+  const triggerNode = useMemo(() => ({
+    id: null,
+    type: 'end_action',
+    node_detail: {
+      key: 'end_action',
+      color: '#393457',
+      icon: 'fa-ban',
+      name: 'End',
+      desc: 'End of actions',
+    },
+  }), []);
+
+  return (
+    <Box>
+      <WFNodeBlock node={triggerNode} noActions />
+    </Box>
+  );
+};
+
 export const NodeItem = ({ node }) => {
   const [nodes] = useNodes();
+
+  const isChainable = useMemo(() => {
+    return !node.node_detail?.unchainable;
+  }, [node]);
 
   const isConditional = useMemo(() => {
     return node.node_detail?.conditionable?.length;
   }, [node]);
 
   const childNodes = useMemo(() => {
+    // not chainable, simply return
+    if (!isChainable) {
+      return {};
+    }
+
     let child = null;
     if (node.child_id) {
       child = nodes.find((n) => n.id === node.child_id);
@@ -25,7 +77,7 @@ export const NodeItem = ({ node }) => {
       right = nodes.find((n) => n.id === node.cond_ids.right) || null;
     }
     return { child, left, right };
-  }, [node, nodes, isConditional]);
+  }, [node, nodes, isConditional, isChainable]);
 
   return (
     <>
@@ -35,12 +87,12 @@ export const NodeItem = ({ node }) => {
       </Box>
 
       {/* non-conditional line */}
-      {!isConditional && (
+      {!isConditional && isChainable && (
         <NodeDirectLine node={node} />
       )}
 
       {/* conditional line */}
-      {isConditional && (
+      {isConditional && isChainable && (
         <NodeCondsLine
           node={node}
           leftNode={childNodes.left}
@@ -185,6 +237,8 @@ export const NodeCondsLine = ({ node, leftNode, rightNode }) => {
         position="relative"
         className="clickable"
         flexGrow="1"
+        width="var(--wf-width)"
+        mx="auto"
         sx={{
           minHeight: 'calc(var(--wf-gap) * 2)',
           '&:hover': {
@@ -261,6 +315,7 @@ export const NodeCondCol = ({
           mx="auto"
           className="clickable"
           sx={{
+            // marginTop: 'calc(var(--wf-gap) * -0.5)',
             minHeight: 'calc(var(--wf-gap) * 2)',
             '&:hover': {
               '--wf-line-color': '#a4a4a4',
@@ -275,11 +330,14 @@ export const NodeCondCol = ({
       <Box
         position="relative"
         width="100%"
-        height="4px"
-        // height="calc(var(--wf-gap) * 0.5)"
+        height="calc(var(--wf-gap) * 0.5)"
       >
+        <NodeVertLine />
         <NodeHorLine
-          pos={{ left: type === 'left' ? '50%' : '0' }}
+          pos={{
+            left: type === 'left' ? '50%' : '0',
+            bottom: 0,
+          }}
         />
       </Box>
     </Box>

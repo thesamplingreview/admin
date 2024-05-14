@@ -13,14 +13,20 @@ export function usePopup() {
   return [popup, setPopup];
 }
 
-export function useEditorWidth() {
-  const { editorWidth } = useContext(WFContext);
+export function useLoading() {
+  const { loading } = useContext(WFContext);
 
-  return editorWidth;
+  return loading;
 }
 
 export function useAction(action) {
   const { actions } = useContext(WFContext);
 
   return actions[action] || null;
+}
+
+export function useOptions() {
+  const { options } = useContext(WFContext);
+
+  return options;
 }

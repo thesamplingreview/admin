@@ -14,11 +14,16 @@ export default function CInputNumber({
   const internalError = useMemo(() => {
     const input = parseFloat(value);
     if (!Number.isNaN(input)) {
-      if (
-        (min !== undefined && input < min)
-        || (max !== undefined && input > max)
-      ) {
-        return 'Invalid number input.';
+      if (min !== undefined && max !== undefined) {
+        if (input < min || input > max) {
+          return `Number must be in range ${min}-${max}.`;
+        }
+      }
+      if (min !== undefined && input < min) {
+        return `Number must be larger than ${min}.`;
+      }
+      if (max !== undefined && input > max) {
+        return `Number can not larger than ${max}.`;
       }
     }
     return '';

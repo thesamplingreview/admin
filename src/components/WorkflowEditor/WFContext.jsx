@@ -5,6 +5,7 @@ import { generateNodesStructure } from './helpers';
 
 const initialState = {
   nodes: [],
+  options: [],
   popup: false,
   editorWidth: null,
   actions: {},
@@ -14,7 +15,10 @@ const WFContext = createContext(initialState);
 
 export const WFContextProvider = ({
   dataset,
+  options,
+  loading,
   children,
+  onSave,
 }) => {
   const [nodes, setNodes] = useState(dataset || initialState.nodes);
   const [popup, setPopup] = useState(false);
@@ -39,7 +43,7 @@ export const WFContextProvider = ({
       const newNodeData = {
         id: (new Date()).valueOf(),
         name: newNode.name,
-        type: newNode.key,
+        action: newNode.key,
         parent_task_id: addMeta.nodeId,
         pos: addMeta.nodePos || null,
         config: {},
@@ -97,18 +101,27 @@ export const WFContextProvider = ({
     });
   }, []);
 
+  const handleSave = () => {
+    if (onSave && !loading) {
+      onSave(nodes);
+    }
+  };
+
   return (
     <WFContext.Provider value={{
       nodes,
       setNodes,
       processedNodes,
+      options,
       popup,
       setPopup,
+      loading,
       actions: {
         showNewNode,
         addNewNode,
         removeNode,
         updateNodeConfig,
+        handleSave,
       },
     }}>
       {children}

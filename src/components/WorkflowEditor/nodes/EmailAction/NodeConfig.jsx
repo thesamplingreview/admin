@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CInput from '@/components/CInput.jsx';
+import CTextArea from '@/components/CTextArea.jsx';
 
 export default function NodeConfig({ config, onChange }) {
   return (
@@ -15,21 +16,29 @@ export default function NodeConfig({ config, onChange }) {
           type="email"
           name="to"
           label="Enter email address"
-          placeholder="Placeholder"
+          placeholder="example@email.com"
           InputLabelProps={{ shrink: true }}
           value={config.to || ''}
           onChange={onChange}
         />
       </Box>
       <Box mb={2}>
-        <CInput
+        <CTextArea
+          name="message"
+          label="Message"
+          placeholder="Enter message"
+          InputLabelProps={{ shrink: true }}
+          value={config.message || ''}
+          onChange={onChange}
+        />
+        {/* <CInput
           name="template"
           label="Select template"
-          placeholder="Select"
+          placeholder="Enter template ID"
           InputLabelProps={{ shrink: true }}
           value={config.template || ''}
           onChange={onChange}
-        />
+        /> */}
       </Box>
     </Box>
   );
