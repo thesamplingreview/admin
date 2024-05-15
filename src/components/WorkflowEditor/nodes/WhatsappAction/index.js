@@ -2,13 +2,13 @@ import NodeConfig from './NodeConfig.jsx';
 
 const meta = {
   key: 'send_whatsapp',
-  name: 'WhatsApp Message',
-  desc: 'Send WhatsApp message to {to}',
-  icon: 'fa-phone',
+  name: 'WhatsApp Notifier',
+  desc: 'Send WhatsApp notify to {number}',
+  icon: 'fa-comment-dots',
   color: '#5bb361',
   configComp: NodeConfig,
   validate: (input) => {
-    if (!input?.to) {
+    if (!input?.number) {
       return 'Number is required.';
     }
     if (!input?.message) {

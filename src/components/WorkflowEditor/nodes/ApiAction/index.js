@@ -3,7 +3,7 @@ import NodeConfig from './NodeConfig.jsx';
 const meta = {
   key: 'call_api',
   name: 'Call API',
-  desc: 'Trigger external API',
+  desc: 'Trigger external API / webhook',
   icon: 'fa-globe',
   color: '#c92464',
   configComp: NodeConfig,

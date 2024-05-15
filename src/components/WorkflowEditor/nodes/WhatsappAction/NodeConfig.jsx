@@ -2,12 +2,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CInputPhone from '@/components/CInputPhone.jsx';
 import CTextArea from '@/components/CTextArea.jsx';
-// eslint-disable-next-line import/no-cycle
-import { useOptions } from '../../hooks';
 
-export default function NodeConfig({ config, onChange }) {
-  const options = useOptions();
-
+export default function NodeConfig({ config, options, onChange }) {
   return (
     <Box>
       <Box mb={2}>
@@ -17,8 +13,8 @@ export default function NodeConfig({ config, onChange }) {
       </Box>
       <Box mb={2}>
         <CInputPhone
-          name="to"
-          value={config.to}
+          name="number"
+          value={config.number}
           prefixes={options?.phone_prefixes?.map((d) => ({
             id: d.id,
             name: `${d.name} (${d.id})`,

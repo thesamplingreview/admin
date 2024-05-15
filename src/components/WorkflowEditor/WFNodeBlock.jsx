@@ -6,11 +6,13 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FasIcon from '@/components/FasIcon.jsx';
-import { useAction } from './hooks';
+import { useAction, useOptions } from './hooks';
 
 export default function WFNodeBlock({ node, noActions }) {
+  const options = useOptions();
   const removeNode = useAction('removeNode');
   const updateConfig = useAction('updateNodeConfig');
+
   const elActions = useRef(null);
   const [openConfig, setOpenConfig] = useState(false);
   const [openActions, setOpenActions] = useState(false);
@@ -145,6 +147,7 @@ export default function WFNodeBlock({ node, noActions }) {
       {openConfig && ConfigComp && (
         <Box borderTop="1px solid var(--border-500)" p={2}>
           <ConfigComp
+            options={options}
             config={node.config || {}}
             onChange={handleChange}
             onSet={handleSet}

@@ -129,7 +129,7 @@ export default function NodeConfig({ config, onChange, onSet }) {
       <Box mb={2}>
         <CSelect
           name="auth_type"
-          // label="Auth Type"
+          label="Auth Type"
           options={authTypes}
           displayEmpty
           value={config.auth_type || ''}

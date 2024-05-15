@@ -12,8 +12,10 @@ export default function CSelect({
   size,
   error,
   helperText,
+  displayEmpty,
   ...props
 }) {
+  const forceShrink = displayEmpty ? true : undefined;
   return (
     <FormControl
       fullWidth
@@ -21,10 +23,12 @@ export default function CSelect({
       required={required}
       error={error}
     >
-      <InputLabel>{label}</InputLabel>
+      <InputLabel shrink={forceShrink}>{label}</InputLabel>
       <Select
         {...props}
         label={label}
+        notched={forceShrink}
+        displayEmpty={displayEmpty}
       >
         {placeholder && (
           <MenuItem value="">{placeholder}</MenuItem>

@@ -38,13 +38,6 @@ export default function WorkflowEditor({
             bottom: 0,
           },
         ]}
-        // sx={{
-        //   // backgroundColor: 'var(--bg-500)',
-        //   // backgroundPosition: 'calc(var(--gap) / 2 * -1) calc(var(--gap) / 2 * -1)',
-        //   // backgroundSize: 'var(--gap) var(--gap)',
-        //   // backgroundImage: 'linear-gradient(to right, #eee 1px, transparent 1px), linear-gradient(to bottom, #eee 1px, transparent 1px)', // grid-design
-        //   // backgroundImage: 'radial-gradient(circle, #ccc 1px, rgba(0, 0, 0, 0) 1px)', // dot-design
-        // }}
       >
         <WFHeader
           title={title}

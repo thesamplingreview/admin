@@ -14,11 +14,11 @@ export default function NodeConfig({ config, onChange }) {
       <Box mb={2}>
         <CInput
           type="email"
-          name="to"
+          name="email"
           label="Enter email address"
           placeholder="example@email.com"
           InputLabelProps={{ shrink: true }}
-          value={config.to || ''}
+          value={config.email || ''}
           onChange={onChange}
         />
       </Box>

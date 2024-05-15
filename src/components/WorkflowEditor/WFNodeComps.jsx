@@ -65,18 +65,18 @@ export const NodeItem = ({ node }) => {
       return {};
     }
 
-    let child = null;
-    if (node.child_id) {
-      child = nodes.find((n) => n.id === node.child_id);
-    }
+    let directNode = null;
+    let trueNode = null;
+    let falseNode = null;
 
-    let left = null;
-    let right = null;
-    if (isConditional && node.cond_ids) {
-      left = nodes.find((n) => n.id === node.cond_ids.left) || null;
-      right = nodes.find((n) => n.id === node.cond_ids.right) || null;
+    if (node.child_id) {
+      directNode = nodes.find((n) => n.id === node.child_id);
     }
-    return { child, left, right };
+    if (isConditional && node.cond_ids) {
+      trueNode = nodes.find((n) => n.id === node.cond_ids.true) || null;
+      falseNode = nodes.find((n) => n.id === node.cond_ids.false) || null;
+    }
+    return { directNode, trueNode, falseNode };
   }, [node, nodes, isConditional, isChainable]);
 
   return (
@@ -95,14 +95,14 @@ export const NodeItem = ({ node }) => {
       {isConditional && isChainable && (
         <NodeCondsLine
           node={node}
-          leftNode={childNodes.left}
-          rightNode={childNodes.right}
+          trueNode={childNodes.trueNode}
+          falseNode={childNodes.falseNode}
         />
       )}
 
       {/* child node */}
-      {childNodes.child && (
-        <NodeItem node={childNodes.child} />
+      {childNodes.directNode && (
+        <NodeItem node={childNodes.directNode} />
       )}
     </>
   );
@@ -195,7 +195,7 @@ export const NodeDirectLine = ({ node }) => {
   );
 };
 
-export const NodeCondsLine = ({ node, leftNode, rightNode }) => {
+export const NodeCondsLine = ({ node, trueNode, falseNode }) => {
   const showNewNode = useAction('showNewNode');
 
   const handleAdd = (pos) => {
@@ -218,16 +218,16 @@ export const NodeCondsLine = ({ node, leftNode, rightNode }) => {
       <Box display="flex" className="cond-nodes">
         {/* left */}
         <NodeCondCol
-          type="left"
+          type="true"
           label={node.node_detail?.conditionable?.[0] || 'True'}
-          node={leftNode}
+          node={trueNode}
           onAdd={handleAdd}
         />
         {/* right */}
         <NodeCondCol
-          type="right"
+          type="false"
           label={node.node_detail?.conditionable?.[1] || 'False'}
-          node={rightNode}
+          node={falseNode}
           onAdd={handleAdd}
         />
       </Box>
@@ -267,8 +267,8 @@ export const NodeCondCol = ({
     <Box
       display="flex"
       flexDirection="column"
-      ml={type === 'left' ? 'auto' : 0}
-      mr={type === 'right' ? 'auto' : 0}
+      ml={type === 'true' ? 'auto' : 0}
+      mr={type === 'false' ? 'auto' : 0}
     >
       <Box
         position="relative"
@@ -276,7 +276,7 @@ export const NodeCondCol = ({
         height="calc(var(--wf-gap) * 0.5)"
       >
         <NodeHorLine
-          pos={{ left: type === 'left' ? '50%' : '0' }}
+          pos={{ left: type === 'true' ? '50%' : '0' }}
         />
         <NodeVertLine />
         <Typography
@@ -335,7 +335,7 @@ export const NodeCondCol = ({
         <NodeVertLine />
         <NodeHorLine
           pos={{
-            left: type === 'left' ? '50%' : '0',
+            left: type === 'true' ? '50%' : '0',
             bottom: 0,
           }}
         />
