@@ -24,7 +24,8 @@ export default function NavView({ active }) {
         key: 'campaigns',
         name: 'My Campaigns',
         route: appRoute(`/users/${model.id}/campaigns`),
-        icon: 'fa-key',
+        icon: 'fa-fire',
+        count: model.enrolments_count,
         scope: 'users:view',
       },
       {

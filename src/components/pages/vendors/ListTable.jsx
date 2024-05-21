@@ -28,6 +28,11 @@ export default function ListTable() {
       sortable: true,
     },
     {
+      key: 'admins_count',
+      name: 'Num of Admins',
+      width: 180,
+    },
+    {
       key: 'profile',
       name: 'Profile',
     },

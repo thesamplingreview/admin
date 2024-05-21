@@ -59,18 +59,25 @@ export default function NavView({ active }) {
         scope: 'campaigns:workflow',
       },
       {
-        key: 'edit',
-        name: 'Edit Detail',
-        route: appRoute(`/campaigns/${model.id}/edit`),
-        icon: 'fa-pencil',
-        scope: 'campaigns:edit',
-      },
-      {
         key: 'setting',
         name: 'Setting',
         route: appRoute(`/campaigns/${model.id}/setting`),
         icon: 'fa-cogs',
         scope: 'campaigns:edit',
+      },
+      {
+        key: 'edit',
+        name: 'Edit View',
+        route: appRoute(`/campaigns/${model.id}/edit`),
+        icon: 'fa-pencil',
+        scope: 'campaigns:edit',
+      },
+      {
+        key: 'admin',
+        name: 'Admin Setting',
+        route: appRoute(`/campaigns/${model.id}/admin`),
+        icon: 'fa-user-cog',
+        scope: 'campaigns:setting',
       },
       {
         key: 'delete',

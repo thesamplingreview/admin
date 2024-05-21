@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { isDate, formatISO } from 'date-fns';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Divider from '@mui/material/Divider';
@@ -10,7 +9,6 @@ import { toFormData } from '@/helpers/utils';
 import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInputLazy.jsx';
 import CSelect from '@/components/CSelect.jsx';
-import CInputNumber from '@/components/CInputNumber.jsx';
 import CInputImage from '@/components/CInputImage.jsx';
 import CInputMD from '@/components/CInputMD.jsx';
 // import CSwitch from '@/components/CSwitch.jsx';
@@ -18,17 +16,8 @@ import CFormControl from '@/components/CFormControl.jsx';
 import CLoadingButton from '@/components/CLoadingButton.jsx';
 
 function genDefaultInput(options, model = null) {
-  function dateParse(date) {
-    if (!date) {
-      return '';
-    }
-    const dt = new Date(date);
-    return isDate(dt) ? formatISO(dt, { representation: 'date' }) : '';
-  }
-
   return {
     name: model?.name || '',
-    slug: model?.slug || '',
     description: model?.description || '',
     intro_title: model?.intro_title || '',
     intro_description: model?.intro_description || '',
@@ -36,12 +25,6 @@ function genDefaultInput(options, model = null) {
     presubmit_description: model?.presubmit_description || '',
     postsubmit_title: model?.postsubmit_title || '',
     postsubmit_description: model?.postsubmit_description || '',
-    meta_title: model?.meta_title || '',
-    meta_description: model?.meta_description || '',
-    meta_tag: model?.meta_tag || '',
-    start_date: dateParse(model?.start_date),
-    end_date: dateParse(model?.end_date),
-    quota: model?.quota || '',
     theme: model?.theme || '',
     cover: null,
     coverUrl: model?.cover_url || '',
@@ -134,21 +117,6 @@ export default function FormEdit({ ...props }) {
       )}
       onSubmit={handleSubmit}
     >
-      <CFormControl
-        label="Campaign Slug"
-        note="This field will used to construct campaign's public URL and must be unique."
-      >
-        <CInput
-          name="slug"
-          value={input.slug}
-          label="Enter slug"
-          required
-          helperText="URL friendly characters only"
-          error={validator?.slug}
-          onChange={handleChange}
-        />
-      </CFormControl>
-
       <CFormControl label="Campaign Detail">
         <Grid container spacing={2} columns={12}>
           <Grid xs={12}>
@@ -183,51 +151,6 @@ export default function FormEdit({ ...props }) {
           label="Browse image"
           maxSize={2}
           error={validator?.cover}
-          onChange={handleChange}
-        />
-      </CFormControl>
-
-      <CFormControl label="Campaign Period">
-        <Grid container spacing={2} columns={12} alignItems="center">
-          <Grid xs={12} md>
-            <CInput
-              type="date"
-              name="start_date"
-              value={input.start_date}
-              label="Start"
-              InputLabelProps={{ shrink: true }}
-              error={validator?.start_date}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid xs={12} md="auto">
-            to
-          </Grid>
-          <Grid xs={12} md>
-            <CInput
-              type="date"
-              name="end_date"
-              value={input.end_date}
-              label="End"
-              InputLabelProps={{ shrink: true }}
-              error={validator?.end_date}
-              onChange={handleChange}
-            />
-          </Grid>
-        </Grid>
-      </CFormControl>
-
-      <CFormControl
-        label="Enrolments Quota"
-        size={4}
-        note="If the quota is reached, no more enrollments can be made. Leave empty for unlimited enrollments."
-      >
-        <CInputNumber
-          name="quota"
-          value={input.quota}
-          label="Enter quota"
-          min={0}
-          error={validator?.quota}
           onChange={handleChange}
         />
       </CFormControl>
@@ -327,46 +250,6 @@ export default function FormEdit({ ...props }) {
           error={validator?.theme}
           onChange={handleChange}
         />
-      </CFormControl>
-
-      <Box my={3}>
-        <Divider />
-      </Box>
-
-      <CFormControl label="SEO Metadata">
-        <Grid container spacing={2} columns={12}>
-          <Grid xs={12}>
-            <CInput
-              name="meta_title"
-              value={input.meta_title}
-              label="Meta title"
-              error={validator?.meta_title}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid xs={12}>
-            <CInput
-              multiline
-              minRows={3}
-              name="meta_description"
-              value={input.meta_description}
-              label="Meta description"
-              rows="4"
-              error={validator?.meta_description}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid xs={12}>
-            <CInput
-              name="meta_tag"
-              value={input.meta_tag}
-              label="Meta tags"
-              rows="4"
-              error={validator?.meta_tag}
-              onChange={handleChange}
-            />
-          </Grid>
-        </Grid>
       </CFormControl>
 
       {/* <CFormControl label="Highlighted">

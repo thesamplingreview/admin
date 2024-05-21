@@ -25,6 +25,7 @@ export default function NavView({ active }) {
         name: 'Edit Fields',
         route: appRoute(`/forms/${model.id}/fields`),
         icon: 'fa-list',
+        count: model.fields?.length,
         scope: 'forms:edit',
       },
       {
@@ -35,7 +36,7 @@ export default function NavView({ active }) {
         scope: 'forms:delete',
       },
     ].filter((d) => permissions.includes(d.scope));
-  }, [model.id, permissions]);
+  }, [model.id, model.fields?.length, permissions]);
 
   return (
     <PageNav navs={navs} active={active}>

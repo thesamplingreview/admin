@@ -17,6 +17,11 @@ export default function ListTable() {
       width: 320,
     },
     {
+      key: 'fields_count',
+      name: 'Num of Fields',
+      width: 170,
+    },
+    {
       key: 'campaigns',
       name: 'Linked Campaigns',
       render(model) {

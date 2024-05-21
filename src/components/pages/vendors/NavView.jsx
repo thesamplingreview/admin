@@ -25,6 +25,7 @@ export default function NavView({ active }) {
         name: 'Admins',
         route: appRoute(`/vendors/${model.id}/admins`),
         icon: 'fa-user-cog',
+        count: model.admins_count,
         scope: 'vendors:edit',
       },
       {

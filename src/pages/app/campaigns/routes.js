@@ -56,6 +56,14 @@ export default [
             },
           },
           {
+            key: 'campaigns.detail.setting_admin',
+            path: 'admin',
+            async lazy() {
+              const { ViewSettingAdmin } = await import('./index');
+              return { Component: ViewSettingAdmin };
+            },
+          },
+          {
             key: 'campaigns.detail.products',
             path: 'products',
             async lazy() {

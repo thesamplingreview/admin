@@ -23,7 +23,7 @@ export default function CampaignSetting() {
             route: appRoute(`/campaigns/${model.id}`),
           },
           {
-            name: 'Admin Setting',
+            name: 'Campaign Setting',
           },
         ]}
       />

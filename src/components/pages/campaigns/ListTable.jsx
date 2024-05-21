@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isDate, format } from 'date-fns';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
+import Tooltip from '@mui/material/Tooltip';
 import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useOptions } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
@@ -9,6 +11,7 @@ import config from '@/config/app';
 import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInput.jsx';
 import CSelect from '@/components/CSelect.jsx';
+import FasIcon from '@/components/FasIcon.jsx';
 import { DataTable } from '@/components/DataTable';
 import BadgeStatus from './BadgeStatus.jsx';
 
@@ -22,6 +25,20 @@ export default function ListTable({ ...props }) {
       key: 'name',
       name: 'Name',
       sortable: true,
+      render(model) {
+        return (
+          <>
+            {model.name || '-'}
+            {model.status === 'publish' && !(model.form_id && model.review_type) && (
+              <Tooltip title="This campaign has incomplete setup" placement="right" arrow>
+                <Box display="inline" ml={1}>
+                  <FasIcon name="fa-triangle-exclamation" color="#ffb822" />
+                </Box>
+              </Tooltip>
+            )}
+          </>
+        );
+      },
     },
     {
       key: 'slug',
