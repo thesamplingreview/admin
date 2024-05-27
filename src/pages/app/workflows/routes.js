@@ -3,17 +3,27 @@ export default [
     key: 'workflows',
     path: 'workflows',
     async lazy() {
-      const { Layout } = await import('./index.jsx');
+      const { Layout } = await import('./index');
       return { Component: Layout };
     },
     children: [
       {
-        key: 'workflows.index',
-        index: true,
+        key: 'workflow.detail',
+        path: ':id',
         async lazy() {
-          const { ListingIndex } = await import('./index.jsx');
-          return { Component: ListingIndex };
+          const { ViewLayout } = await import('./index');
+          return { Component: ViewLayout };
         },
+        children: [
+          {
+            key: 'workflow.detail.edit',
+            index: 'edit',
+            async lazy() {
+              const { ViewEdit } = await import('./index');
+              return { Component: ViewEdit };
+            },
+          },
+        ],
       },
     ],
   },

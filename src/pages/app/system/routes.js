@@ -24,6 +24,14 @@ export default [
         },
       },
       {
+        key: 'system.workflow',
+        path: 'workflow',
+        async lazy() {
+          const { ViewWorkflow } = await import('./index.jsx');
+          return { Component: ViewWorkflow };
+        },
+      },
+      {
         key: 'system.notification',
         path: 'notification',
         async lazy() {

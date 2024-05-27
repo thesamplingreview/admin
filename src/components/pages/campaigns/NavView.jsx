@@ -52,9 +52,9 @@ export default function NavView({ active }) {
         scope: 'campaigns:edit',
       },
       {
-        key: 'workflow',
-        name: 'Workflow Editor',
-        route: appRoute(`/campaigns/${model.id}/workflow`),
+        key: 'workflows',
+        name: 'Workflows Editor',
+        route: appRoute(`/campaigns/${model.id}/workflows`),
         icon: 'fa-sitemap',
         scope: 'campaigns:workflow',
       },

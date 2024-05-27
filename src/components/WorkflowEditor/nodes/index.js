@@ -5,8 +5,7 @@ import WhatsappUserAction from './WhatsappUserAction';
 import SmsAction from './SmsAction';
 import SmsUserAction from './SmsUserAction';
 import ApiAction from './ApiAction';
-import DelayAction from './DelayAction';
-// import EndAction from './EndAction';
+// import DelayAction from './DelayAction';
 
 /**
  * Action configs
@@ -26,8 +25,7 @@ const nodes = {
   send_sms: SmsAction,
   send_whatsapp: WhatsappAction,
   call_api: ApiAction,
-  delay_action: DelayAction,
-  // end_action: EndAction,
+  // delay_action: DelayAction,
 };
 
 export default nodes;

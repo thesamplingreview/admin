@@ -1,19 +1,11 @@
-import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CSelect from '@/components/CSelect.jsx';
+// eslint-disable-next-line import/no-cycle
+import { useOptions } from '../../hooks';
 
 export default function NodeConfig({ config, onChange }) {
-  const templates = useMemo(() => ([
-    {
-      id: 'template_1',
-      name: 'Template 1',
-    },
-    {
-      id: 'template_2',
-      name: 'Template 2',
-    },
-  ]), []);
+  const options = useOptions();
 
   return (
     <Box>
@@ -24,7 +16,7 @@ export default function NodeConfig({ config, onChange }) {
       </Box>
       <Box mb={2}>
         <CSelect
-          options={templates}
+          options={options.waTmpls}
           name="template"
           label="Email Template"
           placeholder="Select template"

@@ -5,7 +5,12 @@ import FasIcon from '@/components/FasIcon.jsx';
 import CLoadingButton from '@/components/CLoadingButton.jsx';
 import { useAction, useLoading } from './hooks';
 
-export default function WFHeader({ title, isFull, setIsFull }) {
+export default function WFHeader({
+  title,
+  isFull,
+  setIsFull,
+  onBack,
+}) {
   const handleSave = useAction('handleSave');
   const loading = useLoading();
 
@@ -17,7 +22,6 @@ export default function WFHeader({ title, isFull, setIsFull }) {
     <Box
       display="flex"
       alignItems="center"
-      justifyContent="space-between"
       bgcolor="#fff"
       borderBottom="1px solid var(--border-500)"
       py={2}
@@ -28,8 +32,11 @@ export default function WFHeader({ title, isFull, setIsFull }) {
         top: 0,
       }}
     >
+      <IconButton sx={{ mr: 2 }} onClick={onBack}>
+        <FasIcon name="fa-chevron-left" color="var(--color-300)" fontSize="1rem" />
+      </IconButton>
       <Typography variant="h6">{title}</Typography>
-      <Box display="flex" alignItems="center" gap={3}>
+      <Box display="flex" alignItems="center" gap={3} sx={{ ml: 'auto' }}>
         <IconButton onClick={toggleIsFull}>
           <FasIcon
             name={isFull ? 'fa-compress' : 'fa-expand'}

@@ -104,11 +104,11 @@ export default [
             },
           },
           {
-            key: 'campaigns.detail.workflow',
-            path: 'workflow',
+            key: 'campaigns.detail.workflows',
+            path: 'workflows',
             async lazy() {
-              const { ViewWorkflow } = await import('./index');
-              return { Component: ViewWorkflow };
+              const { ViewWorkflows } = await import('./index');
+              return { Component: ViewWorkflows };
             },
           },
         ],

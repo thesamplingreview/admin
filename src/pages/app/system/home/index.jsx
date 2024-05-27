@@ -17,6 +17,13 @@ export default function SystemHome() {
       icon: 'fa-envelopes-bulk',
     },
     {
+      key: 'workflow',
+      name: 'Workflow Templates',
+      desc: 'Setup templates mapping for workflow actions.',
+      href: appRoute('/system/workflow'),
+      icon: 'fa-sitemap',
+    },
+    {
       key: 'notification',
       name: 'Admin Notification',
       desc: 'Setup notification for admins.',

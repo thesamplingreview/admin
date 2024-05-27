@@ -1,0 +1,42 @@
+import { useState } from 'react';
+import { useParams, Outlet } from 'react-router-dom';
+import { useOnce } from '@/helpers/hooks';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
+import { useModel } from '@/contexts/hooks/module';
+import CLoader from '@/components/CLoader.jsx';
+import CError from '@/components/CError.jsx';
+
+export default function WorkflowViewLayout() {
+  const { id } = useParams();
+  const doFetch = useFetch();
+  const [, setModel] = useModel();
+  const endpointGet = useRoleEndpoint(`/workflows/${id}`);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchModel = async () => {
+    setLoading(true);
+    try {
+      const { code, data } = await doFetch(endpointGet);
+      if (code !== 200) {
+        throw new Error('API error');
+      }
+      setModel(data);
+    } catch (err) {
+      setError(err);
+    }
+    setLoading(false);
+  };
+
+  useOnce(() => {
+    fetchModel();
+  });
+
+  if (loading) {
+    return <CLoader full="header" />;
+  }
+  if (error) {
+    return <CError full="header" message={error.message} />;
+  }
+  return <Outlet />;
+}

@@ -4,7 +4,8 @@ import { useModel } from '@/contexts/hooks/module';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
 import NavView from '@/components/pages/campaigns/NavView.jsx';
 import EditAlert from '@/components/pages/campaigns/EditAlert.jsx';
-import FormWorkflow from '@/components/pages/campaigns/FormWorkflow.jsx';
+// import FormWorkflow from '@/components/pages/campaigns/FormWorkflow.jsx';
+import ViewWorkflows from '@/components/pages/campaigns/ViewWorkflows.jsx';
 
 export default function CampaignWorkflow() {
   const [model] = useModel();
@@ -30,11 +31,11 @@ export default function CampaignWorkflow() {
 
       <Grid container spacing={{ xs: 3, xl: 5 }}>
         <Grid lg={3}>
-          <NavView active="workflow" />
+          <NavView active="workflows" />
         </Grid>
         <Grid lg={9}>
           <EditAlert />
-          <FormWorkflow mb={5} />
+          <ViewWorkflows title="Campaign Workflows" mb={5} />
         </Grid>
       </Grid>
     </>

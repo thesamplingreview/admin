@@ -29,7 +29,7 @@ export default function ListTable({ ...props }) {
         return (
           <>
             {model.name || '-'}
-            {model.status === 'publish' && !(model.form_id && model.review_type) && (
+            {!(model.form_id && model.review_type) && (
               <Tooltip title="This campaign has incomplete setup" placement="right" arrow>
                 <Box display="inline" ml={1}>
                   <FasIcon name="fa-triangle-exclamation" color="#ffb822" />

@@ -11,9 +11,11 @@ export default function WorkflowEditor({
   options = [],
   loading = false,
   height = '500px',
+  initFull = false,
   onSave,
+  onBack,
 }) {
-  const [isFull, setIsFull] = useState(false);
+  const [isFull, setIsFull] = useState(initFull);
 
   return (
     <WFContextProvider
@@ -43,6 +45,7 @@ export default function WorkflowEditor({
           title={title}
           isFull={isFull}
           setIsFull={setIsFull}
+          onBack={onBack}
         />
         <WFEditor
           isFull={isFull}
