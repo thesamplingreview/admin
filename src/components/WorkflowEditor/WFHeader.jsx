@@ -10,6 +10,7 @@ export default function WFHeader({
   isFull,
   setIsFull,
   onBack,
+  onEditName,
 }) {
   const handleSave = useAction('handleSave');
   const loading = useLoading();
@@ -36,6 +37,11 @@ export default function WFHeader({
         <FasIcon name="fa-chevron-left" color="var(--color-300)" fontSize="1rem" />
       </IconButton>
       <Typography variant="h6">{title}</Typography>
+      {onEditName && (
+        <IconButton sx={{ ml: 2 }} onClick={onEditName}>
+          <FasIcon name="fa-pencil-alt" color="var(--color-300)" fontSize="1rem" />
+        </IconButton>
+      )}
       <Box display="flex" alignItems="center" gap={3} sx={{ ml: 'auto' }}>
         <IconButton onClick={toggleIsFull}>
           <FasIcon

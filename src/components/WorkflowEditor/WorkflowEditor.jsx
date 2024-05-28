@@ -13,6 +13,7 @@ export default function WorkflowEditor({
   height = '500px',
   initFull = false,
   onSave,
+  onEditName,
   onBack,
 }) {
   const [isFull, setIsFull] = useState(initFull);
@@ -46,6 +47,7 @@ export default function WorkflowEditor({
           isFull={isFull}
           setIsFull={setIsFull}
           onBack={onBack}
+          onEditName={onEditName}
         />
         <WFEditor
           isFull={isFull}

@@ -33,7 +33,7 @@ export default function NavView({ active }) {
         name: 'User Enrolments',
         route: appRoute(`/campaigns/${model.id}/enrolments`),
         icon: 'fa-user-check',
-        count: model.enrolments_count,
+        count: model.enrolments_accepted_count,
         scope: 'enrolments:view',
       },
       {
@@ -49,6 +49,7 @@ export default function NavView({ active }) {
         name: 'Linked Products',
         route: appRoute(`/campaigns/${model.id}/products`),
         icon: 'fa-tag',
+        count: model.products_count,
         scope: 'campaigns:edit',
       },
       {
@@ -56,6 +57,7 @@ export default function NavView({ active }) {
         name: 'Workflows Editor',
         route: appRoute(`/campaigns/${model.id}/workflows`),
         icon: 'fa-sitemap',
+        count: model.workflows_count,
         scope: 'campaigns:workflow',
       },
       {

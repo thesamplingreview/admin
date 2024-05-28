@@ -6,6 +6,7 @@ import { useToast } from '@/contexts/hooks/toast';
 import { useModel, useOptions } from '@/contexts/hooks/module';
 import CBox from '@/components/CBox.jsx';
 import { WorkflowEditor } from '@/components/WorkflowEditor';
+import DialogEdit from './DialogEdit.jsx';
 
 export default function FormWorkflow({ ...props }) {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export default function FormWorkflow({ ...props }) {
   const endpointPut = useRoleEndpoint(`/workflows/${model.id}/tasks`);
 
   const [saving, setSaving] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
   const handleBack = () => {
     navigate(appRoute(`/campaigns/${model.campaign_id}/workflows`));
@@ -50,16 +52,25 @@ export default function FormWorkflow({ ...props }) {
   };
 
   return (
-    <CBox {...props} noPadding>
-      <WorkflowEditor
-        title={`${model.name || '-'}`}
-        options={options}
-        value={model.tasks || []}
-        loading={saving}
-        initFull
-        onSave={handleSubmit}
-        onBack={handleBack}
+    <>
+      <CBox {...props} noPadding>
+        <WorkflowEditor
+          title={`${model.name || '-'}`}
+          options={options}
+          value={model.tasks || []}
+          loading={saving}
+          initFull
+          onSave={handleSubmit}
+          onEditName={() => setIsEdit(true)}
+          onBack={handleBack}
+        />
+      </CBox>
+
+      <DialogEdit
+        open={isEdit}
+        onClose={() => setIsEdit(false)}
+        onEdited={() => setIsEdit(false)}
       />
-    </CBox>
+    </>
   );
 }

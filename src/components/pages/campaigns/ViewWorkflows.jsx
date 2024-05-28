@@ -2,21 +2,27 @@ import { useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Switch from '@mui/material/Switch';
+import { useToast } from '@/contexts/hooks/toast';
 import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import CBox from '@/components/CBox.jsx';
 import { DataTable } from '@/components/DataTable';
 import DialogAdd from '@/components/pages/workflows/DialogAdd.jsx';
+import TriggerButton from '@/components/pages/workflows/TriggerButton.jsx';
 
 export default function ViewWorkflows({ ...props }) {
   const navigate = useNavigate();
   const doFetch = useFetch();
+  const pushToast = useToast();
   const [model] = useModel();
   const endpointGet = useRoleEndpoint('/workflows');
+  const endpointPut = useRoleEndpoint('/workflows/{id}');
 
   const [isAdd, setIsAdd] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
+
   const columns = useMemo(() => ([
     {
       key: 'name',
@@ -25,8 +31,76 @@ export default function ViewWorkflows({ ...props }) {
     {
       key: 'trigger',
       name: 'Trigger',
+      render(item) {
+        if (item.trigger === 'enrolment') {
+          return 'New enrolment';
+        }
+        return item.trigger;
+      },
     },
-  ]), []);
+    {
+      key: 'workflow_tasks_count',
+      name: 'Actions',
+      width: 120,
+    },
+    {
+      key: 'enable',
+      name: 'Auto Trigger',
+      width: 150,
+      render(item) {
+        const handleChangeEnable = async (e) => {
+          const endpoint = endpointPut.replace('{id}', item.id);
+          try {
+            const formdata = {
+              enable: e.target.checked,
+            };
+            const { code } = await doFetch(endpoint, {
+              method: 'PUT',
+              data: formdata,
+            });
+            if (code !== 200) {
+              throw new Error('Invalid API');
+            }
+            // push toast
+            pushToast('success', 'Status updated!');
+          } catch (err) {
+            pushToast('error', 'Failed to update entry.');
+          }
+        };
+
+        return (
+          <div onClick={(e) => e.stopPropagation()}>
+            <Switch
+              name="enable"
+              defaultChecked={item.enable}
+              onChange={handleChangeEnable}
+            />
+          </div>
+        );
+      },
+    },
+    {
+      key: 'action',
+      name: '',
+      width: 160,
+      render(item) {
+        return (
+          <div onClick={(e) => e.stopPropagation()}>
+            <TriggerButton
+              id={item.campaign_workflow_id}
+              name={item.name}
+              type="button"
+              variant="outlined"
+              color="primary"
+              size="small"
+            >
+              Trigger
+            </TriggerButton>
+          </div>
+        );
+      },
+    },
+  ]), [doFetch, pushToast, endpointPut]);
 
   const fetchData = useCallback(({ page, perPage, sort }) => {
     const params = {
