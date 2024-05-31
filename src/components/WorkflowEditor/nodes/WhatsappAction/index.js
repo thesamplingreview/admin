@@ -2,7 +2,7 @@ import NodeConfig from './NodeConfig.jsx';
 
 const meta = {
   key: 'send_whatsapp',
-  name: 'WhatsApp Notifier',
+  name: 'Notification (WhatsApp)',
   desc: 'Send WhatsApp notify to {number}',
   icon: 'fa-comment-dots',
   color: '#5bb361',
@@ -11,8 +11,8 @@ const meta = {
     if (!input?.number) {
       return 'Number is required.';
     }
-    if (!input?.message) {
-      return 'Message is required.';
+    if (!input?.template) {
+      return 'Template is required.';
     }
     return '';
   },

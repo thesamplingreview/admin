@@ -47,6 +47,14 @@ export default [
               return { Component: ViewPassword };
             },
           },
+          {
+            key: 'admins.detail.delete',
+            path: 'delete',
+            async lazy() {
+              const { ViewDelete } = await import('./index.jsx');
+              return { Component: ViewDelete };
+            },
+          },
         ],
       },
     ],

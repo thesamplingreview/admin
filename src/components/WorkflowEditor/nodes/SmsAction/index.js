@@ -2,7 +2,7 @@ import NodeConfig from './NodeConfig.jsx';
 
 const meta = {
   key: 'send_sms',
-  name: 'SMS Notifier',
+  name: 'Notification (SMS)',
   desc: 'Send SMS notification to {number}',
   icon: 'fa-comment-sms',
   color: '#6a3771',

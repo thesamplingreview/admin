@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
+import { appRoute } from '@/helpers/route';
 import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useOptions } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
 import CInput from '@/components/CInput.jsx';
-// import CSelect from '@/components/CSelect.jsx';
+import CSelect from '@/components/CSelect.jsx';
 import CFormControl from '@/components/CFormControl.jsx';
 import CLoadingButton from '@/components/CLoadingButton.jsx';
 
@@ -13,11 +15,12 @@ function genDefaultInput(options, model = null) {
     email: model?.email || '',
     password: '',
     name: model?.name || '',
-    // role_id: model?.role_id || options.roles?.[0]?.id || '',
+    role_id: model?.role_id || options.roles?.[0]?.id || '',
   };
 }
 
 export default function FormCreate() {
+  const navigate = useNavigate();
   const doFetch = useFetch();
   const pushToast = useToast();
   const options = useOptions();
@@ -52,6 +55,8 @@ export default function FormCreate() {
       setInput(genDefaultInput(options));
       // push toast
       pushToast('success', 'Entry created!');
+      // redirect
+      navigate(appRoute('/admins'));
       // redirect?
     } catch (err) {
       if (err.response?.data?.code === 422) {
@@ -105,17 +110,19 @@ export default function FormCreate() {
         />
       </CFormControl>
 
-      {/* <CFormControl label="Admin Role">
-        <CSelect
-          name="role_id"
-          value={input.role_id}
-          label="Select role"
-          options={options.roles}
-          required
-          error={validator?.role_id}
-          onChange={handleChange}
-        />
-      </CFormControl> */}
+      {options.roles?.length > 1 && (
+        <CFormControl label="Admin Role">
+          <CSelect
+            name="role_id"
+            value={input.role_id}
+            label="Select role"
+            options={options.roles}
+            required
+            error={validator?.role_id}
+            onChange={handleChange}
+          />
+        </CFormControl>
+      )}
 
       <Box display="flex" justifyContent="flex-end" mt={3}>
         <CLoadingButton

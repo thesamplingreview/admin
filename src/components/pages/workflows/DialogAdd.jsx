@@ -87,7 +87,7 @@ export default function DialogAdd({
   return (
     <Dialog
       open={open}
-      maxWidth="sm"
+      maxWidth="md"
       fullWidth
       onClose={onClose}
     >
@@ -95,7 +95,7 @@ export default function DialogAdd({
         Add Workflow
       </DialogTitle>
       <DialogContent dividers>
-        <CFormControl label="Workflow Name" size={8}>
+        <CFormControl label="Workflow Name">
           <CInput
             name="name"
             value={input.name}

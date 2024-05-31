@@ -27,6 +27,13 @@ export default function NavView({ active }) {
         icon: 'fa-key',
         scope: 'admins:password',
       },
+      {
+        key: 'delete',
+        name: 'Delete',
+        route: appRoute(`/admins/${model.id}/delete`),
+        icon: 'fa-trash-can',
+        scope: 'admins:delete',
+      },
     ].filter((d) => permissions.includes(d.scope));
   }, [model.id, permissions]);
 

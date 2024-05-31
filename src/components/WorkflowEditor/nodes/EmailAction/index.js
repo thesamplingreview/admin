@@ -2,7 +2,7 @@ import NodeConfig from './NodeConfig.jsx';
 
 const meta = {
   key: 'send_email',
-  name: 'Email Notifier',
+  name: 'Notification (Email)',
   desc: 'Send email notification to {email}',
   icon: 'fa-envelopes-bulk',
   color: '#11adc1',

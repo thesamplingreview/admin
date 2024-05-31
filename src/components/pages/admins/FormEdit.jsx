@@ -95,17 +95,19 @@ export default function FormEdit() {
         />
       </CFormControl>
 
-      <CFormControl label="Admin Role">
-        <CSelect
-          name="role_id"
-          value={input.role_id}
-          label="Select role"
-          options={options.roles}
-          required
-          error={validator?.role_id}
-          onChange={handleChange}
-        />
-      </CFormControl>
+      {options.roles?.length > 1 && (
+        <CFormControl label="Admin Role">
+          <CSelect
+            name="role_id"
+            value={input.role_id}
+            label="Select role"
+            options={options.roles}
+            required
+            error={validator?.role_id}
+            onChange={handleChange}
+          />
+        </CFormControl>
+      )}
 
       <CFormControl label="Status">
         <CSelect

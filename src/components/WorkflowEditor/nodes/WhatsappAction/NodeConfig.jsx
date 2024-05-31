@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CInputPhone from '@/components/CInputPhone.jsx';
-import CTextArea from '@/components/CTextArea.jsx';
+import CSelect from '@/components/CSelect.jsx';
 
 export default function NodeConfig({ config, options, onChange }) {
   return (
@@ -24,12 +24,12 @@ export default function NodeConfig({ config, options, onChange }) {
         />
       </Box>
       <Box mb={2}>
-        <CTextArea
-          name="message"
-          label="Message"
-          placeholder="Enter message to send"
-          InputLabelProps={{ shrink: true }}
-          value={config.message || ''}
+        <CSelect
+          options={options.waTmpls}
+          name="template"
+          label="Email Template"
+          placeholder="Select template"
+          value={config.template || ''}
           onChange={onChange}
         />
       </Box>

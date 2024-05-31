@@ -1,12 +1,8 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CSelect from '@/components/CSelect.jsx';
-// eslint-disable-next-line import/no-cycle
-import { useOptions } from '../../hooks';
 
-export default function NodeConfig({ config, onChange }) {
-  const options = useOptions();
-
+export default function NodeConfig({ config, options, onChange }) {
   return (
     <Box>
       <Box mb={2}>
