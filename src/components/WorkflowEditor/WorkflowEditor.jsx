@@ -7,13 +7,14 @@ import WFNodesSelection from './WFNodesSelection.jsx';
 
 export default function WorkflowEditor({
   title,
+  trigger,
   value = [],
   options = [],
   loading = false,
   height = '500px',
   initFull = false,
   onSave,
-  onEditName,
+  onEdit,
   onBack,
 }) {
   const [isFull, setIsFull] = useState(initFull);
@@ -47,9 +48,10 @@ export default function WorkflowEditor({
           isFull={isFull}
           setIsFull={setIsFull}
           onBack={onBack}
-          onEditName={onEditName}
+          onEdit={onEdit}
         />
         <WFEditor
+          trigger={trigger}
           isFull={isFull}
           height={height}
         />

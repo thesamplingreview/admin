@@ -4,7 +4,6 @@ import { useModel } from '@/contexts/hooks/module';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
 import NavView from '@/components/pages/campaigns/NavView.jsx';
 import EditAlert from '@/components/pages/campaigns/EditAlert.jsx';
-// import FormWorkflow from '@/components/pages/campaigns/FormWorkflow.jsx';
 import ViewWorkflows from '@/components/pages/campaigns/ViewWorkflows.jsx';
 
 export default function CampaignWorkflow() {

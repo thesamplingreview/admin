@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Switch from '@mui/material/Switch';
 import { useToast } from '@/contexts/hooks/toast';
 import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
-import { useModel } from '@/contexts/hooks/module';
+import { useModel, useOptions } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import CBox from '@/components/CBox.jsx';
 import { DataTable } from '@/components/DataTable';
@@ -16,6 +16,7 @@ export default function ViewWorkflows({ ...props }) {
   const navigate = useNavigate();
   const doFetch = useFetch();
   const pushToast = useToast();
+  const options = useOptions();
   const [model] = useModel();
   const endpointGet = useRoleEndpoint('/workflows');
   const endpointPut = useRoleEndpoint('/workflows/{id}');
@@ -32,15 +33,13 @@ export default function ViewWorkflows({ ...props }) {
       key: 'trigger',
       name: 'Trigger',
       render(item) {
-        if (item.trigger === 'enrolment') {
-          return 'New enrolment';
-        }
-        return item.trigger;
+        const found = options.workflow_triggers?.find((d) => d.id === item.trigger);
+        return found?.name || item.trigger;
       },
     },
     {
       key: 'workflow_tasks_count',
-      name: 'Actions',
+      name: 'Tasks',
       width: 120,
     },
     {
@@ -88,7 +87,8 @@ export default function ViewWorkflows({ ...props }) {
           <div onClick={(e) => e.stopPropagation()}>
             <TriggerButton
               id={item.campaign_workflow_id}
-              name={item.name}
+              trigger={item.trigger}
+              count={item.trigger === 'review' ? model.reviews_count : model.enrolments_accepted_count}
               type="button"
               variant="outlined"
               color="primary"
@@ -100,7 +100,7 @@ export default function ViewWorkflows({ ...props }) {
         );
       },
     },
-  ]), [doFetch, pushToast, endpointPut]);
+  ]), [doFetch, pushToast, endpointPut, model, options.workflow_triggers]);
 
   const fetchData = useCallback(({ page, perPage, sort }) => {
     const params = {

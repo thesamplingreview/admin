@@ -10,7 +10,7 @@ export default function WFHeader({
   isFull,
   setIsFull,
   onBack,
-  onEditName,
+  onEdit,
 }) {
   const handleSave = useAction('handleSave');
   const loading = useLoading();
@@ -37,8 +37,8 @@ export default function WFHeader({
         <FasIcon name="fa-chevron-left" color="var(--color-300)" fontSize="1rem" />
       </IconButton>
       <Typography variant="h6">{title}</Typography>
-      {onEditName && (
-        <IconButton sx={{ ml: 2 }} onClick={onEditName}>
+      {onEdit && (
+        <IconButton sx={{ ml: 2 }} onClick={onEdit}>
           <FasIcon name="fa-pencil-alt" color="var(--color-300)" fontSize="1rem" />
         </IconButton>
       )}

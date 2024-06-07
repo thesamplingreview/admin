@@ -6,15 +6,19 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { useUpdated } from '@/helpers/hooks';
 import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
+import { useOptions } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
 import CInput from '@/components/CInput.jsx';
+import CSelect from '@/components/CSelect.jsx';
 import CFormControl from '@/components/CFormControl.jsx';
 import CLoadingButton from '@/components/CLoadingButton.jsx';
 
-const initInput = {
-  name: '',
-  trigger: 'enrolment',
-};
+function genDefaultInput() {
+  return {
+    name: '',
+    trigger: 'enrolment',
+  };
+}
 
 export default function DialogAdd({
   open,
@@ -25,9 +29,10 @@ export default function DialogAdd({
   const doFetch = useFetch();
   const endpointPost = useRoleEndpoint('/workflows');
   const pushToast = useToast();
+  const options = useOptions();
 
   const [saving, setSaving] = useState(false);
-  const [input, setInput] = useState({});
+  const [input, setInput] = useState(genDefaultInput());
   const [validator, setValidator] = useState(null);
 
   const isValid = useMemo(() => {
@@ -78,7 +83,7 @@ export default function DialogAdd({
   useUpdated(() => {
     if (open) {
       setInput({
-        ...initInput,
+        ...genDefaultInput(),
         ...appendData,
       });
     }
@@ -103,6 +108,17 @@ export default function DialogAdd({
             helperText="Allow between 3-50 characters"
             required
             error={validator?.name}
+            onChange={handleChange}
+          />
+        </CFormControl>
+        <CFormControl label="Trigger">
+          <CSelect
+            options={options.workflow_triggers}
+            name="trigger"
+            value={input.trigger}
+            label="Select trigger"
+            required
+            error={validator?.trigger}
             onChange={handleChange}
           />
         </CFormControl>

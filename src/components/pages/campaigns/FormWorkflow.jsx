@@ -8,6 +8,9 @@ import CLoader from '@/components/CLoader.jsx';
 import CError from '@/components/CError.jsx';
 import { WorkflowEditor } from '@/components/WorkflowEditor';
 
+/**
+ * DEPRECATED - component has migrated to workflow module
+ */
 export default function FormWorkflow({ ...props }) {
   const doFetch = useFetch();
   const pushToast = useToast();

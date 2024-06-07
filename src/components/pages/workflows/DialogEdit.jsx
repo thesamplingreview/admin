@@ -6,15 +6,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { useUpdated } from '@/helpers/hooks';
 import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
-import { useModel } from '@/contexts/hooks/module';
+import { useModel, useOptions } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
 import CInput from '@/components/CInput.jsx';
+import CSelect from '@/components/CSelect.jsx';
 import CFormControl from '@/components/CFormControl.jsx';
 import CLoadingButton from '@/components/CLoadingButton.jsx';
 
 function genDefaultInput(model = null) {
   return {
     name: model?.name || '',
+    trigger: model?.trigger || 'enrolment',
   };
 }
 
@@ -24,6 +26,7 @@ export default function DialogEdit({
   onEdited,
 }) {
   const doFetch = useFetch();
+  const options = useOptions();
   const [model, setModel] = useModel();
   const endpointPut = useRoleEndpoint(`/workflows/${model.id}`);
   const pushToast = useToast();
@@ -108,6 +111,17 @@ export default function DialogEdit({
             helperText="Allow between 3-50 characters"
             required
             error={validator?.name}
+            onChange={handleChange}
+          />
+        </CFormControl>
+        <CFormControl label="Trigger">
+          <CSelect
+            options={options.workflow_triggers}
+            name="trigger"
+            value={input.trigger}
+            label="Select trigger"
+            required
+            error={validator?.trigger}
             onChange={handleChange}
           />
         </CFormControl>

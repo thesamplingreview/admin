@@ -5,11 +5,24 @@ import Box from '@mui/material/Box';
 import { NodeTrigger, NodeItem, NodeEnd } from './WFNodeComps.jsx';
 import { useNodes } from './hooks';
 
-export default function WFEditor({ height, isFull }) {
+export default function WFEditor({ trigger, height, isFull }) {
   const [nodes] = useNodes();
 
   const $el = useRef(null);
   const [editorWidth, setEditorWidth] = useState(0);
+
+  const triggerNode = useMemo(() => {
+    if (trigger === 'review') {
+      return {
+        name: 'New Review',
+        desc: 'Trigger when having new campaign\'s review.',
+      };
+    }
+    return {
+      name: 'New Enrolment',
+      desc: 'Trigger when having new campaign\'s enrolment.',
+    };
+  }, [trigger]);
 
   const rootNode = useMemo(() => {
     const node = nodes.find((n) => !n.parent_task_id);
@@ -59,8 +72,8 @@ export default function WFEditor({ height, isFull }) {
         }}
       >
         <NodeTrigger
-          name="Campaign Enrolment"
-          desc="Trigger when having new campaign's enrolment."
+          name={triggerNode.name}
+          desc={triggerNode.desc}
         />
         {rootNode && <NodeItem node={rootNode} />}
         <NodeEnd />

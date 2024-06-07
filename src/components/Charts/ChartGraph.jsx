@@ -56,7 +56,7 @@ export default function ChartGraph({
     return () => {
       chart.destroy();
     };
-  }, [dataset, color]);
+  }, [dataset, color, options]);
 
   return (
     <Box {...props}>

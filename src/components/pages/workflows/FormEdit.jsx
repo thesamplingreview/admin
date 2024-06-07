@@ -57,11 +57,12 @@ export default function FormWorkflow({ ...props }) {
         <WorkflowEditor
           title={`${model.name || '-'}`}
           options={options}
+          trigger={model.trigger}
           value={model.tasks || []}
           loading={saving}
           initFull
           onSave={handleSubmit}
-          onEditName={() => setIsEdit(true)}
+          onEdit={() => setIsEdit(true)}
           onBack={handleBack}
         />
       </CBox>
