@@ -14,7 +14,7 @@ export default function SplashCover({ theme = 'design' }) {
     >
       <Box
         component="img"
-        src={`https://source.unsplash.com/featured?${theme}`}
+        src={`https://unsplash.qutebox.com?topic=${theme}`}
         alt=""
         width="1440"
         height="1440"
