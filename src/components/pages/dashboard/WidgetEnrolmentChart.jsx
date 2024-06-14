@@ -39,9 +39,10 @@ export default function WidgetEnrolmentChart() {
       }), {});
       const days = eachDayOfInterval(dates).map((date) => {
         const day = format(date, 'yyyy-MM-dd');
+        const label = format(date, 'd MMM');
         return {
           key: day,
-          name: day,
+          name: label,
           count: daysValue[day] || 0,
         };
       });
@@ -73,23 +74,6 @@ export default function WidgetEnrolmentChart() {
           <ChartGraph
             dataset={dataset}
             height="100%"
-            options={{
-              scales: {
-                y: {
-                  min: 0,
-                  ticks: {
-                    stepSize: 1,
-                  },
-                },
-                x: {
-                  ticks: {
-                    font: {
-                      size: 11,
-                    },
-                  },
-                },
-              },
-            }}
           />
         )}
       </Box>
