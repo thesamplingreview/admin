@@ -1,11 +1,15 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isDate, format } from 'date-fns';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import config from '@/config/app';
 import CBox from '@/components/CBox.jsx';
+import FasIcon from '@/components/FasIcon.jsx';
+import CCsvButton from '@/components/CCsvButton.jsx';
 import { DataTable } from '@/components/DataTable';
 import BadgeStatus from '../enrolments/BadgeStatus.jsx';
 
@@ -65,6 +69,23 @@ export default function ViewEnrolments({ ...props }) {
 
   return (
     <CBox {...props} noPadding>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        borderBottom="1px solid var(--border-500)"
+        p={3}
+      >
+        <Typography variant="h5">
+          <FasIcon name="fa-user-check" mr={2} />
+          Campaign Enrolments
+        </Typography>
+        <CCsvButton
+          endpoint={useRoleEndpoint('/enrolments/export')}
+          filename="campaign-enrolments.csv"
+          filter={{ campaign_id: model.id }}
+        />
+      </Box>
       <DataTable
         columns={columns}
         initData={{

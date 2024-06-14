@@ -143,6 +143,9 @@ export default function DataTable({
                   <TableCell
                     key={col.key}
                     align={col.align}
+                    sx={[
+                      col.valign && { verticalAlign: col.valign },
+                    ]}
                     onClick={col.stopPropagate ? (e) => e.stopPropagation() : null}
                   >
                     {content}
