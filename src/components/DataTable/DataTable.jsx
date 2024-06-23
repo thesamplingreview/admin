@@ -28,6 +28,7 @@ export default function DataTable({
   },
   selectable = false,
   filterable = false,
+  fixed = false,
   filtersBody,
   fetcher,
   onSelect,
