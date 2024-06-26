@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
 import CInput from '@/components/CInput.jsx';
@@ -11,6 +11,7 @@ export default function FormPassword() {
   const doFetch = useFetch();
   const pushToast = useToast();
   const [model] = useModel();
+  const endpointPost = useRoleEndpoint(`/admins/${model.id}`);
 
   const defaultInput = useRef({
     password: '',
@@ -43,7 +44,7 @@ export default function FormPassword() {
     setValidator(null);
     try {
       const formdata = { ...input };
-      const { code } = await doFetch(`/v1/admin/admins/${model.id}`, {
+      const { code } = await doFetch(endpointPost, {
         method: 'PUT',
         data: formdata,
       });

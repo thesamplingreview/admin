@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useOptions, useModel } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
 import CInput from '@/components/CInput.jsx';
@@ -22,6 +22,7 @@ export default function FormEdit() {
   const options = useOptions();
   const pushToast = useToast();
   const [model, setModel] = useModel();
+  const endpointPut = useRoleEndpoint(`/admins/${model.id}`);
 
   const [loading, setLoading] = useState(false);
   const [validator, setValidator] = useState(null);
@@ -41,7 +42,7 @@ export default function FormEdit() {
     setValidator(null);
     try {
       const formdata = { ...input };
-      const { code, data } = await doFetch(`/v1/admin/admins/${model.id}`, {
+      const { code, data } = await doFetch(endpointPut, {
         method: 'PUT',
         data: formdata,
       });
@@ -94,17 +95,19 @@ export default function FormEdit() {
         />
       </CFormControl>
 
-      <CFormControl label="Admin Role">
-        <CSelect
-          name="role_id"
-          value={input.role_id}
-          label="Select role"
-          options={options.roles}
-          required
-          error={validator?.role_id}
-          onChange={handleChange}
-        />
-      </CFormControl>
+      {options.roles?.length > 1 && (
+        <CFormControl label="Admin Role">
+          <CSelect
+            name="role_id"
+            value={input.role_id}
+            label="Select role"
+            options={options.roles}
+            required
+            error={validator?.role_id}
+            onChange={handleChange}
+          />
+        </CFormControl>
+      )}
 
       <CFormControl label="Status">
         <CSelect

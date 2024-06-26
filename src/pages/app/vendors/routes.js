@@ -40,6 +40,14 @@ export default [
             },
           },
           {
+            key: 'vendors.detail.admins',
+            path: 'admins',
+            async lazy() {
+              const { ViewAdmins } = await import('./index');
+              return { Component: ViewAdmins };
+            },
+          },
+          {
             key: 'vendors.detail.edit',
             path: 'edit',
             async lazy() {

@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import { useOnce } from '@/helpers/hooks';
 import { stringToColor } from '@/helpers/utils';
@@ -14,6 +14,7 @@ import MChartHorizontalBar from '@/components/Charts/MChartHorizontalBar.jsx';
 export default function ViewReport({ ...props }) {
   const doFetch = useFetch();
   const [model] = useModel();
+  const endpointGet = useRoleEndpoint(`/campaigns/${model.id}/report/counts`);
 
   const [dataset, setDataset] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +23,7 @@ export default function ViewReport({ ...props }) {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const { code, data } = await doFetch(`/v1/admin/campaigns/${model.id}/report/counts`);
+      const { code, data } = await doFetch(endpointGet);
       if (code !== 200) {
         throw new Error('API error');
       }

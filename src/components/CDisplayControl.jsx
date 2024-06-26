@@ -84,10 +84,7 @@ const ValueComp = ({
           size="small"
           sx={{ my: -1, px: 1, minWidth: '3em' }}
         >
-          <FasIcon
-            name={valueProps?.icon || 'fa-link'}
-            fontSize="0.875em"
-          />
+          {valueProps?.text || 'View'}
         </Button>
       </Box>
     );

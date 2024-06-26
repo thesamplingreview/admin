@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, Outlet } from 'react-router-dom';
 import { useOnce } from '@/helpers/hooks';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import CLoader from '@/components/CLoader.jsx';
 import CError from '@/components/CError.jsx';
@@ -10,13 +10,14 @@ export default function ProductViewLayout() {
   const { id } = useParams();
   const doFetch = useFetch();
   const [, setModel] = useModel();
+  const endpointGet = useRoleEndpoint(`/products/${id}`);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchModel = async () => {
     setLoading(true);
     try {
-      const { code, data } = await doFetch(`/v1/admin/products/${id}`);
+      const { code, data } = await doFetch(endpointGet);
       if (code !== 200) {
         throw new Error('API error');
       }

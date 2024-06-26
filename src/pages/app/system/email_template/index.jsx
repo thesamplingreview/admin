@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
@@ -13,6 +12,7 @@ import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInput.jsx';
 import CLoadingButton from '@/components/CLoadingButton.jsx';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
+import ConfigItem from '@/components/pages/system/ConfigItem.jsx';
 
 export default function SystemEmailTemplate() {
   const doFetch = useFetch();
@@ -21,11 +21,13 @@ export default function SystemEmailTemplate() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [input, setInput] = useState({
-    sendgrid_template_id_reset_password: '',
-    sendgrid_template_id_campaign_enrolled_user: '',
-    sendgrid_template_id_campaign_enrolled_admin: '',
-    sendgrid_template_id_signup_user: '',
-    sendgrid_template_id_signup_admin: '',
+    mailersend_tmpl_base: '',
+    mailersend_tmpl_reset_password: '',
+    // sendgrid_template_id_reset_password: '',
+    // sendgrid_template_id_campaign_enrolled_user: '',
+    // sendgrid_template_id_campaign_enrolled_admin: '',
+    // sendgrid_template_id_signup_user: '',
+    // sendgrid_template_id_signup_admin: '',
   });
 
   const fetchData = async () => {
@@ -103,7 +105,7 @@ export default function SystemEmailTemplate() {
 
       <Box mt={-2} mb={4}>
         <Typography variant="body2" color="text.light">
-          The email notification will rely on Sendgrid email API and email template features. <br />Refer to Sendgrid documentation for more detail. (<a href="https://docs.sendgrid.com/ui/sending-email/how-to-send-an-email-with-dynamic-templates" target="_blank" rel="noreferrer noopener">link</a>)
+          The email notification will rely on MailerSend email API and email template features. <br />Refer to MailerSend documentation for more detail. (<a href="https://developers.mailersend.com" target="_blank" rel="noreferrer noopener">link</a>)
         </Typography>
       </Box>
 
@@ -125,7 +127,41 @@ export default function SystemEmailTemplate() {
         )}
         onSubmit={handleSubmit}
       >
-        {/* password reset */}
+        {/* base template */}
+        <ConfigItem
+          heading="Base Template"
+          desc={(
+            <>
+              <Typography variant="body2" mb={2}>
+                Base template will be used for dynamic email layout.
+              </Typography>
+              <Box display="flex">
+                <Typography variant="body2" fontSize="0.75em" pt={0.25} mr={2}>
+                  Variables:
+                </Typography>
+                <VariableTags
+                  items={[
+                    '{{html}}',
+                  ]}
+                />
+              </Box>
+            </>
+          )}
+        >
+          <Box mb={0}>
+            <CInput
+              label="Template ID"
+              helperText="Email won't be send out when empty."
+              name="mailersend_tmpl_base"
+              value={input.mailersend_tmpl_base || ''}
+              onChange={handleChange}
+            />
+          </Box>
+        </ConfigItem>
+
+        <Divider />
+
+        {/* reset password */}
         <ConfigItem
           heading="Forgot Password Email"
           desc={(
@@ -151,134 +187,15 @@ export default function SystemEmailTemplate() {
           <Box mb={0}>
             <CInput
               label="Send to user"
-              placeholder="Enter Sendgrid Template ID"
-              helperText="Leave empty to disable email."
-              name="sendgrid_template_id_reset_password"
-              value={input.sendgrid_template_id_reset_password || ''}
-              onChange={handleChange}
-            />
-          </Box>
-        </ConfigItem>
-
-        <Divider />
-
-        {/* user enrolments */}
-        <ConfigItem
-          heading="User Enrolment Email Notification"
-          desc={(
-            <>
-              <Typography variant="body2" mb={2}>
-                A notification when user enrolled into any campaign.
-              </Typography>
-              <Box display="flex">
-                <Typography variant="body2" fontSize="0.75em" pt={0.25} mr={2}>
-                  Variables:
-                </Typography>
-                <VariableTags
-                  items={[
-                    '{{enrolment_id}}',
-                    '{{campaign_name}}',
-                    '{{user_name}}',
-                    '{{user_email}}',
-                  ]}
-                />
-              </Box>
-            </>
-          )}
-        >
-          <Box mb={3}>
-            <CInput
-              label="Send to user"
-              placeholder="Enter Sendgrid Template ID"
-              helperText="Leave empty to disable email."
-              name="sendgrid_template_id_campaign_enrolled_user"
-              value={input.sendgrid_template_id_campaign_enrolled_user || ''}
-              onChange={handleChange}
-            />
-          </Box>
-          <Box mb={0}>
-            <CInput
-              label="Send to admin"
-              placeholder="Enter Sendgrid Template ID"
-              helperText="Leave empty to disable email."
-              name="sendgrid_template_id_campaign_enrolled_admin"
-              value={input.sendgrid_template_id_campaign_enrolled_admin || ''}
-              onChange={handleChange}
-            />
-          </Box>
-        </ConfigItem>
-
-        <Divider />
-
-        {/* user signup */}
-        <ConfigItem
-          heading="User Sign Up Email Notification"
-          desc={(
-            <>
-              <Typography variant="body2" mb={2}>
-                A notification when user signed up.
-              </Typography>
-              <Box display="flex">
-                <Typography variant="body2" fontSize="0.75em" pt={0.25} mr={2}>
-                  Variables:
-                </Typography>
-                <VariableTags
-                  items={[
-                    '{{user_name}}',
-                    '{{user_email}}',
-                  ]}
-                />
-              </Box>
-            </>
-          )}
-        >
-          <Box mb={3}>
-            <CInput
-              label="Send to user"
-              placeholder="Enter Sendgrid Template ID"
-              helperText="Leave empty to disable email."
-              name="sendgrid_template_id_signup_user"
-              value={input.sendgrid_template_id_signup_user || ''}
-              onChange={handleChange}
-            />
-          </Box>
-          <Box mb={0}>
-            <CInput
-              label="Send to admin"
-              placeholder="Enter Sendgrid Template ID"
-              helperText="Leave empty to disable email."
-              name="sendgrid_template_id_signup_admin"
-              value={input.sendgrid_template_id_signup_user || ''}
+              helperText="Email won't be send out when empty."
+              name="mailersend_tmpl_reset_password"
+              value={input.mailersend_tmpl_reset_password || ''}
               onChange={handleChange}
             />
           </Box>
         </ConfigItem>
       </CBox>
     </>
-  );
-}
-
-function ConfigItem({
-  heading,
-  desc,
-  children,
-}) {
-  return (
-    <Grid container>
-      <Grid xs={12} md={7}>
-        <Box p={3}>
-          <Typography variant="h6" fontWeight="600" mb={1}>
-            {heading}
-          </Typography>
-          {desc}
-        </Box>
-      </Grid>
-      <Grid xs={12} md={5} sx={{ borderLeft: '1px solid var(--border-500)' }}>
-        <Box p={3}>
-          {children}
-        </Box>
-      </Grid>
-    </Grid>
   );
 }
 

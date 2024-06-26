@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useOptions, useModel } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
 import CBox from '@/components/CBox.jsx';
@@ -24,6 +24,7 @@ export default function FormEdit({ ...props }) {
   const options = useOptions();
   const pushToast = useToast();
   const [model, setModel] = useModel();
+  const endpointPut = useRoleEndpoint(`/forms/${model.id}`);
 
   const [loading, setLoading] = useState(false);
   const [validator, setValidator] = useState(null);
@@ -43,7 +44,7 @@ export default function FormEdit({ ...props }) {
     setValidator(null);
     try {
       const formdata = { ...input };
-      const { code, data } = await doFetch(`/v1/admin/forms/${model.id}`, {
+      const { code, data } = await doFetch(endpointPut, {
         method: 'PUT',
         data: formdata,
       });
@@ -51,7 +52,10 @@ export default function FormEdit({ ...props }) {
         throw new Error('Invalid API');
       }
       // update cached
-      setModel(data);
+      setModel((oldState) => ({
+        ...oldState,
+        ...data,
+      }));
       setInput(genDefaultInput(options, data));
       // push toast
       pushToast('success', 'Entry updated.');

@@ -10,20 +10,6 @@ export default function ViewDetail({ ...props }) {
   return (
     <CBox title="Entry Detail" toggleable {...props}>
       <CDisplayControl
-        label="Campaign Name"
-        value={model.name}
-      />
-      <CDisplayControl
-        label="Start Date"
-        type="date"
-        value={model.start_date}
-      />
-      <CDisplayControl
-        label="End Date"
-        type="date"
-        value={model.end_date}
-      />
-      <CDisplayControl
         label="Description"
         value={model.description}
       />
@@ -76,6 +62,10 @@ export default function ViewDetail({ ...props }) {
         <Divider />
       </Box>
 
+      <CDisplayControl
+        label="Slug"
+        value={model.slug}
+      />
       <CDisplayControl
         label="SEO Meta Title"
         value={model.meta_title}

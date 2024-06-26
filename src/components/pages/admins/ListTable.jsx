@@ -1,75 +1,50 @@
-import { useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Unstable_Grid2';
-import Chip from '@mui/material/Chip';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint, usePermissions } from '@/contexts/hooks/auth';
 import { useOptions } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
-// import CInput from '@/components/CInput.jsx';
 import CSelect from '@/components/CSelect.jsx';
-import { DataTable, DataTableActions } from '@/components/DataTable';
+import { DataTable } from '@/components/DataTable';
+import BadgeStatus from './BadgeStatus.jsx';
 
 export default function ListTable() {
   const navigate = useNavigate();
   const doFetch = useFetch();
+  const endpointGet = useRoleEndpoint('/admins');
+  const [permissions] = usePermissions();
 
-  const columns = [
-    {
-      key: 'name',
-      name: 'Name',
-      sortable: true,
-    },
-    {
-      key: 'email',
-      name: 'Email Address',
-      sortable: true,
-    },
-    {
-      key: 'status',
-      name: 'Status',
-      sortable: true,
-      render(data) {
-        let color = 'success';
-        if (data.status === 'inactive') {
-          color = 'error';
-        }
-        return (
-          <Chip label={data.status} color={color} size="small" />
-        );
+  const columns = useMemo(() => {
+    return [
+      {
+        key: 'name',
+        name: 'Name',
+        sortable: true,
       },
-    },
-    {
-      key: 'user_role.name',
-      name: 'Role',
-    },
-    {
-      key: 'actions',
-      name: '',
-      width: 100,
-      align: 'right',
-      stopPropagate: true,
-      render(model) {
-        return (
-          <DataTableActions
-            actions={[
-              {
-                key: 'view',
-                name: 'View',
-                icon: 'fa-file-lines',
-                route: appRoute(`/admins/${model.id}`),
-              },
-              {
-                key: 'edit',
-                name: 'edit',
-                icon: 'fa-pencil',
-                route: appRoute(`/admins/${model.id}/edit`),
-              },
-            ]}
-          />
-        );
+      {
+        key: 'email',
+        name: 'Email Address',
+        sortable: true,
       },
-    },
-  ];
+      {
+        key: 'user_role.name',
+        name: 'Role',
+      },
+      {
+        key: 'vendor.name',
+        name: 'Vendor',
+        scope: 'vendors:view',
+      },
+      {
+        key: 'status',
+        name: 'Status',
+        sortable: true,
+        render(model) {
+          return <BadgeStatus status={model.status} />;
+        },
+      },
+    ].filter((d) => !d.scope || permissions.includes(d.scope));
+  }, [permissions]);
 
   const fetchData = useCallback(({
     page, perPage, sort, filters,
@@ -80,14 +55,14 @@ export default function ListTable() {
       sort,
       per_page: perPage,
     };
-    return doFetch('/v1/admin/admins', { params })
+    return doFetch(endpointGet, { params })
       .then((result) => {
         if (result.code !== 200) {
           throw new Error('Invalid response');
         }
         return result;
       });
-  }, [doFetch]);
+  }, [doFetch, endpointGet]);
 
   const handleSelect = (data) => {
     navigate(appRoute(`/admins/${data.id}`));

@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { setValue, toDotProps } from '@/helpers/utils';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
 import { useModel } from '@/contexts/hooks/module';
 import CBox from '@/components/CBox.jsx';
@@ -46,6 +46,8 @@ export default function FormProducts({ formFields, ...props }) {
   const doFetch = useFetch();
   const pushToast = useToast();
   const [model, setModel] = useModel();
+  const endpointGet = useRoleEndpoint(`/campaigns/${model.id}`);
+  const endpointPost = useRoleEndpoint(`/campaigns/${model.id}/products`);
 
   const [inputs, setInputs] = useState(genInputs(model.products));
   const [loading, setLoading] = useState(false);
@@ -106,7 +108,7 @@ export default function FormProducts({ formFields, ...props }) {
       const formdata = {
         products: beInputs,
       };
-      const { code } = await doFetch(`/v1/admin/campaigns/${model.id}/products`, {
+      const { code } = await doFetch(endpointPost, {
         method: 'PUT',
         data: formdata,
       });
@@ -114,7 +116,7 @@ export default function FormProducts({ formFields, ...props }) {
         throw new Error('Invalid API');
       }
       // as returned data was product_campaign data, hence using refresh campaign model to update the model
-      const { data } = await doFetch(`/v1/admin/campaigns/${model.id}`);
+      const { data } = await doFetch(endpointGet);
       setModel(data);
       setInputs(genInputs(data.products));
       // push toast

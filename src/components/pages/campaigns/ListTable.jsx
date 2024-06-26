@@ -1,26 +1,44 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isDate, format } from 'date-fns';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useFetch } from '@/contexts/hooks/auth';
+import Tooltip from '@mui/material/Tooltip';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useOptions } from '@/contexts/hooks/module';
-import { appRoute, publicRoute } from '@/helpers/route';
+import { appRoute } from '@/helpers/route';
 import config from '@/config/app';
 import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInput.jsx';
 import CSelect from '@/components/CSelect.jsx';
-import { DataTable, DataTableActions } from '@/components/DataTable';
+import FasIcon from '@/components/FasIcon.jsx';
+import { DataTable } from '@/components/DataTable';
 import BadgeStatus from './BadgeStatus.jsx';
 
 export default function ListTable({ ...props }) {
   const navigate = useNavigate();
   const doFetch = useFetch();
+  const endpointGet = useRoleEndpoint('/campaigns');
 
   const columns = [
     {
       key: 'name',
       name: 'Name',
       sortable: true,
+      render(model) {
+        return (
+          <>
+            {model.name || '-'}
+            {!(model.form_id && model.review_type) && (
+              <Tooltip title="This campaign has incomplete setup" placement="right" arrow>
+                <Box display="inline" ml={1}>
+                  <FasIcon name="fa-triangle-exclamation" color="#ffb822" />
+                </Box>
+              </Tooltip>
+            )}
+          </>
+        );
+      },
     },
     {
       key: 'slug',
@@ -63,34 +81,6 @@ export default function ListTable({ ...props }) {
         return <BadgeStatus status={model.status} />;
       },
     },
-    {
-      key: 'actions',
-      name: '',
-      width: 100,
-      align: 'right',
-      stopPropagate: true,
-      render(model) {
-        return (
-          <DataTableActions
-            actions={[
-              {
-                key: 'edit',
-                name: 'Edit entry',
-                icon: 'fa-pencil',
-                route: appRoute(`/campaigns/${model.id}/edit`),
-              },
-              {
-                key: 'public',
-                name: 'Campaign URL',
-                icon: 'fa-link',
-                route: publicRoute(`/campaigns/${model.slug}`),
-                otherProps: { target: '_blank' },
-              },
-            ]}
-          />
-        );
-      },
-    },
   ];
 
   const fetchData = useCallback(({
@@ -102,14 +92,14 @@ export default function ListTable({ ...props }) {
       sort,
       per_page: perPage,
     };
-    return doFetch('/v1/admin/campaigns', { params })
+    return doFetch(endpointGet, { params })
       .then((result) => {
         if (result.code !== 200) {
           throw new Error('Invalid response');
         }
         return result;
       });
-  }, [doFetch]);
+  }, [doFetch, endpointGet]);
 
   const handleSelect = (data) => {
     navigate(appRoute(`/campaigns/${data.id}`));

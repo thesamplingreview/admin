@@ -1,5 +1,7 @@
+import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { usePermissions } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import CAvatar from '@/components/CAvatar.jsx';
@@ -7,21 +9,33 @@ import PageNav from '@/components/layouts/PageNav.jsx';
 
 export default function NavView({ active }) {
   const [model] = useModel();
+  const [permissions] = usePermissions();
 
-  const navs = [
-    {
-      key: 'edit',
-      name: 'Edit Detail',
-      route: appRoute(`/admins/${model.id}`),
-      icon: 'fa-user',
-    },
-    {
-      key: 'password',
-      name: 'Change Password',
-      route: appRoute(`/admins/${model.id}/password`),
-      icon: 'fa-key',
-    },
-  ];
+  const navs = useMemo(() => {
+    return [
+      {
+        key: 'edit',
+        name: 'Edit Detail',
+        route: appRoute(`/admins/${model.id}`),
+        icon: 'fa-user',
+        scope: 'admins:edit',
+      },
+      {
+        key: 'password',
+        name: 'Change Password',
+        route: appRoute(`/admins/${model.id}/password`),
+        icon: 'fa-key',
+        scope: 'admins:password',
+      },
+      {
+        key: 'delete',
+        name: 'Delete',
+        route: appRoute(`/admins/${model.id}/delete`),
+        icon: 'fa-trash-can',
+        scope: 'admins:delete',
+      },
+    ].filter((d) => permissions.includes(d.scope));
+  }, [model.id, permissions]);
 
   return (
     <PageNav navs={navs} active={active}>

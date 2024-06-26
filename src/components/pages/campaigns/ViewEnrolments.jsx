@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { isDate, format } from 'date-fns';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import config from '@/config/app';
@@ -17,6 +17,7 @@ export default function ViewEnrolments({ ...props }) {
   const navigate = useNavigate();
   const doFetch = useFetch();
   const [model] = useModel();
+  const endpointGet = useRoleEndpoint('/enrolments');
 
   const columns = [
     {
@@ -53,14 +54,14 @@ export default function ViewEnrolments({ ...props }) {
       sort,
       per_page: perPage,
     };
-    return doFetch('/v1/admin/enrolments', { params })
+    return doFetch(endpointGet, { params })
       .then((result) => {
         if (result.code !== 200) {
           throw new Error('Invalid response');
         }
         return result;
       });
-  }, [doFetch, model.id]);
+  }, [doFetch, model.id, endpointGet]);
 
   const handleSelect = (data) => {
     navigate(appRoute(`/enrolments/${data.id}`));
@@ -80,7 +81,7 @@ export default function ViewEnrolments({ ...props }) {
           Campaign Enrolments
         </Typography>
         <CCsvButton
-          endpoint="/v1/admin/enrolments/export"
+          endpoint={useRoleEndpoint('/enrolments/export')}
           filename="campaign-enrolments.csv"
           filter={{ campaign_id: model.id }}
         />

@@ -1,5 +1,7 @@
+import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { usePermissions } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import CAvatar from '@/components/CAvatar.jsx';
@@ -7,27 +9,41 @@ import PageNav from '@/components/layouts/PageNav.jsx';
 
 export default function NavView({ active }) {
   const [model] = useModel();
+  const [permissions] = usePermissions();
 
-  const navs = [
-    {
-      key: 'overview',
-      name: 'Overview',
-      route: appRoute(`/vendors/${model.id}`),
-      icon: 'fa-file-lines',
-    },
-    {
-      key: 'edit',
-      name: 'Edit Detail',
-      route: appRoute(`/vendors/${model.id}/edit`),
-      icon: 'fa-pencil',
-    },
-    {
-      key: 'delete',
-      name: 'Delete',
-      route: appRoute(`/vendors/${model.id}/delete`),
-      icon: 'fa-trash-can',
-    },
-  ];
+  const navs = useMemo(() => {
+    return [
+      {
+        key: 'overview',
+        name: 'Overview',
+        route: appRoute(`/vendors/${model.id}`),
+        icon: 'fa-file-lines',
+        scope: 'vendors:view',
+      },
+      {
+        key: 'admins',
+        name: 'Admins',
+        route: appRoute(`/vendors/${model.id}/admins`),
+        icon: 'fa-user-cog',
+        count: model.admins_count,
+        scope: 'vendors:edit',
+      },
+      {
+        key: 'edit',
+        name: 'Edit Detail',
+        route: appRoute(`/vendors/${model.id}/edit`),
+        icon: 'fa-pencil',
+        scope: 'vendors:edit',
+      },
+      {
+        key: 'delete',
+        name: 'Delete',
+        route: appRoute(`/vendors/${model.id}/delete`),
+        icon: 'fa-trash-can',
+        scope: 'vendors:delete',
+      },
+    ].filter((d) => permissions.includes(d.scope));
+  }, [model.id, permissions]);
 
   return (
     <PageNav navs={navs} active={active}>

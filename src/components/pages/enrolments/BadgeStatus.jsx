@@ -6,6 +6,9 @@ export default function BadgeStatus({ status }) {
     if (status === 'complete') {
       return 'success';
     }
+    if (status === 'reject') {
+      return 'error';
+    }
     return undefined;
   }, [status]);
 

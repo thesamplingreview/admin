@@ -2,19 +2,20 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isDate, format } from 'date-fns';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useOptions } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import config from '@/config/app';
 import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInput.jsx';
 import CSelect from '@/components/CSelect.jsx';
-import { DataTable, DataTableActions } from '@/components/DataTable';
+import { DataTable } from '@/components/DataTable';
 import BadgeStatus from './BadgeStatus.jsx';
 
 export default function ListTable({ ...props }) {
   const navigate = useNavigate();
   const doFetch = useFetch();
+  const endpointGet = useRoleEndpoint('/enrolments');
 
   const columns = [
     {
@@ -46,27 +47,6 @@ export default function ListTable({ ...props }) {
         return isDate(dt) ? format(dt, config.formatDateTime) : '-';
       },
     },
-    {
-      key: 'actions',
-      name: '',
-      width: 100,
-      align: 'right',
-      stopPropagate: true,
-      render(model) {
-        return (
-          <DataTableActions
-            actions={[
-              {
-                key: 'edit',
-                name: 'Update',
-                icon: 'fa-pencil',
-                route: appRoute(`/enrolments/${model.id}/edit`),
-              },
-            ]}
-          />
-        );
-      },
-    },
   ];
 
   const fetchData = useCallback(({
@@ -78,14 +58,14 @@ export default function ListTable({ ...props }) {
       sort,
       per_page: perPage,
     };
-    return doFetch('/v1/admin/enrolments', { params })
+    return doFetch(endpointGet, { params })
       .then((result) => {
         if (result.code !== 200) {
           throw new Error('Invalid response');
         }
         return result;
       });
-  }, [doFetch]);
+  }, [doFetch, endpointGet]);
 
   const handleSelect = (data) => {
     navigate(appRoute(`/enrolments/${data.id}`));

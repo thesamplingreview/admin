@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { appRoute } from '@/helpers/route';
+import { usePermissions } from '@/contexts/hooks/auth';
 import Button from '@mui/material/Button';
 import CBox from '@/components/CBox.jsx';
 import FasIcon from '@/components/FasIcon.jsx';
@@ -7,6 +8,8 @@ import PageHeader from '@/components/layouts/PageHeader.jsx';
 import ListTable from '@/components/pages/products/ListTable.jsx';
 
 export default function ProductList() {
+  const [permissions] = usePermissions();
+
   return (
     <>
       <PageHeader
@@ -21,15 +24,17 @@ export default function ProductList() {
           },
         ]}
       >
-        <Button
-          component={Link}
-          to={appRoute('/products/add')}
-          variant="contained"
-          color="primary"
-          startIcon={<FasIcon name="fa-circle-plus" />}
-        >
-          New Product
-        </Button>
+        {permissions.includes('products:create') && (
+          <Button
+            component={Link}
+            to={appRoute('/products/add')}
+            variant="contained"
+            color="primary"
+            startIcon={<FasIcon name="fa-circle-plus" />}
+          >
+            New Product
+          </Button>
+        )}
       </PageHeader>
 
       <CBox noPadding mb={5}>

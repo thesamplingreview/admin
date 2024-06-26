@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
 import { useModel } from '@/contexts/hooks/module';
 import { toFormData } from '@/helpers/utils';
@@ -23,6 +23,7 @@ export default function FormEdit() {
   const doFetch = useFetch();
   const pushToast = useToast();
   const [model, setModel] = useModel();
+  const endpointPut = useRoleEndpoint(`/vendors/${model.id}`);
 
   const [loading, setLoading] = useState(false);
   const [validator, setValidator] = useState(null);
@@ -42,7 +43,7 @@ export default function FormEdit() {
     setValidator(null);
     try {
       const formdata = { ...input };
-      const { code, data } = await doFetch(`/v1/admin/vendors/${model.id}`, {
+      const { code, data } = await doFetch(endpointPut, {
         method: 'PUT',
         headers: { 'Content-Type': 'multipart/form-data' },
         data: toFormData(formdata),

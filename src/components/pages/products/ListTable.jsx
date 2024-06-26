@@ -1,18 +1,19 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useOptions } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import CInput from '@/components/CInput.jsx';
 import CSelect from '@/components/CSelect.jsx';
 import CAvatar from '@/components/CAvatar.jsx';
-import { DataTable, DataTableActions } from '@/components/DataTable';
+import { DataTable } from '@/components/DataTable';
 import BadgeStatus from './BadgeStatus.jsx';
 
 export default function ListTable() {
   const navigate = useNavigate();
   const doFetch = useFetch();
+  const endpointGet = useRoleEndpoint('/products');
 
   const columns = [
     {
@@ -44,33 +45,6 @@ export default function ListTable() {
         return <BadgeStatus status={model.status} />;
       },
     },
-    {
-      key: 'actions',
-      name: '',
-      width: 100,
-      align: 'right',
-      stopPropagate: true,
-      render(model) {
-        return (
-          <DataTableActions
-            actions={[
-              {
-                key: 'view',
-                name: 'View',
-                icon: 'fa-file-lines',
-                route: appRoute(`/products/${model.id}`),
-              },
-              {
-                key: 'edit',
-                name: 'edit',
-                icon: 'fa-pencil',
-                route: appRoute(`/products/${model.id}/edit`),
-              },
-            ]}
-          />
-        );
-      },
-    },
   ];
 
   const fetchData = useCallback(({
@@ -82,14 +56,14 @@ export default function ListTable() {
       sort,
       per_page: perPage,
     };
-    return doFetch('/v1/admin/products', { params })
+    return doFetch(endpointGet, { params })
       .then((result) => {
         if (result.code !== 200) {
           throw new Error('Invalid response');
         }
         return result;
       });
-  }, [doFetch]);
+  }, [doFetch, endpointGet]);
 
   const handleSelect = (data) => {
     navigate(appRoute(`/products/${data.id}`));

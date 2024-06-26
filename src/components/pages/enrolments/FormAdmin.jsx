@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useToast } from '@/contexts/hooks/toast';
 import { useOptions, useModel } from '@/contexts/hooks/module';
 import CBox from '@/components/CBox.jsx';
@@ -19,6 +19,7 @@ export default function FormAdmin({ ...props }) {
   const pushToast = useToast();
   const options = useOptions();
   const [model, setModel] = useModel();
+  const endpointPost = useRoleEndpoint(`/enrolments/${model.id}`);
 
   const [loading, setLoading] = useState(false);
   const [validator, setValidator] = useState(null);
@@ -38,7 +39,7 @@ export default function FormAdmin({ ...props }) {
     setValidator(null);
     try {
       const formdata = { ...input };
-      const { code, data } = await doFetch(`/v1/admin/enrolments/${model.id}`, {
+      const { code, data } = await doFetch(endpointPost, {
         method: 'PUT',
         data: formdata,
       });
@@ -88,7 +89,11 @@ export default function FormAdmin({ ...props }) {
       )}
       onSubmit={handleSubmit}
     >
-      <CFormControl label="Status" size={4}>
+      <CFormControl
+        label="Status"
+        size={4}
+        note="Rejected enrollments will not be included in the campaign's quota."
+      >
         <CSelect
           options={options.statuses}
           name="status"

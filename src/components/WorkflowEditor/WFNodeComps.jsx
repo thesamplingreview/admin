@@ -1,0 +1,345 @@
+import { useMemo } from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import FasIcon from '@/components/FasIcon.jsx';
+import WFNodeBlock from './WFNodeBlock.jsx';
+import { useNodes, useAction } from './hooks';
+
+export const NodeTrigger = ({ name, desc }) => {
+  const triggerNode = useMemo(() => ({
+    id: null,
+    type: 'trigger',
+    node_detail: {
+      key: 'trigger',
+      color: '#f7e476',
+      icon: 'fa-bolt',
+      name,
+      desc,
+    },
+  }), [name, desc]);
+
+  return (
+    <>
+      <Box>
+        <WFNodeBlock node={triggerNode} noActions />
+      </Box>
+      <NodeDirectLine node={triggerNode} />
+    </>
+  );
+};
+
+export const NodeEnd = () => {
+  const triggerNode = useMemo(() => ({
+    id: null,
+    type: 'end_action',
+    node_detail: {
+      key: 'end_action',
+      color: '#393457',
+      icon: 'fa-ban',
+      name: 'End',
+      desc: 'End of actions',
+    },
+  }), []);
+
+  return (
+    <Box>
+      <WFNodeBlock node={triggerNode} noActions />
+    </Box>
+  );
+};
+
+export const NodeItem = ({ node }) => {
+  const [nodes] = useNodes();
+
+  const isChainable = useMemo(() => {
+    return !node.node_detail?.unchainable;
+  }, [node]);
+
+  const isConditional = useMemo(() => {
+    return node.node_detail?.conditionable?.length;
+  }, [node]);
+
+  const childNodes = useMemo(() => {
+    // not chainable, simply return
+    if (!isChainable) {
+      return {};
+    }
+
+    let directNode = null;
+    let trueNode = null;
+    let falseNode = null;
+
+    if (node.child_id) {
+      directNode = nodes.find((n) => n.id === node.child_id);
+    }
+    if (isConditional && node.cond_ids) {
+      trueNode = nodes.find((n) => n.id === node.cond_ids.true) || null;
+      falseNode = nodes.find((n) => n.id === node.cond_ids.false) || null;
+    }
+    return { directNode, trueNode, falseNode };
+  }, [node, nodes, isConditional, isChainable]);
+
+  return (
+    <>
+      {/* main node */}
+      <Box>
+        <WFNodeBlock node={node} />
+      </Box>
+
+      {/* non-conditional line */}
+      {!isConditional && isChainable && (
+        <NodeDirectLine node={node} />
+      )}
+
+      {/* conditional line */}
+      {isConditional && isChainable && (
+        <NodeCondsLine
+          node={node}
+          trueNode={childNodes.trueNode}
+          falseNode={childNodes.falseNode}
+        />
+      )}
+
+      {/* child node */}
+      {childNodes.directNode && (
+        <NodeItem node={childNodes.directNode} />
+      )}
+    </>
+  );
+};
+
+export const NodeHorLine = ({ pos }) => {
+  return (
+    <Box
+      sx={{
+        position: 'absolute',
+        width: 'calc(50% + 4px)',
+        height: '4px',
+        marginLeft: '-2px',
+        marginRight: '-2px',
+        bgcolor: 'var(--wf-line-color)',
+        transition: 'background .3s',
+        ...pos,
+      }}
+    />
+  );
+};
+
+export const NodeVertLine = ({ addable }) => {
+  return (
+    <>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          width: '4px',
+          left: 'calc(50% - 2px)',
+          bgcolor: 'var(--wf-line-color)',
+          transition: 'background .3s',
+        }}
+      />
+      {addable && (
+        <Box
+          sx={{
+            position: 'absolute',
+            zIndex: 1,
+            top: '50%',
+            left: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1rem',
+            width: '1.5em',
+            height: '1.5em',
+            borderRadius: '50%',
+            bgcolor: 'var(--wf-line-color)',
+            transform: 'translate(-50%, -50%)',
+            transition: 'background .3s',
+          }}
+        >
+          <FasIcon name="fa-plus" fontSize="0.75em" color="#fff" />
+        </Box>
+      )}
+    </>
+  );
+};
+
+export const NodeDirectLine = ({ node }) => {
+  const showNewNode = useAction('showNewNode');
+
+  const handleAdd = () => {
+    showNewNode({
+      nodeId: node.id,
+      nodePos: null,
+    });
+  };
+
+  return (
+    <Box
+      position="relative"
+      flexGrow="1"
+      width="var(--wf-width)"
+      mx="auto"
+      className="clickable"
+      sx={{
+        minHeight: 'calc(var(--wf-gap) * 2)',
+        '&:hover': {
+          '--wf-line-color': '#a4a4a4',
+        },
+      }}
+      onClick={handleAdd}
+    >
+      <NodeVertLine addable />
+    </Box>
+  );
+};
+
+export const NodeCondsLine = ({ node, trueNode, falseNode }) => {
+  const showNewNode = useAction('showNewNode');
+
+  const handleAdd = (pos) => {
+    showNewNode({
+      nodeId: node.id,
+      nodePos: pos || null,
+    });
+  };
+
+  return (
+    <Box display="flex" flexDirection="column" flexGrow="1">
+      {/* top join line */}
+      <Box
+        position="relative"
+        sx={{ minHeight: 'calc(var(--wf-gap) * 1)' }}
+      >
+        <NodeVertLine />
+      </Box>
+
+      <Box display="flex" className="cond-nodes">
+        {/* left */}
+        <NodeCondCol
+          type="true"
+          label={node.node_detail?.conditionable?.[0] || 'True'}
+          node={trueNode}
+          onAdd={handleAdd}
+        />
+        {/* right */}
+        <NodeCondCol
+          type="false"
+          label={node.node_detail?.conditionable?.[1] || 'False'}
+          node={falseNode}
+          onAdd={handleAdd}
+        />
+      </Box>
+
+      {/* btm join line */}
+      <Box
+        position="relative"
+        className="clickable"
+        flexGrow="1"
+        width="var(--wf-width)"
+        mx="auto"
+        sx={{
+          minHeight: 'calc(var(--wf-gap) * 2)',
+          '&:hover': {
+            '--wf-line-color': '#a4a4a4',
+          },
+        }}
+        onClick={() => handleAdd()}
+      >
+        <NodeVertLine addable />
+      </Box>
+    </Box>
+  );
+};
+
+export const NodeCondCol = ({
+  node,
+  type,
+  label,
+  onAdd,
+}) => {
+  const handleAdd = () => {
+    onAdd(type);
+  };
+
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      ml={type === 'true' ? 'auto' : 0}
+      mr={type === 'false' ? 'auto' : 0}
+    >
+      <Box
+        position="relative"
+        width="100%"
+        height="calc(var(--wf-gap) * 0.5)"
+      >
+        <NodeHorLine
+          pos={{ left: type === 'true' ? '50%' : '0' }}
+        />
+        <NodeVertLine />
+        <Typography
+          component="div"
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: '50%',
+            fontSize: '0.75rem',
+            fontWeight: 500,
+            color: '#999',
+            transform: 'translate(-50%, -115%)',
+          }}
+        >
+          {label}
+        </Typography>
+      </Box>
+
+      {/* if have node, rely on node add */}
+      {node && (
+        <Box
+          display="flex"
+          flexDirection="column"
+          flexGrow="1"
+          px={2}
+        >
+          <NodeItem node={node} />
+        </Box>
+      )}
+      {/* if don't have node, enable add for pos */}
+      {!node && (
+        <Box
+          position="relative"
+          flexGrow="1"
+          width="var(--wf-width)"
+          mx="auto"
+          className="clickable"
+          sx={{
+            // marginTop: 'calc(var(--wf-gap) * -0.5)',
+            minHeight: 'calc(var(--wf-gap) * 2)',
+            '&:hover': {
+              '--wf-line-color': '#a4a4a4',
+            },
+          }}
+          onClick={handleAdd}
+        >
+          <NodeVertLine addable />
+        </Box>
+      )}
+
+      <Box
+        position="relative"
+        width="100%"
+        height="calc(var(--wf-gap) * 0.5)"
+      >
+        <NodeVertLine />
+        <NodeHorLine
+          pos={{
+            left: type === 'true' ? '50%' : '0',
+            bottom: 0,
+          }}
+        />
+      </Box>
+    </Box>
+  );
+};

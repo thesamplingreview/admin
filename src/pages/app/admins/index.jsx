@@ -4,3 +4,4 @@ export { default as AddIndex } from './add/index.jsx';
 export { default as ViewLayout } from './view/layout.jsx';
 export { default as ViewEdit } from './view/edit.jsx';
 export { default as ViewPassword } from './view/password.jsx';
+export { default as ViewDelete } from './view/delete.jsx';

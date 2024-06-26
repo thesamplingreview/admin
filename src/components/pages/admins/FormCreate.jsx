@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { useFetch } from '@/contexts/hooks/auth';
+import { appRoute } from '@/helpers/route';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useOptions } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
 import CInput from '@/components/CInput.jsx';
@@ -14,14 +16,15 @@ function genDefaultInput(options, model = null) {
     password: '',
     name: model?.name || '',
     role_id: model?.role_id || options.roles?.[0]?.id || '',
-    status: model?.status || options.statuses?.[0]?.id || '',
   };
 }
 
 export default function FormCreate() {
+  const navigate = useNavigate();
   const doFetch = useFetch();
   const pushToast = useToast();
   const options = useOptions();
+  const endpointPost = useRoleEndpoint('/admins');
 
   const [loading, setLoading] = useState(false);
   const [validator, setValidator] = useState(null);
@@ -41,7 +44,7 @@ export default function FormCreate() {
     setValidator(null);
     try {
       const formdata = { ...input };
-      const { code } = await doFetch('/v1/admin/admins', {
+      const { code } = await doFetch(endpointPost, {
         method: 'POST',
         data: formdata,
       });
@@ -52,6 +55,8 @@ export default function FormCreate() {
       setInput(genDefaultInput(options));
       // push toast
       pushToast('success', 'Entry created!');
+      // redirect
+      navigate(appRoute('/admins'));
       // redirect?
     } catch (err) {
       if (err.response?.data?.code === 422) {
@@ -61,8 +66,7 @@ export default function FormCreate() {
         }), {}));
         pushToast('error', 'Invalid submission!');
       } else {
-        // eslint-disable-next-line no-console
-        console.error(err);
+        // console.error(err);
         pushToast('error', 'Failed to update entry.');
       }
     }
@@ -71,6 +75,17 @@ export default function FormCreate() {
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
+      <CFormControl label="Admin Name">
+        <CInput
+          name="name"
+          value={input.name}
+          label="Enter name"
+          required
+          error={validator?.name}
+          onChange={handleChange}
+        />
+      </CFormControl>
+
       <CFormControl label="Login Email">
         <CInput
           type="email"
@@ -95,40 +110,19 @@ export default function FormCreate() {
         />
       </CFormControl>
 
-      <CFormControl label="Admin Name">
-        <CInput
-          name="name"
-          value={input.name}
-          label="Enter name"
-          required
-          error={validator?.name}
-          onChange={handleChange}
-        />
-      </CFormControl>
-
-      <CFormControl label="Admin Role">
-        <CSelect
-          name="role_id"
-          value={input.role_id}
-          label="Select role"
-          options={options.roles}
-          required
-          error={validator?.role_id}
-          onChange={handleChange}
-        />
-      </CFormControl>
-
-      <CFormControl label="Status">
-        <CSelect
-          name="status"
-          value={input.status}
-          label="Select status"
-          options={options.statuses}
-          required
-          error={validator?.status}
-          onChange={handleChange}
-        />
-      </CFormControl>
+      {options.roles?.length > 1 && (
+        <CFormControl label="Admin Role">
+          <CSelect
+            name="role_id"
+            value={input.role_id}
+            label="Select role"
+            options={options.roles}
+            required
+            error={validator?.role_id}
+            onChange={handleChange}
+          />
+        </CFormControl>
+      )}
 
       <Box display="flex" justifyContent="flex-end" mt={3}>
         <CLoadingButton

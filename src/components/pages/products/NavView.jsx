@@ -1,5 +1,7 @@
+import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { usePermissions } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import { appRoute } from '@/helpers/route';
 import CAvatar from '@/components/CAvatar.jsx';
@@ -7,27 +9,33 @@ import PageNav from '@/components/layouts/PageNav.jsx';
 
 export default function NavView({ active }) {
   const [model] = useModel();
+  const [permissions] = usePermissions();
 
-  const navs = [
-    {
-      key: 'overview',
-      name: 'Overview',
-      route: appRoute(`/products/${model.id}`),
-      icon: 'fa-file-lines',
-    },
-    {
-      key: 'edit',
-      name: 'Edit Detail',
-      route: appRoute(`/products/${model.id}/edit`),
-      icon: 'fa-pencil',
-    },
-    {
-      key: 'delete',
-      name: 'Delete',
-      route: appRoute(`/products/${model.id}`),
-      icon: 'fa-trash-can',
-    },
-  ];
+  const navs = useMemo(() => {
+    return [
+      {
+        key: 'overview',
+        name: 'Overview',
+        route: appRoute(`/products/${model.id}`),
+        icon: 'fa-file-lines',
+        scope: 'products:view',
+      },
+      {
+        key: 'edit',
+        name: 'Edit Detail',
+        route: appRoute(`/products/${model.id}/edit`),
+        icon: 'fa-pencil',
+        scope: 'products:edit',
+      },
+      {
+        key: 'delete',
+        name: 'Delete',
+        route: appRoute(`/products/${model.id}`),
+        icon: 'fa-trash-can',
+        scope: 'products:delete',
+      },
+    ].filter((d) => permissions.includes(d.scope));
+  }, [model.id, permissions]);
 
   return (
     <PageNav navs={navs} active={active}>

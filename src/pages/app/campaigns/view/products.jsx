@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import { appRoute } from '@/helpers/route';
 import { useOnce } from '@/helpers/hooks';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import PageHeader from '@/components/layouts/PageHeader.jsx';
 import CLoader from '@/components/CLoader.jsx';
@@ -13,14 +13,15 @@ import FormProducts from '@/components/pages/campaigns/FormProducts';
 export default function CampaignProducts() {
   const doFetch = useFetch();
   const [model] = useModel();
+  const endpointGet = useRoleEndpoint(`/forms/${model.form_id}`);
   const [loading, setLoading] = useState(true);
   const [formFields, setFormFields] = useState([]);
 
   // fetch form detail, need form's fields info
-  const fetchForm = async (formId) => {
+  const fetchForm = async () => {
     setLoading(true);
     try {
-      const { code, data } = await doFetch(`/v1/admin/forms/${formId}`);
+      const { code, data } = await doFetch(endpointGet);
       if (code !== 200) {
         throw new Error('API error');
       }
@@ -33,7 +34,7 @@ export default function CampaignProducts() {
 
   useOnce(() => {
     if (model.form_id) {
-      fetchForm(model.form_id);
+      fetchForm();
     } else {
       setLoading(false);
     }
