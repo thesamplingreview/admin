@@ -54,7 +54,7 @@ export default function ViewReviews({ ...props }) {
         return (
           <Box minWidth="1px">
             <Box dangerouslySetInnerHTML={{ __html: data.review.replace(/\n/g, '<br>') }} />
-            {data.uploads?.length && (
+            {data.uploads?.length > 0 && (
               <Box
                 display="flex"
                 flexWrap="wrap"
