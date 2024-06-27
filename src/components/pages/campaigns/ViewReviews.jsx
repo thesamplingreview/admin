@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react';
+import { useCallback } from 'react';
 import { isDate, format } from 'date-fns';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -6,6 +6,7 @@ import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import config from '@/config/app';
 import CBox from '@/components/CBox.jsx';
+import FbGallery from '@/components/FancyBox/FbGallery.jsx';
 import FasIcon from '@/components/FasIcon.jsx';
 import CCsvButton from '@/components/CCsvButton.jsx';
 import { DataTable } from '@/components/DataTable';
@@ -15,6 +16,20 @@ export default function ViewReviews({ ...props }) {
   const doFetch = useFetch();
   const [model] = useModel();
   const endpointGet = useRoleEndpoint('/reviews');
+
+  const getFileType = (url) => {
+    const urlSegs = url.split('.');
+    const ext = urlSegs[urlSegs.length - 1];
+    // images
+    if (['jpg', 'jpeg', 'png', 'webp'].includes(ext)) {
+      return 'image';
+    }
+    // video
+    if (['mp4', 'mov', '3gp'].includes(ext)) {
+      return 'video';
+    }
+    return '';
+  };
 
   const columns = [
     {
@@ -54,18 +69,15 @@ export default function ViewReviews({ ...props }) {
         return (
           <Box minWidth="1px">
             <Box dangerouslySetInnerHTML={{ __html: data.review.replace(/\n/g, '<br>') }} />
-            {data.uploads?.length > 0 && (
-              <Box
-                display="flex"
-                flexWrap="wrap"
-                gap={1}
-                mt={2}
-              >
-                {data.uploads?.map((d) => (
-                  <MediaAsset key={d.id} data={d} />
-                ))}
-              </Box>
-            )}
+            <FbGallery
+              dataset={data.uploads?.map((d) => ({
+                src: d.url,
+                type: getFileType(d.url),
+              })) || []}
+              size="80px"
+              gap={1}
+              mt={2}
+            />
           </Box>
         );
       },
@@ -133,68 +145,5 @@ export default function ViewReviews({ ...props }) {
         fetcher={fetchData}
       />
     </CBox>
-  );
-}
-
-function MediaAsset({ data }) {
-  // @todo - enhance the way of checking file type?
-  const mimetype = useMemo(() => {
-    const urlSegs = data.url.split('.');
-    const ext = urlSegs[urlSegs.length - 1];
-    // images
-    if (['jpg', 'jpeg', 'png', 'webp'].includes(ext)) {
-      return 'image';
-    }
-    // video
-    if (['mp4', 'mov', '3gp'].includes(ext)) {
-      return 'video';
-    }
-    return 'file';
-  }, [data.url]);
-
-  return (
-    <Box
-      component="a"
-      href={data.url}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      width="80px"
-      height="80px"
-      color="text.main"
-      overflow="hidden"
-      bgcolor="var(--bg-500)"
-      border="1px solid transparent"
-      borderRadius=".5rem"
-      target="_blank"
-      sx={{
-        textDecoration: 'none',
-        '&:hover': {
-          color: 'primary.main',
-          borderColor: 'text.light',
-        },
-      }}
-    >
-      {mimetype === 'image' && (
-        <img
-          src={data.url}
-          width="80"
-          height="80"
-          loading="lazy"
-          alt=""
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-          }}
-        />
-      )}
-      {mimetype === 'video' && (
-        <FasIcon name="fa-play" size="1.5rem" />
-      )}
-      {mimetype === 'file' && (
-        <FasIcon name="fa-file-lines" size="1.5rem" />
-      )}
-    </Box>
   );
 }

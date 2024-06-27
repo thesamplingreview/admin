@@ -7,7 +7,7 @@ export default function RatingStars({ rating }) {
     const stars = [];
     for (let i = 0; i < rating; i += 1) {
       stars.push((
-        <FasIcon name="fa-star" color="#fdcc0d" />
+        <FasIcon key={`rate_${i}`} name="fa-star" color="#fdcc0d" />
       ));
     }
     return stars;

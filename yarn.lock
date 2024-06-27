@@ -436,6 +436,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fancyapps/ui@npm:^5.0.36":
+  version: 5.0.36
+  resolution: "@fancyapps/ui@npm:5.0.36"
+  checksum: 3e3a9bb71e3fa84d49ac7713a8d235d455cf3edb5b063d05042c845e98e7ce66887190a93c5fd6c1c18b7d0db4604f6c4b582707b766b7b2145a0d55c846c4ba
+  languageName: node
+  linkType: hard
+
 "@floating-ui/core@npm:^1.4.2":
   version: 1.5.0
   resolution: "@floating-ui/core@npm:1.5.0"
@@ -5193,6 +5200,7 @@ __metadata:
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
+    "@fancyapps/ui": ^5.0.36
     "@mui/material": ^5.14.18
     "@types/react": ^18.2.15
     "@types/react-dom": ^18.2.7

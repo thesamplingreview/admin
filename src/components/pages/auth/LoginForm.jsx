@@ -45,7 +45,7 @@ export default function LoginForm({ disabled }) {
         />
       </Box>
       <Typography variant="h5">
-        Admin Portal
+        Business Portal
       </Typography>
       <Typography variant="body1" color="text.light" mt={1}>
         Please login to proceed.
