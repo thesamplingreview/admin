@@ -10,6 +10,7 @@ export default function DTFilters({ children }) {
   const { loading } = useTableState();
   // eslint-disable-next-line no-unused-vars
   const [filters, setFilters] = useMeta('filters');
+  const [, { setPage }] = useMeta('pagin');
 
   // const $form = useRef(null);
   const [isShow, setIsShow] = useState(false);
@@ -21,6 +22,7 @@ export default function DTFilters({ children }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const input = getFormData(e.target);
+    setPage(1);
     setFilters(input);
   };
 
