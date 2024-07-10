@@ -26,6 +26,7 @@ export const ModuleProvider = ({
 
   const fetchInitData = async () => {
     if (!fetchInit) {
+      setInit(true);
       return;
     }
     setLoading(true);
