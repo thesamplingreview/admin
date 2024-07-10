@@ -32,16 +32,16 @@ export const ModuleProvider = ({
     try {
       const result = await fetchInit();
       setOptions(result);
+      setLoading(false);
+      setInit(true);
     } catch (err) {
+      setLoading(false);
       setError(err);
     }
-    setLoading(false);
   };
 
   useOnce(() => {
-    fetchInitData().then(() => {
-      setInit(true);
-    });
+    fetchInitData();
   });
 
   return (

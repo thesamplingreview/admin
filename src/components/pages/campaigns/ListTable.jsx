@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { isDate, format } from 'date-fns';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -12,13 +12,14 @@ import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInput.jsx';
 import CSelect from '@/components/CSelect.jsx';
 import FasIcon from '@/components/FasIcon.jsx';
-import { DataTable } from '@/components/DataTable';
+import { DataTable, useInitTableData } from '@/components/DataTable';
 import BadgeStatus from './BadgeStatus.jsx';
 
 export default function ListTable({ ...props }) {
   const navigate = useNavigate();
   const doFetch = useFetch();
   const endpointGet = useRoleEndpoint('/campaigns');
+  const initTableData = useInitTableData();
 
   const columns = [
     {
@@ -108,19 +109,16 @@ export default function ListTable({ ...props }) {
   return (
     <CBox {...props} noPadding>
       <DataTable
+        key={initTableData.key}
         columns={columns}
-        initData={{
-          page: 1,
-          perPage: 20,
-          sort: '',
-          filters: {},
-        }}
+        initData={initTableData}
         dataProps={{
           data: 'data',
           total: 'meta.total',
         }}
         selectable
         filterable
+        alterHistory
         filtersBody={<FiltersBody />}
         fetcher={fetchData}
         onSelect={handleSelect}
@@ -131,6 +129,7 @@ export default function ListTable({ ...props }) {
 
 const FiltersBody = () => {
   const options = useOptions();
+  const [searchParams] = useSearchParams();
 
   return (
     <Grid container spacing={4}>
@@ -138,7 +137,7 @@ const FiltersBody = () => {
         <CSelect
           label="Type"
           name="state"
-          defaultValue="" // convert to uncontrolled input
+          defaultValue={searchParams.get('state') || ''} // convert to uncontrolled input
           // size="small"
           placeholder="Show all"
           options={options.states || []}
@@ -148,7 +147,7 @@ const FiltersBody = () => {
         <CSelect
           label="Status"
           name="status"
-          defaultValue="" // convert to uncontrolled input
+          defaultValue={searchParams.get('status') || ''}
           placeholder="Show all"
           options={options.statuses || []}
         />
@@ -158,6 +157,7 @@ const FiltersBody = () => {
           label="Campaign name"
           name="name"
           placeholder="Search name"
+          defaultValue={searchParams.get('name') || ''}
         />
       </Grid>
     </Grid>

@@ -1,21 +1,26 @@
 import { useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { isDate, format } from 'date-fns';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useModel } from '@/contexts/hooks/module';
 import config from '@/config/app';
 import CBox from '@/components/CBox.jsx';
+import CInput from '@/components/CInput.jsx';
+import CSelect from '@/components/CSelect.jsx';
 import FbGallery from '@/components/FancyBox/FbGallery.jsx';
 import FasIcon from '@/components/FasIcon.jsx';
 import CCsvButton from '@/components/CCsvButton.jsx';
-import { DataTable } from '@/components/DataTable';
+import { DataTable, useInitTableData } from '@/components/DataTable';
 import RatingStars from './RatingStars.jsx';
 
 export default function ViewReviews({ ...props }) {
   const doFetch = useFetch();
   const [model] = useModel();
   const endpointGet = useRoleEndpoint('/reviews');
+  const initTableData = useInitTableData();
 
   const getFileType = (url) => {
     const urlSegs = url.split('.');
@@ -95,8 +100,11 @@ export default function ViewReviews({ ...props }) {
     },
   ];
 
-  const fetchData = useCallback(({ page, perPage, sort }) => {
+  const fetchData = useCallback(({
+    page, perPage, sort, filters,
+  }) => {
     const params = {
+      ...filters,
       campaign_id: model.id,
       page,
       sort,
@@ -131,19 +139,58 @@ export default function ViewReviews({ ...props }) {
         />
       </Box>
       <DataTable
+        key={initTableData.key}
         columns={columns}
-        initData={{
-          page: 1,
-          perPage: 20,
-          sort: '',
-          filters: {},
-        }}
+        initData={initTableData}
         dataProps={{
           data: 'data',
           total: 'meta.total',
         }}
         fetcher={fetchData}
+        filterable
+        alterHistory
+        filtersBody={<FiltersBody />}
       />
     </CBox>
   );
 }
+
+const FiltersBody = () => {
+  const [searchParams] = useSearchParams();
+
+  return (
+    <Grid container spacing={4}>
+      <Grid xs={12} md={6} lg={3}>
+        <CSelect
+          label="Rating"
+          name="rating"
+          defaultValue={searchParams.get('rating') || ''}
+          placeholder="Show all"
+          options={[
+            { id: 5, name: '5 stars' },
+            { id: 4, name: '4 stars' },
+            { id: 3, name: '3 stars' },
+            { id: 2, name: '2 stars' },
+            { id: 1, name: '1 star' },
+          ]}
+        />
+      </Grid>
+      <Grid xs={12} md={6} lg={3}>
+        <CInput
+          label="User name"
+          name="user_name"
+          placeholder="Search name"
+          defaultValue={searchParams.get('user_name') || ''}
+        />
+      </Grid>
+      <Grid xs={12} md={6} lg={3}>
+        <CInput
+          label="User email"
+          name="user_email"
+          placeholder="Search email"
+          defaultValue={searchParams.get('user_email') || ''}
+        />
+      </Grid>
+    </Grid>
+  );
+};

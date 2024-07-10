@@ -99,7 +99,7 @@ export const AuthProvider = ({
     return data;
   }, [setTokenHook, setUserHook]);
 
-  useOnce(async () => {
+  const initAuth = async () => {
     if (!token && !refreshToken) {
       setLoading(false);
       return;
@@ -115,6 +115,10 @@ export const AuthProvider = ({
       // ...
     }
     setLoading(false);
+  };
+
+  useOnce(() => {
+    initAuth();
   });
 
   return (

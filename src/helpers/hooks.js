@@ -35,3 +35,19 @@ export function useUpdated(cb, dependencies = []) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies);
 }
+
+/**
+ * Debounce trigger of hook
+ *
+ * @param  {void}  cb
+ * @param  {array}  dependencies
+ */
+export function useDebounce(cb, dependencies = [], delay = 500) {
+  const debounce = useRef(null);
+
+  useEffect(() => {
+    clearTimeout(debounce.current);
+    debounce.current = setTimeout(cb, delay);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, dependencies);
+}

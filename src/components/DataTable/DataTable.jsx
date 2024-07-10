@@ -28,7 +28,7 @@ export default function DataTable({
   },
   selectable = false,
   filterable = false,
-  fixed = false,
+  alterHistory = false,
   filtersBody,
   fetcher,
   onSelect,
@@ -39,6 +39,7 @@ export default function DataTable({
       initData={initData}
       dataProps={dataProps}
       fetcher={fetcher}
+      alterHistory={alterHistory}
     >
       {filterable && <DTFilters>{filtersBody}</DTFilters>}
 
