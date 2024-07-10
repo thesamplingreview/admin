@@ -21,9 +21,7 @@ export default function ViewEnrolments({ ...props }) {
   const doFetch = useFetch();
   const [model] = useModel();
   const endpointGet = useRoleEndpoint('/enrolments');
-  const initTableData = useInitTableData({
-    perPage: 1,
-  });
+  const initTableData = useInitTableData();
 
   const columns = [
     {
