@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { isDate, format } from 'date-fns';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
@@ -9,13 +9,16 @@ import config from '@/config/app';
 import CBox from '@/components/CBox.jsx';
 import CInput from '@/components/CInput.jsx';
 import CSelect from '@/components/CSelect.jsx';
-import { DataTable } from '@/components/DataTable';
+import { DataTable, useInitTableData } from '@/components/DataTable';
 import BadgeStatus from './BadgeStatus.jsx';
 
 export default function ListTable({ ...props }) {
   const navigate = useNavigate();
   const doFetch = useFetch();
   const endpointGet = useRoleEndpoint('/enrolments');
+  const initTableData = useInitTableData({
+    sort: '-created_at',
+  });
 
   const columns = [
     {
@@ -74,19 +77,16 @@ export default function ListTable({ ...props }) {
   return (
     <CBox {...props} noPadding>
       <DataTable
+        key={initTableData.key}
         columns={columns}
-        initData={{
-          page: 1,
-          perPage: 20,
-          sort: '-created_at',
-          filters: {},
-        }}
+        initData={initTableData}
         dataProps={{
           data: 'data',
           total: 'meta.total',
         }}
         selectable
         filterable
+        alterHistory
         filtersBody={<FiltersBody />}
         fetcher={fetchData}
         onSelect={handleSelect}
@@ -96,6 +96,7 @@ export default function ListTable({ ...props }) {
 }
 
 const FiltersBody = () => {
+  const [searchParams] = useSearchParams();
   const options = useOptions();
 
   return (
@@ -104,7 +105,7 @@ const FiltersBody = () => {
         <CSelect
           label="Campaign"
           name="campaign_id"
-          defaultValue="" // convert to uncontrolled input
+          defaultValue={searchParams.get('campaign_id') || ''} // convert to uncontrolled input
           // size="small"
           placeholder="Show all"
           options={options.campaigns || []}
@@ -114,7 +115,7 @@ const FiltersBody = () => {
         <CSelect
           label="Status"
           name="status"
-          defaultValue="" // convert to uncontrolled input
+          defaultValue={searchParams.get('status') || ''}
           placeholder="Show all"
           options={options.statuses || []}
         />
@@ -124,6 +125,7 @@ const FiltersBody = () => {
           type="date"
           label="From Date"
           name="date_from"
+          defaultValue={searchParams.get('date_from') || ''}
           placeholder="Select date"
           InputLabelProps={{ shrink: true }}
         />
@@ -133,6 +135,7 @@ const FiltersBody = () => {
           type="date"
           label="To Date"
           name="date_to"
+          defaultValue={searchParams.get('date_to') || ''}
           placeholder="Select date"
           InputLabelProps={{ shrink: true }}
         />
