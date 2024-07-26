@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Box from '@mui/material/Box';
+import { useOnce } from '@/helpers/hooks';
 import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useOptions, useModel } from '@/contexts/hooks/module';
 import { useToast } from '@/contexts/hooks/toast';
@@ -14,6 +15,7 @@ function genDefaultInput(options, model = null) {
     email: model?.email || '',
     role_id: model?.role_id || options.roles?.[0]?.id || '',
     status: model?.status || options.statuses?.[0]?.id || '',
+    vendor_id: model?.vendor_id || '',
   };
 }
 
@@ -27,6 +29,12 @@ export default function FormEdit() {
   const [loading, setLoading] = useState(false);
   const [validator, setValidator] = useState(null);
   const [input, setInput] = useState(genDefaultInput(options, model));
+
+  // on vendor UI, options.roles won't include group info, so this flag will always return false
+  const isVendorRole = useMemo(() => {
+    const role = options.roles.find((d) => d.id === input.role_id);
+    return role?.group === 'vendor';
+  }, [options.roles, input.role_id]);
 
   const handleChange = (e) => {
     setInput((state) => ({
@@ -109,6 +117,18 @@ export default function FormEdit() {
         </CFormControl>
       )}
 
+      {isVendorRole && (
+        <CFormControl label="Vendor">
+          <VendorSelectInput
+            name="vendor_id"
+            value={input.vendor_id}
+            required
+            error={validator?.vendor_id}
+            onChange={handleChange}
+          />
+        </CFormControl>
+      )}
+
       <CFormControl label="Status">
         <CSelect
           name="status"
@@ -133,3 +153,50 @@ export default function FormEdit() {
     </Box>
   );
 }
+
+const VendorSelectInput = ({
+  name,
+  value,
+  required,
+  error,
+  onChange,
+}) => {
+  const doFetch = useFetch();
+  const endpointPut = useRoleEndpoint('/vendors');
+
+  const [loading, setLoading] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [internalError, setInternalError] = useState('');
+
+  const fetchVendors = async () => {
+    setLoading(true);
+    try {
+      const { code, data } = await doFetch(endpointPut);
+      if (code !== 200) {
+        throw new Error('Invalid API');
+      }
+      setOptions(data);
+    } catch (err) {
+      setInternalError(err.message);
+    }
+    setLoading(false);
+  };
+
+  useOnce(() => {
+    fetchVendors();
+  });
+
+  return (
+    <CSelect
+      name={name}
+      value={value}
+      label="Select vendor"
+      placeholder="Select"
+      options={options}
+      required={required}
+      disabled={loading}
+      error={internalError || error}
+      onChange={onChange}
+    />
+  );
+};
