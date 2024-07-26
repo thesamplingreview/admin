@@ -1,13 +1,14 @@
 import { useState, useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ModuleProvider } from '@/contexts/ModuleContext.jsx';
-import { useFetch } from '@/contexts/hooks/auth';
+import { useFetch, useRoleEndpoint } from '@/contexts/hooks/auth';
 import { useOnce } from '@/helpers/hooks';
 import CLoader from '@/components/CLoader.jsx';
 import CError from '@/components/CError.jsx';
 
 export default function MyLayout() {
   const doFetch = useFetch();
+  const endpointGet = useRoleEndpoint('/users/all/options');
 
   const [my, setMy] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,9 +16,9 @@ export default function MyLayout() {
 
   // re-using users module options (contact prefixes)
   const fetchOptions = useCallback(() => {
-    return doFetch('/v1/admin/users/all/options')
+    return doFetch(endpointGet)
       .then(({ data }) => data);
-  }, [doFetch]);
+  }, [doFetch, endpointGet]);
 
   useOnce(async () => {
     setLoading(true);
