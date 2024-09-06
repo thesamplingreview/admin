@@ -6,3 +6,4 @@ export { default as ViewOverview } from './view/overview.jsx';
 export { default as ViewEdit } from './view/edit.jsx';
 export { default as ViewPassword } from './view/password.jsx';
 export { default as ViewCampaigns } from './view/campaigns.jsx';
+export { default as ViewDelete } from './view/delete.jsx';
