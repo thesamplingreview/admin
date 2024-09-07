@@ -5,7 +5,7 @@ import PageHeader from '@/components/layouts/PageHeader.jsx';
 import NavView from '@/components/pages/admins/NavView.jsx';
 import FormDelete from '@/components/pages/admins/FormDelete.jsx';
 
-export default function CampaignDelete() {
+export default function AdminDelete() {
   const [model] = useModel();
 
   return (

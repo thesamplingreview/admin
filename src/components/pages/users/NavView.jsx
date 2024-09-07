@@ -42,8 +42,15 @@ export default function NavView({ active }) {
         icon: 'fa-key',
         scope: 'users:edit',
       },
+      {
+        key: 'delete',
+        name: 'Delete',
+        route: appRoute(`/users/${model.id}/delete`),
+        icon: 'fa-trash',
+        scope: 'users:delete',
+      },
     ].filter((d) => permissions.includes(d.scope));
-  }, [model.id, permissions]);
+  }, [model.id, permissions, model.enrolments_count]);
 
   return (
     <PageNav navs={navs} active={active}>
