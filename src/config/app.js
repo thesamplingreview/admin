@@ -11,4 +11,16 @@ const config = {
   loginableRoleIds: [2, 3, 4, 9],
 };
 
+// Log configuration on startup
+console.log('🔧 Admin Portal Configuration:', {
+  VITE_URL: config.url,
+  VITE_WEB_URL: config.webUrl,
+  VITE_API_URL: config.apiUrl,
+  'API URL Status': config.apiUrl ? '✅ Configured' : '❌ Missing',
+});
+
+if (!config.apiUrl) {
+  console.error('❌ VITE_API_URL is not set! API requests will fail.');
+}
+
 export default config;
