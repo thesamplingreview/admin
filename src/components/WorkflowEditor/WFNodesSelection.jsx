@@ -118,7 +118,7 @@ export default function WFNodesSelection() {
             overflowY: 'auto',
           }}
         >
-          {Object.values(nodesList).map((node) => (
+          {Object.values(nodesList).filter((node) => !node.hidden).map((node) => (
             <NodeItem
               key={node.key}
               node={node}

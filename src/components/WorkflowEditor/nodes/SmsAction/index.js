@@ -7,6 +7,8 @@ const meta = {
   icon: 'fa-comment-sms',
   color: '#6a3771',
   configComp: NodeConfig,
+  // SMS sending is disabled; kept so existing workflows still render
+  hidden: true,
   validate: (input) => {
     if (!input?.number) {
       return 'Number is required.';
