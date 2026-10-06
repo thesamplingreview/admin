@@ -1,0 +1,18 @@
+src/components/WorkflowEditor/WFNodesSelection.jsx
+  h_55ed20ed42cd13 121
+src/components/WorkflowEditor/nodes/SmsAction/index.js
+  h_55ed20ed42cd13 10-11
+src/components/WorkflowEditor/nodes/SmsUserAction/index.js
+  h_55ed20ed42cd13 10-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "80f34976fcc6c9473f570d0e214b1f92088a2581",
+  "prompts": {},
+  "humans": {
+    "h_55ed20ed42cd13": {
+      "author": "Developer <imexlight@gmail.com>"
+    }
+  }
+}
